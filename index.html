@@ -5720,7 +5720,13 @@ var SOCIAL_HEAT_DATA = CRAWLED.socialHeat || {};
 var stationInfo = CRAWLED.stationInfo;
 var allStations = CRAWLED.allStations;
 var venueMap = CRAWLED.metro.venue_map;
-var eventProfiles = CRAWLED.eventProfiles;
+var eventProfiles = CRAWLED.eventProfiles || {};
+// 兜底默认：当某活动（如新增的 9/12 活动）在 eventProfiles 中缺少进站/出站小时分布时，
+// 使用通用演唱会/赛事分布，避免 computeEventFlow 因 prof.inbound 为 undefined 而抛错、导致整页预测空白。
+var DEFAULT_EVENT_PROFILE = {
+  inbound:  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.10,0.20,0.30,0.30,0.10,0,0,0],
+  outbound: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.30,0.50,0.20]
+};
 var weatherMap = CRAWLED.weatherMap;
 var holidayMap = CRAWLED.holidayMap;
 
@@ -6143,7 +6149,7 @@ function computeEventFlow(stn, date){
         var myWeight = flowWeights[stn] || 0.15;
         var myShare = myWeight / totalWeight;
         var perStn = att * share * myShare;
-        var prof = eventProfiles[e.id];
+        var prof = eventProfiles[e.id] || DEFAULT_EVENT_PROFILE;
         for(var h=0;h<24;h++){
           eventHourly[h] += Math.round(perStn * (prof.inbound[h] + prof.outbound[h]*0.5));
         }
@@ -6181,7 +6187,7 @@ function computeEventFlow(stn, date){
     var stationPassengers = totalMetro * levelW;
     // Store gravity details for display
     var gravInfo = {totalMetro:Math.round(totalMetro), gravDetails:gravDetails, gravitySum:gravitySum, myGravity:myGravityVal, totalWeight:totalWeightSum, levelWeight:levelW, beta:GRAVITY_BETA};
-    var prof = eventProfiles[e.id];
+    var prof = eventProfiles[e.id] || DEFAULT_EVENT_PROFILE;
     // Apply Hawkes decay to outbound flow (post-event residual impact)
     // Reference: STHGARN(2024) — event impact follows Hawkes process
     // After event ends, residual trips decay exponentially: 1h=65%, 2h=42%, 3h=27%
