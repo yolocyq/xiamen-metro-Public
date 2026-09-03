@@ -6599,9 +6599,7 @@ function loadDashboard(){
     html+='<div class="alert-panel orange"><div class="alert-header"><span class="title" style="color:#e65100;">🌧 恶劣天气预警</span>'+
       '<span class="badge orange">注意</span></div><div class="alert-body">天气系数='+wCoef.coef.toFixed(3)+'，预计客流较日常下降约'+Math.round((1-wCoef.coef)*100)+'%。请检查防洪物资、铺设防滑垫、加强广播提示。</div></div>';
   } else {
-    html+='<div class="alert-panel" style="border-color:#c8e6c9;background:linear-gradient(135deg,#f1f8e9,#fff);">'+
-      '<div class="alert-header"><span class="title" style="color:#2e7d32;">✅ 运营状态正常</span>'+
-      '<span class="badge green">正常</span></div><div class="alert-body">全网'+results.length+'个车站运营状态正常，无客流预警。日常监控持续进行中。</div></div>';
+    // 正常状态不再展示绿色描述横幅（按用户要求：移除运营总览分析日期上方的绿色文字性描述）
   }
 
   // ===== KEY METRICS =====
