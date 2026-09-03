@@ -155,6 +155,121 @@ table.striped tr:nth-child(even){background:#fafbfd;}
 }
   .wm{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden;}
   .wm span{position:absolute;font-size:28px;color:rgba(0,0,0,0.04);transform:rotate(-25deg);white-space:nowrap;user-select:none;font-weight:700;}
+
+  /* ---- 日期选择辅助按钮 ---- */
+  .btn-today{padding:5px 12px;border:1px solid #c5d3e6;background:#fff;color:#0066cc;border-radius:6px;
+    font-size:12px;font-weight:600;cursor:pointer;margin-left:8px;transition:all .2s;white-space:nowrap;}
+  .btn-today:hover{background:#e8f0fa;border-color:#0066cc;}
+
+  /* ==================== 实时闸机 / 大客流预警 ==================== */
+  .gate-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:14px;}
+  .gate-card{border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:linear-gradient(135deg,#f8fafd 0%,#fff 100%);}
+  .gate-card.bl{border-left:4px solid #1565c0;} .gate-card.yl{border-left:4px solid #f57f17;}
+  .gate-card.or{border-left:4px solid #e65100;} .gate-card.rd{border-left:4px solid #d32f2f;}
+  .gate-card.gn{border-left:4px solid #2e7d32;} .gate-card.gy{border-left:4px solid #9e9e9e;}
+  .gate-val{font-size:26px;font-weight:700;line-height:1.15;}
+  .gate-lab{font-size:11px;color:var(--text3);margin-top:3px;}
+  .gate-sub{font-size:11px;color:var(--text2);margin-top:5px;}
+
+  .conn-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;padding:14px;background:#f5f8fc;
+    border:1px solid #dce3ed;border-radius:10px;margin-bottom:14px;}
+  .conn-bar .fld{display:flex;flex-direction:column;gap:4px;}
+  .conn-bar label{font-size:11px;color:var(--text2);font-weight:600;}
+  .conn-bar input,.conn-bar select{padding:6px 10px;border:1px solid #ccd6e4;border-radius:6px;font-size:12px;
+    font-family:inherit;background:#fff;color:var(--text);}
+  .conn-bar input:focus,.conn-bar select:focus{outline:none;border-color:#0066cc;}
+  .conn-bar input[type=text]{min-width:230px;}
+  .conn-bar input[type=number]{width:78px;}
+  .btn{padding:7px 14px;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;
+    font-family:inherit;transition:all .2s;white-space:nowrap;}
+  .btn-pri{background:var(--pri-light);color:#fff;} .btn-pri:hover{background:var(--pri);}
+  .btn-dan{background:#d32f2f;color:#fff;} .btn-dan:hover{background:#b71c1c;}
+  .btn-sec{background:#e0e6ed;color:#333;} .btn-sec:hover{background:#cfd8e3;}
+
+  .status-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:12px;
+    font-size:12px;font-weight:600;}
+  .status-pill .dot{width:8px;height:8px;border-radius:50%;}
+  .st-live{background:#e8f5e9;color:#2e7d32;} .st-live .dot{background:#4caf50;animation:pulse 1.4s infinite;}
+  .st-sim{background:#fff3e0;color:#e65100;} .st-sim .dot{background:#ff9800;animation:pulse 1.4s infinite;}
+  .st-down{background:#ffebee;color:#c62828;} .st-down .dot{background:#d32f2f;}
+  .st-idle{background:#eceff1;color:#607d8b;} .st-idle .dot{background:#90a4ae;}
+
+  /* 告警横幅 */
+  .warn-banner{border-radius:10px;padding:14px 18px;margin-bottom:12px;display:flex;align-items:flex-start;
+    gap:12px;border-left:6px solid;}
+  .warn-banner.red{background:linear-gradient(135deg,#ffebee,#fff);border-color:#d32f2f;}
+  .warn-banner.orange{background:linear-gradient(135deg,#fff3e0,#fff);border-color:#e65100;}
+  .warn-banner.yellow{background:linear-gradient(135deg,#fffde7,#fff);border-color:#f57f17;}
+  .warn-banner.blue{background:linear-gradient(135deg,#e3f2fd,#fff);border-color:#1565c0;}
+  .warn-banner .wico{font-size:26px;line-height:1;}
+  .warn-banner .wtit{font-weight:700;font-size:14px;margin-bottom:3px;}
+  .warn-banner .wmsg{font-size:12px;color:#555;line-height:1.7;}
+  .warn-banner .wact{margin-top:8px;font-size:12px;color:#333;background:rgba(255,255,255,.7);
+    border-radius:6px;padding:7px 11px;}
+
+  /* 分时热力条 */
+  .slot-wrap{display:flex;flex-wrap:wrap;gap:3px;margin-top:8px;}
+  .slot-cell{flex:1 1 0;min-width:15px;height:44px;border-radius:3px;position:relative;cursor:default;
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;
+    font-size:9px;color:#fff;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.4);}
+  .slot-axis{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;}
+  .slot-axis span{flex:1 1 0;min-width:15px;text-align:center;font-size:9px;color:#999;}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text2);margin-top:10px;
+    padding-top:10px;border-top:1px dashed #e0e6ed;}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:4px;vertical-align:-1px;}
+
+  .tbl{width:100%;border-collapse:collapse;font-size:12px;}
+  .tbl th{background:#f5f8fc;padding:9px 10px;text-align:left;font-weight:600;color:#455a64;
+    border-bottom:2px solid #e0e6ed;white-space:nowrap;}
+  .tbl td{padding:9px 10px;border-bottom:1px solid #f0f3f7;}
+  .tbl tr:hover td{background:#fafcfe;}
+  .tbl .num{text-align:right;font-variant-numeric:tabular-nums;}
+  .lv{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap;}
+  .lv-red{background:#ffebee;color:#c62828;} .lv-orange{background:#fff3e0;color:#e65100;}
+  .lv-yellow{background:#fffde7;color:#f57f17;} .lv-blue{background:#e3f2fd;color:#1565c0;}
+  .lv-green{background:#e8f5e9;color:#2e7d32;} .lv-none{background:#eceff1;color:#78909c;}
+
+  .cfg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;}
+  .cfg-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;
+    background:#f8fafd;border:1px solid #e6ebf2;border-radius:8px;}
+  .cfg-item .cl{font-size:12px;color:#455a64;font-weight:600;}
+  .cfg-item .ch{font-size:10px;color:#9aa5b1;}
+  .cfg-item input{width:88px;padding:5px 8px;border:1px solid #ccd6e4;border-radius:5px;
+    font-size:12px;text-align:right;font-family:inherit;}
+  .cfg-item input:focus{outline:none;border-color:#0066cc;}
+  .notice{background:#f5f8fc;border:1px dashed #b9c7d9;border-radius:8px;padding:10px 14px;
+    font-size:12px;color:#5a6b80;line-height:1.7;margin-bottom:14px;}
+  .notice code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:11px;color:#0a4d8c;}
+
+  /* ===== 实时闸机（新版：全站网格 + 底部植入标准） ===== */
+  .gate-grid{overflow-x:auto;}
+  .gate-grid table{width:100%;border-collapse:collapse;}
+  .gate-row:hover{background:#f3f8ff;}
+  .gate-summary{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px;}
+  .lvl-chip{font-size:12px;font-weight:600;padding:4px 10px;border-radius:12px;background:#eef1f5;color:#455a73;}
+  .lvl-chip.red{background:#fdecea;color:#d32f2f;} .lvl-chip.orange{background:#fff3e0;color:#e65100;}
+  .lvl-chip.yellow{background:#fffde7;color:#f9a825;} .lvl-chip.blue{background:#e3f2fd;color:#1565c0;}
+  .lvl-chip.none{background:#e8f5e9;color:#2e7d32;}
+  .lvl-badge{display:inline-block;padding:2px 10px;border-radius:11px;font-size:11px;font-weight:700;}
+  .std-card .std-box{margin-top:4px;}
+  .std-box textarea{width:100%;height:200px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+    border:1px solid #ccd6e4;border-radius:8px;padding:10px;resize:vertical;box-sizing:border-box;color:#233;}
+  .std-box textarea:focus{outline:none;border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.08);}
+  .std-btns{display:flex;gap:8px;margin:8px 0;}
+  .std-status{font-size:12px;min-height:18px;}
+  .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:12px 0;}
+  .kv-i{background:#f6f9fd;border:1px solid #e6edf5;border-radius:8px;padding:10px 12px;}
+  .kv-l{font-size:11px;color:#6b7a8d;} .kv-v{font-size:15px;font-weight:700;margin-top:2px;color:#1b2a3a;}
+  .alert-box{border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13px;line-height:1.7;}
+  .bars{display:flex;align-items:flex-end;gap:2px;height:120px;padding-top:6px;border-bottom:1px solid #eef2f7;}
+  .bar-col{position:relative;flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;}
+  .bar{width:100%;border-radius:2px 2px 0 0;}
+  .bar.in{background:linear-gradient(180deg,#4a90e2,#2f6fd0);}
+  .bar.out{background:linear-gradient(180deg,#34c0a8,#1f9e86);}
+  .bar-x{position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-size:9px;color:#9aa7b6;}
+
+
+    font-size:11px;color:#5a6b7d;line-height:1.8;}
 </style>
 </head>
 <body>
@@ -178,19 +293,40 @@ table.striped tr:nth-child(even){background:#fafbfd;}
     <button class="tab-btn" onclick="switchTab('flow')">📊 客流预测</button>
     <button class="tab-btn" onclick="switchTab('event')">🎯 活动保障</button>
     <button class="tab-btn" onclick="switchTab('analytics')">📈 数据分析</button>
+    <button class="tab-btn" onclick="switchTab('gate')">🚧 实时闸机</button>
+    <button class="tab-btn" onclick="switchTab('archive')">📚 历史归档</button>
   </div>
   <div class="tab-content active" id="tab-dashboard"></div>
   <div class="tab-content" id="tab-flow"></div>
   <div class="tab-content" id="tab-event"></div>
   <div class="tab-content" id="tab-analytics"></div>
+  <div class="tab-content" id="tab-gate"></div>
+  <div class="tab-content" id="tab-archive"></div>
 </div>
 <div class="footer-note">数据不全仅供参考，未涉及任何侵权行为</div>
 
 <script>
+// ==================== 日期基准（本地时区 / 跨零点自动刷新） ====================
+// 原实现用 new Date().toISOString().slice(0,10) —— 取的是 UTC 日期。
+// 北京时间 = UTC+8，每天 00:00~07:59 会返回"前一天"，是日期不准的根源之一。
+function pad2(n){return String(n).padStart(2,'0');}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmtDate(d){return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());}
+function todayStr(){return fmtDate(new Date());}            // 本地时区（北京时间）
+function addDays(ds,n){var p=ds.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);d.setDate(d.getDate()+n);return fmtDate(d);}
+function dateLabel(d){
+  var t=todayStr();
+  if(d===t)return '今天';
+  if(d===addDays(t,1))return '明天';
+  if(d===addDays(t,2))return '后天';
+  return '';
+}
+
 // ==================== LIVE CLOCK ====================
 function updateClock(){
   var n=new Date();
-  document.getElementById('liveTime').textContent=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')+' '+String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0');
+  document.getElementById('liveTime').textContent=
+    fmtDate(n)+' '+pad2(n.getHours())+':'+pad2(n.getMinutes())+':'+pad2(n.getSeconds());
 }
 setInterval(updateClock,1000);updateClock();
 
@@ -200,7 +336,5357 @@ setInterval(updateClock,1000);updateClock();
 
 
 <script>
-var CRAWLED = {"weather": {"source": "中国天气网 (t.weather.itboy.net)", "source_url": "http://t.weather.itboy.net/api/weather/city/101230201", "city_code": "101230201", "crawl_time": "2026-07-23 19:00:27", "current": {"temperature": "32.5", "humidity": "72%", "air_quality": "优", "pm25": 18.0, "pm10": 40.0, "ganmao": "各类人群可自由活动"}, "forecast": [{"date": "2026-07-23", "week": "星期四", "sunrise": "05:31", "high": "高温 32℃", "low": "低温 27℃", "weather": "晴", "wind_dir": "西南风", "wind_level": "2级", "aqi": 43, "aqi_level": null}, {"date": "2026-07-24", "week": "星期五", "sunrise": "05:32", "high": "高温 32℃", "low": "低温 26℃", "weather": "晴", "wind_dir": "东北风", "wind_level": "2级", "aqi": 45, "aqi_level": null}, {"date": "2026-07-25", "week": "星期六", "sunrise": "05:32", "high": "高温 31℃", "low": "低温 27℃", "weather": "多云", "wind_dir": "东北风", "wind_level": "3级", "aqi": 50, "aqi_level": null}, {"date": "2026-07-26", "week": "星期日", "sunrise": "05:33", "high": "高温 27℃", "low": "低温 25℃", "weather": "中雨", "wind_dir": "东南风", "wind_level": "4级", "aqi": 36, "aqi_level": null}, {"date": "2026-07-27", "week": "星期一", "sunrise": "05:33", "high": "高温 28℃", "low": "低温 26℃", "weather": "阴", "wind_dir": "东南风", "wind_level": "2级", "aqi": 40, "aqi_level": null}, {"date": "2026-07-28", "week": "星期二", "sunrise": "05:34", "high": "高温 29℃", "low": "低温 25℃", "weather": "小雨", "wind_dir": "东南风", "wind_level": "2级", "aqi": 46, "aqi_level": null}, {"date": "2026-07-29", "week": "星期三", "sunrise": "05:34", "high": "高温 30℃", "low": "低温 26℃", "weather": "中雨", "wind_dir": "东南风", "wind_level": "2级", "aqi": 36, "aqi_level": null}, {"date": "2026-07-30", "week": "星期四", "sunrise": "05:35", "high": "高温 29℃", "low": "低温 26℃", "weather": "大雨", "wind_dir": "东南风", "wind_level": "2级", "aqi": 21, "aqi_level": null}, {"date": "2026-07-31", "week": "星期五", "sunrise": "05:35", "high": "高温 31℃", "low": "低温 26℃", "weather": "大雨", "wind_dir": "西南风", "wind_level": "2级", "aqi": 20, "aqi_level": null}, {"date": "2026-08-01", "week": "星期六", "sunrise": "05:36", "high": "高温 31℃", "low": "低温 26℃", "weather": "暴雨", "wind_dir": "西南风", "wind_level": "2级", "aqi": 19, "aqi_level": null}, {"date": "2026-08-02", "week": "星期日", "sunrise": "05:36", "high": "高温 30℃", "low": "低温 26℃", "weather": "大雨", "wind_dir": "南风", "wind_level": "2级", "aqi": 17, "aqi_level": null}, {"date": "2026-08-03", "week": "星期一", "sunrise": "05:36", "high": "高温 31℃", "low": "低温 25℃", "weather": "中雨", "wind_dir": "东北风", "wind_level": "2级", "aqi": 21, "aqi_level": null}, {"date": "2026-08-04", "week": "星期二", "sunrise": "05:37", "high": "高温 31℃", "low": "低温 26℃", "weather": "阴", "wind_dir": "东北风", "wind_level": "2级", "aqi": 29, "aqi_level": null}, {"date": "2026-08-05", "week": "星期三", "sunrise": "05:37", "high": "高温 32℃", "low": "低温 26℃", "weather": "小雨", "wind_dir": "东风", "wind_level": "2级", "aqi": 31, "aqi_level": null}, {"date": "2026-08-06", "week": "星期四", "sunrise": "05:38", "high": "高温 32℃", "low": "低温 26℃", "weather": "小雨", "wind_dir": "东风", "wind_level": "2级", "aqi": 32, "aqi_level": null}], "yesterday": {"date": "2026-07-22", "high": "高温 32℃", "low": "低温 27℃", "weather": "晴", "wind_dir": "西南风", "wind_level": "2级"}}, "holidays": {"source": "timor.tech 节假日API", "source_url": "https://timor.tech/api/holiday/info/", "crawl_time": "2026-07-23 19:00:27", "days": [{"date": "2026-07-23", "type_code": 0, "type_name": "周四", "week": 4, "holiday": null}, {"date": "2026-07-24", "type_code": 0, "type_name": "周五", "week": 5, "holiday": null}, {"date": "2026-07-25", "type_code": 1, "type_name": "周六", "week": 6, "holiday": null}, {"date": "2026-07-26", "type_code": 1, "type_name": "周日", "week": 7, "holiday": null}, {"date": "2026-07-27", "type_code": 0, "type_name": "周一", "week": 1, "holiday": null}, {"date": "2026-07-28", "type_code": 0, "type_name": "周二", "week": 2, "holiday": null}, {"date": "2026-07-29", "type_code": 0, "type_name": "周三", "week": 3, "holiday": null}, {"date": "2026-07-30", "type_code": 0, "type_name": "周四", "week": 4, "holiday": null}, {"date": "2026-07-31", "error": "HTTP Error 429: Too Many Requests"}, {"date": "2026-08-01", "error": "HTTP Error 429: Too Many Requests"}, {"date": "2026-08-02", "error": "HTTP Error 429: Too Many Requests"}, {"date": "2026-08-03", "error": "HTTP Error 429: Too Many Requests"}, {"date": "2026-08-04", "error": "HTTP Error 429: Too Many Requests"}, {"date": "2026-08-05", "error": "HTTP Error 429: Too Many Requests"}, {"date": "2026-08-06", "error": "HTTP Error 429: Too Many Requests"}]}, "hotsearch": {"source": "百度热搜榜 (top.baidu.com)", "source_url": "https://top.baidu.com/board?tab=realtime", "crawl_time": "2026-07-23 19:00:44", "hot_words": [{"rank": 1, "word": "总书记为何高度重视基础教育", "hot_score": 7904751}, {"rank": 2, "word": "滔搏回应暴力打折甩卖耐克库存", "hot_score": 7809211}, {"rank": 3, "word": "644分考生报志愿没看清本部和分校", "hot_score": 7712898}, {"rank": 4, "word": "大暑时节 这份中暑防治指南请查收", "hot_score": 7619396}, {"rank": 5, "word": "GDP十强省份又变了", "hot_score": 7522920}, {"rank": 6, "word": "暑期档票房破50亿 《功夫女足》领跑", "hot_score": 7428200}, {"rank": 7, "word": "净网：网警发20起涉汛涉灾谣言案例", "hot_score": 7332242}, {"rank": 8, "word": "男子彩票中奖5400万 号码竟是捡到的", "hot_score": 7233506}, {"rank": 9, "word": "女子搬运150斤黄鸡蛋瞬间全碎", "hot_score": 7137479}, {"rank": 10, "word": "王楚钦回应1比2徐海东", "hot_score": 7048823}, {"rank": 11, "word": "中国数学家冲击菲尔兹奖 研究了啥", "hot_score": 6952044}, {"rank": 12, "word": "中纪委一日连打三“虎”", "hot_score": 6855395}, {"rank": 13, "word": "荣耀更换logo", "hot_score": 6755908}, {"rank": 14, "word": "郑州8岁男孩装千度近视一年", "hot_score": 6665676}, {"rank": 15, "word": "“最爱发钱老板”当场辞退不孝员工", "hot_score": 6572916}, {"rank": 16, "word": "男子称跟女同事开玩笑被打还被开除", "hot_score": 6477842}, {"rank": 17, "word": "奶茶店集体卖冰淇淋 定价比奶茶贵", "hot_score": 6375709}, {"rank": 18, "word": "电影暑期档已经不存在了", "hot_score": 6281843}, {"rank": 19, "word": "妈妈把孩子暑假作业进度可视化", "hot_score": 6177055}, {"rank": 20, "word": "演员寇占文被法院悬赏", "hot_score": 6096778}, {"rank": 21, "word": "菲公务船侵闯黄岩岛海域 中方驱离", "hot_score": 5995481}, {"rank": 22, "word": "医生称“抖腿”能够保护血管", "hot_score": 5897724}, {"rank": 23, "word": "小伙带父母花2.5万从广州打车到西藏", "hot_score": 5812066}, {"rank": 24, "word": "云南耿马现54.7公斤巨大口蘑", "hot_score": 5702250}, {"rank": 25, "word": "10年涨价3倍 共享单车越骑越贵", "hot_score": 5621917}, {"rank": 26, "word": "中方回应王毅缺席东盟与中日韩外长会", "hot_score": 5507540}, {"rank": 27, "word": "乒超：蒯曼率队冲首胜", "hot_score": 5416989}, {"rank": 28, "word": "两兄弟暴雨前将满院粮食搬回屋", "hot_score": 5322809}, {"rank": 29, "word": "74年前坠海美国客机终于被找到", "hot_score": 5228142}, {"rank": 30, "word": "老家空调一刻不停 漠河出门穿长袖", "hot_score": 5124158}], "xiamen_related": []}, "events": {"source": "厦门本地宝/腾讯网/厦门国际会展中心官网/厦门电视台/厦门日报", "source_urls": ["https://xm.bendibao.com/xiuxian/", "https://new.qq.com/rain/a/20260620A080RW00", "https://www.xicec.com", "https://www.xmtv.cn/xmtv/2026-07-01/98f687bb5f2c9330.html", "https://www.toutiao.com/article/7657369210124911113/"], "crawl_time": "2026-07-23 19:00:44", "events": [{"id": "EVT-001", "name": "Ella陈嘉桦\"It's Me 艾拉主意\"巡回演唱会-厦门站", "type": "演唱会", "date": "2026-07-18", "start_time": "19:00", "end_time": "22:30", "venue": "厦门奥林匹克体育中心-凤凰体育馆", "venue_capacity": 18000, "expected_attendance": 15000, "price_range": "380-1880元", "source": "厦门本地宝/腾讯网", "source_url": "https://xm.bendibao.com/xiuxian/", "ticket_status": "已开票"}, {"id": "EVT-002", "name": "郭富城ICONIC世界巡回演唱会-厦门站", "type": "演唱会", "date": "2026-07-25", "start_time": "19:00", "end_time": "22:30", "venue": "厦门奥林匹克体育中心-凤凰体育馆", "venue_capacity": 18000, "expected_attendance": 18000, "price_range": "388-2088元", "source": "厦门本地宝/腾讯网", "source_url": "https://new.qq.com/rain/a/20260620A080RW00", "ticket_status": "已开票"}, {"id": "EVT-003", "name": "蒲熠星《银河系旅行攻略》巡回演唱会-厦门", "type": "演唱会", "date": "2026-08-01", "start_time": "19:00", "end_time": "22:00", "venue": "厦门奥林匹克体育中心-凤凰体育馆", "venue_capacity": 18000, "expected_attendance": 12000, "price_range": "380-1680元", "source": "厦门本地宝", "source_url": "https://xm.bendibao.com/xiuxian/", "ticket_status": "已开票"}, {"id": "EVT-004", "name": "李健\"万物安生时\"2026-2027巡回演唱会-厦门站", "type": "演唱会", "date": "2026-08-08", "start_time": "19:30", "end_time": "22:30", "venue": "厦门奥林匹克体育中心-凤凰体育馆", "venue_capacity": 18000, "expected_attendance": 17000, "price_range": "480-2080元", "source": "厦门本地宝/腾讯网", "source_url": "https://new.qq.com/rain/a/20260620A080RW00", "ticket_status": "已开票"}, {"id": "EVT-005", "name": "周华健2026\"少年的奇幻之旅3.0\"巡演-厦门站", "type": "演唱会", "date": "2026-08-22", "start_time": "19:00", "end_time": "22:30", "venue": "厦门奥林匹克体育中心-凤凰体育馆", "venue_capacity": 18000, "expected_attendance": 18000, "price_range": "399-2088元", "source": "厦门本地宝/腾讯网", "source_url": "https://new.qq.com/rain/a/20260620A080RW00", "ticket_status": "已开票"}, {"id": "EVT-006", "name": "第61届仿真植物、园林花艺及美陈道具(秋季)交易会", "type": "展览会", "date": "2026-07-16", "end_date": "2026-07-18", "start_time": "09:00", "end_time": "17:00", "venue": "厦门国际会议展览中心", "hall": "C1-C5馆", "venue_capacity": 50000, "expected_attendance": 8000, "source": "厦门国际会展中心官网", "source_url": "https://www.xicec.com", "ticket_status": "专业观众登记"}, {"id": "EVT-007", "name": "电力建设科技发展大会暨第二届电力智能新型施工装备展", "type": "展览会", "date": "2026-07-29", "end_date": "2026-07-31", "start_time": "09:00", "end_time": "17:00", "venue": "厦门国际会议展览中心", "hall": "C3-C5馆", "venue_capacity": 50000, "expected_attendance": 6000, "source": "厦门国际会展中心官网", "source_url": "https://www.xicec.com", "ticket_status": "专业观众登记"}, {"id": "EVT-008", "name": "中国华夏家博会(厦门)", "type": "展览会", "date": "2026-08-07", "end_date": "2026-08-09", "start_time": "09:00", "end_time": "17:00", "venue": "厦门国际会议展览中心", "hall": "B3-B4展厅", "venue_capacity": 50000, "expected_attendance": 15000, "source": "厦门国际会展中心官网", "source_url": "https://www.xicec.com", "ticket_status": "免费登记"}, {"id": "EVT-009", "name": "CXPE厦门印刷包装瓦楞彩盒产业博览会", "type": "展览会", "date": "2026-08-08", "end_date": "2026-08-10", "start_time": "09:00", "end_time": "17:00", "venue": "厦门国际会议展览中心", "venue_capacity": 50000, "expected_attendance": 5000, "source": "厦门国际会展中心官网", "source_url": "https://www.xicec.com", "ticket_status": "专业观众登记"}, {"id": "EVT-010", "name": "第一届梦鱼动漫游戏嘉年华", "type": "漫展", "date": "2026-08-08", "end_date": "2026-08-09", "start_time": "09:00", "end_time": "17:00", "venue": "厦门国际会议展览中心", "venue_capacity": 50000, "expected_attendance": 10000, "source": "厦门国际会展中心官网", "source_url": "https://www.xicec.com", "ticket_status": "已开票"}, {"id": "EVT-011", "name": "厦门国际冷冻冷藏食品博览会+蓝装家博会", "type": "展览会", "date": "2026-08-13", "end_date": "2026-08-16", "start_time": "09:00", "end_time": "17:00", "venue": "厦门国际会议展览中心", "venue_capacity": 50000, "expected_attendance": 12000, "source": "厦门国际会展中心官网", "source_url": "https://www.xicec.com", "ticket_status": "免费登记"}, {"id": "EVT-012", "name": "\"来厦门 猫一夏\"暑期文旅活动(3000场次)", "type": "文旅活动", "date": "2026-07-01", "end_date": "2026-08-31", "venue": "全市多点(鼓浪屿/环岛路/园博苑等)", "venue_capacity": 100000, "expected_attendance": 50000, "source": "厦门电视台", "source_url": "https://www.xmtv.cn/xmtv/2026-07-01/98f687bb5f2c9330.html", "ticket_status": "免费/混合"}, {"id": "EVT-013", "name": "嘉庚剧院暑期儿童剧系列(多场)", "type": "演出", "date": "2026-07-16", "end_date": "2026-08-24", "venue": "厦门嘉庚剧院", "venue_capacity": 1200, "expected_attendance": 8000, "source": "厦门日报/今日头条", "source_url": "https://www.toutiao.com/article/7657369210124911113/", "ticket_status": "已开票"}]}, "metro": {"source": "厦门地铁官网(xmgdjt.com.cn)线路图 + 百度百科 + 高德地图POI距离测算", "source_urls": ["https://www.xmgdjt.com.cn/", "https://baike.baidu.com/item/厦门轨道交通交通/0", "https://jt.xm.gov.cn/tzxx/hyxw/202408/t20240830_2887475.htm"], "crawl_time": "2026-07-23 19:00:44", "lines": {"1号线": {"color": "#e60012", "stations": ["镇海路", "中山公园", "将军祠", "文灶", "湖滨东路", "莲坂", "莲花路口", "吕厝", "乌石浦", "塘边", "火炬园", "殿前", "高崎", "集美学村", "园博苑", "杏林村", "杏锦路", "官任", "诚毅广场", "集美软件园", "集美大道", "天水路", "厦门北站", "岩内"], "length_km": 30.3, "opened": "2017-12-31"}, "2号线": {"color": "#00b140", "stations": ["天竺山", "东孚", "东瑶", "新阳大道", "新垵", "翁角路", "马青路", "海沧行政中心", "海沧商务中心", "海沧湾公园", "邮轮中心", "建业路", "湖滨中路", "体育中心", "育秀东路", "吕厝", "江头", "后埔", "蔡塘", "古地石", "岭兜", "软件园二期", "何厝", "观音山", "东宅", "两岸金融中心", "五通", "湿地公园", "钟宅", "五缘湾"], "length_km": 41.6, "opened": "2019-12-25", "note": "共32座车站，鼎美站和马銮中心站暂缓开通，运营30座"}, "3号线": {"color": "#00a0e9", "stations": ["厦门火车站", "湖滨东路", "体育中心", "人才中心", "湖里公园", "华荣路", "火炬园", "小东山", "安兜", "坂尚", "湖里创新园", "五缘湾", "国际博览中心", "东界", "洪坑", "林前", "鼓锣", "翔安市民公园", "浦边", "后村", "蔡厝"], "length_km": 26.5, "opened": "2021-06-25", "note": "翔安机场站为在建延伸段(蔡厝~翔安机场)，尚未开通"}}, "venue_map": {"厦门奥林匹克体育中心-凤凰体育馆": {"primary_station": "国际博览中心", "venue_capacity": 18000, "nearby_stations": [{"station": "国际博览中心", "line": "3号线", "distance_m": 600, "impact_level": 5}, {"station": "东界", "line": "3号线", "distance_m": 1500, "impact_level": 3}, {"station": "洪坑", "line": "3号线", "distance_m": 2500, "impact_level": 2}, {"station": "林前", "line": "3号线", "distance_m": 3500, "impact_level": 2}]}, "厦门奥林匹克体育中心-白鹭体育场": {"primary_station": "国际博览中心", "venue_capacity": 60000, "nearby_stations": [{"station": "国际博览中心", "line": "3号线", "distance_m": 600, "impact_level": 5}, {"station": "东界", "line": "3号线", "distance_m": 1400, "impact_level": 4}, {"station": "洪坑", "line": "3号线", "distance_m": 2400, "impact_level": 3}, {"station": "林前", "line": "3号线", "distance_m": 3400, "impact_level": 3}, {"station": "五缘湾", "line": "2号线/3号线", "distance_m": 4500, "impact_level": 2}]}, "厦门国际会议展览中心": {"primary_station": "湿地公园", "nearby_stations": [{"station": "湿地公园", "line": "2号线", "distance_m": 800, "impact_level": 5}, {"station": "钟宅", "line": "2号线", "distance_m": 1200, "impact_level": 4}, {"station": "五缘湾", "line": "2号线", "distance_m": 1500, "impact_level": 4}, {"station": "观音山", "line": "2号线", "distance_m": 2000, "impact_level": 3}, {"station": "何厝", "line": "2号线", "distance_m": 2500, "impact_level": 2}]}, "厦门市体育中心": {"primary_station": "体育中心", "nearby_stations": [{"station": "体育中心", "line": "2号线", "distance_m": 300, "impact_level": 5}, {"station": "育秀东路", "line": "2号线", "distance_m": 600, "impact_level": 4}, {"station": "湖滨东路", "line": "1号线", "distance_m": 800, "impact_level": 3}, {"station": "人才中心", "line": "3号线", "distance_m": 1000, "impact_level": 3}, {"station": "莲坂", "line": "1号线", "distance_m": 1200, "impact_level": 2}]}, "厦门嘉庚剧院": {"primary_station": "诚毅广场", "nearby_stations": [{"station": "诚毅广场", "line": "1号线", "distance_m": 500, "impact_level": 5}, {"station": "官任", "line": "1号线", "distance_m": 1000, "impact_level": 3}, {"station": "集美大道", "line": "1号线", "distance_m": 1500, "impact_level": 2}]}}, "station_types": {"吕厝": "换乘", "火炬园": "换乘", "体育中心": "换乘", "湖滨东路": "换乘", "五缘湾": "换乘", "厦门北站": "枢纽", "高崎": "枢纽", "厦门火车站": "枢纽", "邮轮中心": "枢纽", "集美学村": "景区", "园博苑": "景区", "湿地公园": "景区", "钟宅": "景区", "镇海路": "商圈", "中山公园": "商圈", "莲坂": "商圈", "江头": "商圈", "观音山": "商圈", "诚毅广场": "商圈", "将军祠": "通勤", "文灶": "通勤", "莲花路口": "通勤", "乌石浦": "通勤", "塘边": "通勤", "殿前": "通勤", "杏林村": "通勤", "杏锦路": "通勤", "官任": "通勤", "集美软件园": "通勤", "集美大道": "通勤", "天水路": "通勤", "岩内": "通勤", "天竺山": "通勤", "东孚": "通勤", "东瑶": "通勤", "新阳大道": "通勤", "新垵": "通勤", "翁角路": "通勤", "马青路": "通勤", "海沧行政中心": "通勤", "海沧商务中心": "通勤", "海沧湾公园": "通勤", "建业路": "通勤", "湖滨中路": "通勤", "育秀东路": "通勤", "后埔": "通勤", "蔡塘": "通勤", "古地石": "通勤", "岭兜": "通勤", "软件园二期": "通勤", "何厝": "通勤", "东宅": "通勤", "两岸金融中心": "通勤", "五通": "通勤", "人才中心": "通勤", "湖里公园": "通勤", "华荣路": "通勤", "小东山": "通勤", "安兜": "通勤", "坂尚": "通勤", "湖里创新园": "通勤", "国际博览中心": "体育会展", "东界": "通勤", "洪坑": "通勤", "林前": "通勤", "鼓锣": "通勤", "翔安市民公园": "通勤", "浦边": "通勤", "后村": "通勤", "蔡厝": "通勤"}, "station_flow_weight": {"吕厝": 1.0, "火炬园": 0.85, "体育中心": 0.8, "湖滨东路": 0.75, "镇海路": 0.5, "厦门北站": 0.7, "厦门火车站": 0.6, "高崎": 0.35, "邮轮中心": 0.3, "莲坂": 0.45, "江头": 0.4, "集美学村": 0.35, "园博苑": 0.3, "五缘湾": 0.45, "湿地公园": 0.25, "中山公园": 0.35, "诚毅广场": 0.3, "观音山": 0.25, "软件园二期": 0.3, "蔡塘": 0.25, "建业路": 0.2, "湖滨中路": 0.25, "育秀东路": 0.2, "后埔": 0.2, "岭兜": 0.2, "古地石": 0.18, "殿前": 0.15, "乌石浦": 0.18, "塘边": 0.15, "文灶": 0.22, "将军祠": 0.15, "莲花路口": 0.18, "杏锦路": 0.12, "官任": 0.15, "杏林村": 0.12, "集美软件园": 0.2, "集美大道": 0.15, "天水路": 0.12, "岩内": 0.1, "天竺山": 0.08, "东孚": 0.1, "东瑶": 0.08, "新阳大道": 0.12, "新垵": 0.15, "翁角路": 0.1, "马青路": 0.12, "海沧行政中心": 0.15, "海沧商务中心": 0.15, "海沧湾公园": 0.12, "何厝": 0.15, "东宅": 0.1, "两岸金融中心": 0.15, "五通": 0.12, "钟宅": 0.15, "人才中心": 0.18, "湖里公园": 0.15, "华荣路": 0.12, "小东山": 0.1, "安兜": 0.1, "坂尚": 0.1, "湖里创新园": 0.12, "国际博览中心": 0.35, "东界": 0.1, "洪坑": 0.08, "林前": 0.08, "鼓锣": 0.1, "翔安市民公园": 0.12, "浦边": 0.08, "后村": 0.08, "蔡厝": 0.1}, "total_stations": 75, "total_lines": 3, "operational_note": "截至2025年12月运营3条线(1/2/3号线)，4/6/9号线建设中。翔安机场站为3号线在建延伸段，尚未开通。"}, "crawlSummary": {"crawl_time": "2026-07-23 19:00:27", "data_sources": ["中国天气网 (t.weather.itboy.net) — 15天天气预报+空气质量", "timor.tech — 法定节假日/调休/周末判定", "百度热搜榜 (top.baidu.com) — 实时搜索热度", "厦门本地宝/腾讯网/厦门国际会展中心官网/厦门电视台 — 大型活动", "厦门地铁公开线路图 + 高德地图POI — 站网与场馆距离", "厦门日报/厦门网/东南网/人民网 — 火车站运营数据", "厦门空港/民航资源网 — 高崎机场航班数据", "厦门智慧文旅平台/携程/途牛 — 来厦旅游热度", "今日头条/腾讯网/携程 — 地铁站周边酒店订房数据", "抖音/小红书/微博/携程/大众点评 — 社交媒体热度排行"]}, "holidayMap": {"2026-07-23": {"date": "2026-07-23", "type_code": 0, "type_name": "周四", "week": 4, "holiday": null}, "2026-07-24": {"date": "2026-07-24", "type_code": 0, "type_name": "周五", "week": 5, "holiday": null}, "2026-07-25": {"date": "2026-07-25", "type_code": 1, "type_name": "周六", "week": 6, "holiday": null}, "2026-07-26": {"date": "2026-07-26", "type_code": 1, "type_name": "周日", "week": 7, "holiday": null}, "2026-07-27": {"date": "2026-07-27", "type_code": 0, "type_name": "周一", "week": 1, "holiday": null}, "2026-07-28": {"date": "2026-07-28", "type_code": 0, "type_name": "周二", "week": 2, "holiday": null}, "2026-07-29": {"date": "2026-07-29", "type_code": 0, "type_name": "周三", "week": 3, "holiday": null}, "2026-07-30": {"date": "2026-07-30", "type_code": 0, "type_name": "周四", "week": 4, "holiday": null}, "2026-07-31": {"date": "2026-07-31", "error": "HTTP Error 429: Too Many Requests"}, "2026-08-01": {"date": "2026-08-01", "error": "HTTP Error 429: Too Many Requests"}, "2026-08-02": {"date": "2026-08-02", "error": "HTTP Error 429: Too Many Requests"}, "2026-08-03": {"date": "2026-08-03", "error": "HTTP Error 429: Too Many Requests"}, "2026-08-04": {"date": "2026-08-04", "error": "HTTP Error 429: Too Many Requests"}, "2026-08-05": {"date": "2026-08-05", "error": "HTTP Error 429: Too Many Requests"}, "2026-08-06": {"date": "2026-08-06", "error": "HTTP Error 429: Too Many Requests"}}, "weatherMap": {"2026-07-23": {"date": "2026-07-23", "week": "星期四", "sunrise": "05:31", "high": "高温 32℃", "low": "低温 27℃", "weather": "晴", "wind_dir": "西南风", "wind_level": "2级", "aqi": 43, "aqi_level": null}, "2026-07-24": {"date": "2026-07-24", "week": "星期五", "sunrise": "05:32", "high": "高温 32℃", "low": "低温 26℃", "weather": "晴", "wind_dir": "东北风", "wind_level": "2级", "aqi": 45, "aqi_level": null}, "2026-07-25": {"date": "2026-07-25", "week": "星期六", "sunrise": "05:32", "high": "高温 31℃", "low": "低温 27℃", "weather": "多云", "wind_dir": "东北风", "wind_level": "3级", "aqi": 50, "aqi_level": null}, "2026-07-26": {"date": "2026-07-26", "week": "星期日", "sunrise": "05:33", "high": "高温 27℃", "low": "低温 25℃", "weather": "中雨", "wind_dir": "东南风", "wind_level": "4级", "aqi": 36, "aqi_level": null}, "2026-07-27": {"date": "2026-07-27", "week": "星期一", "sunrise": "05:33", "high": "高温 28℃", "low": "低温 26℃", "weather": "阴", "wind_dir": "东南风", "wind_level": "2级", "aqi": 40, "aqi_level": null}, "2026-07-28": {"date": "2026-07-28", "week": "星期二", "sunrise": "05:34", "high": "高温 29℃", "low": "低温 25℃", "weather": "小雨", "wind_dir": "东南风", "wind_level": "2级", "aqi": 46, "aqi_level": null}, "2026-07-29": {"date": "2026-07-29", "week": "星期三", "sunrise": "05:34", "high": "高温 30℃", "low": "低温 26℃", "weather": "中雨", "wind_dir": "东南风", "wind_level": "2级", "aqi": 36, "aqi_level": null}, "2026-07-30": {"date": "2026-07-30", "week": "星期四", "sunrise": "05:35", "high": "高温 29℃", "low": "低温 26℃", "weather": "大雨", "wind_dir": "东南风", "wind_level": "2级", "aqi": 21, "aqi_level": null}, "2026-07-31": {"date": "2026-07-31", "week": "星期五", "sunrise": "05:35", "high": "高温 31℃", "low": "低温 26℃", "weather": "大雨", "wind_dir": "西南风", "wind_level": "2级", "aqi": 20, "aqi_level": null}, "2026-08-01": {"date": "2026-08-01", "week": "星期六", "sunrise": "05:36", "high": "高温 31℃", "low": "低温 26℃", "weather": "暴雨", "wind_dir": "西南风", "wind_level": "2级", "aqi": 19, "aqi_level": null}, "2026-08-02": {"date": "2026-08-02", "week": "星期日", "sunrise": "05:36", "high": "高温 30℃", "low": "低温 26℃", "weather": "大雨", "wind_dir": "南风", "wind_level": "2级", "aqi": 17, "aqi_level": null}, "2026-08-03": {"date": "2026-08-03", "week": "星期一", "sunrise": "05:36", "high": "高温 31℃", "low": "低温 25℃", "weather": "中雨", "wind_dir": "东北风", "wind_level": "2级", "aqi": 21, "aqi_level": null}, "2026-08-04": {"date": "2026-08-04", "week": "星期二", "sunrise": "05:37", "high": "高温 31℃", "low": "低温 26℃", "weather": "阴", "wind_dir": "东北风", "wind_level": "2级", "aqi": 29, "aqi_level": null}, "2026-08-05": {"date": "2026-08-05", "week": "星期三", "sunrise": "05:37", "high": "高温 32℃", "low": "低温 26℃", "weather": "小雨", "wind_dir": "东风", "wind_level": "2级", "aqi": 31, "aqi_level": null}, "2026-08-06": {"date": "2026-08-06", "week": "星期四", "sunrise": "05:38", "high": "高温 32℃", "low": "低温 26℃", "weather": "小雨", "wind_dir": "东风", "wind_level": "2级", "aqi": 32, "aqi_level": null}}, "stationInfo": {"镇海路": {"lines": ["1号线"], "type": "商圈"}, "中山公园": {"lines": ["1号线"], "type": "商圈"}, "将军祠": {"lines": ["1号线"], "type": "通勤"}, "文灶": {"lines": ["1号线"], "type": "通勤"}, "湖滨东路": {"lines": ["1号线", "3号线"], "type": "换乘"}, "莲坂": {"lines": ["1号线"], "type": "商圈"}, "莲花路口": {"lines": ["1号线"], "type": "通勤"}, "吕厝": {"lines": ["1号线", "2号线"], "type": "换乘"}, "乌石浦": {"lines": ["1号线"], "type": "通勤"}, "塘边": {"lines": ["1号线"], "type": "通勤"}, "火炬园": {"lines": ["1号线", "3号线"], "type": "换乘"}, "殿前": {"lines": ["1号线"], "type": "通勤"}, "高崎": {"lines": ["1号线"], "type": "枢纽"}, "集美学村": {"lines": ["1号线"], "type": "景区"}, "园博苑": {"lines": ["1号线"], "type": "景区"}, "杏林村": {"lines": ["1号线"], "type": "通勤"}, "杏锦路": {"lines": ["1号线"], "type": "通勤"}, "官任": {"lines": ["1号线"], "type": "通勤"}, "诚毅广场": {"lines": ["1号线"], "type": "商圈"}, "集美软件园": {"lines": ["1号线"], "type": "通勤"}, "集美大道": {"lines": ["1号线"], "type": "通勤"}, "天水路": {"lines": ["1号线"], "type": "通勤"}, "厦门北站": {"lines": ["1号线"], "type": "枢纽"}, "岩内": {"lines": ["1号线"], "type": "通勤"}, "天竺山": {"lines": ["2号线"], "type": "通勤"}, "东孚": {"lines": ["2号线"], "type": "通勤"}, "东瑶": {"lines": ["2号线"], "type": "通勤"}, "新阳大道": {"lines": ["2号线"], "type": "通勤"}, "新垵": {"lines": ["2号线"], "type": "通勤"}, "翁角路": {"lines": ["2号线"], "type": "通勤"}, "马青路": {"lines": ["2号线"], "type": "通勤"}, "海沧行政中心": {"lines": ["2号线"], "type": "通勤"}, "海沧商务中心": {"lines": ["2号线"], "type": "通勤"}, "海沧湾公园": {"lines": ["2号线"], "type": "通勤"}, "邮轮中心": {"lines": ["2号线"], "type": "枢纽"}, "建业路": {"lines": ["2号线"], "type": "通勤"}, "湖滨中路": {"lines": ["2号线"], "type": "通勤"}, "体育中心": {"lines": ["2号线", "3号线"], "type": "换乘"}, "育秀东路": {"lines": ["2号线"], "type": "通勤"}, "江头": {"lines": ["2号线"], "type": "商圈"}, "后埔": {"lines": ["2号线"], "type": "通勤"}, "蔡塘": {"lines": ["2号线"], "type": "通勤"}, "古地石": {"lines": ["2号线"], "type": "通勤"}, "岭兜": {"lines": ["2号线"], "type": "通勤"}, "软件园二期": {"lines": ["2号线"], "type": "通勤"}, "何厝": {"lines": ["2号线"], "type": "通勤"}, "观音山": {"lines": ["2号线"], "type": "商圈"}, "东宅": {"lines": ["2号线"], "type": "通勤"}, "两岸金融中心": {"lines": ["2号线"], "type": "通勤"}, "五通": {"lines": ["2号线"], "type": "通勤"}, "湿地公园": {"lines": ["2号线"], "type": "景区"}, "钟宅": {"lines": ["2号线"], "type": "景区"}, "五缘湾": {"lines": ["2号线", "3号线"], "type": "换乘"}, "厦门火车站": {"lines": ["3号线"], "type": "枢纽"}, "人才中心": {"lines": ["3号线"], "type": "通勤"}, "湖里公园": {"lines": ["3号线"], "type": "通勤"}, "华荣路": {"lines": ["3号线"], "type": "通勤"}, "小东山": {"lines": ["3号线"], "type": "通勤"}, "安兜": {"lines": ["3号线"], "type": "通勤"}, "坂尚": {"lines": ["3号线"], "type": "通勤"}, "湖里创新园": {"lines": ["3号线"], "type": "通勤"}, "国际博览中心": {"lines": ["3号线"], "type": "体育会展"}, "东界": {"lines": ["3号线"], "type": "通勤"}, "洪坑": {"lines": ["3号线"], "type": "通勤"}, "林前": {"lines": ["3号线"], "type": "通勤"}, "鼓锣": {"lines": ["3号线"], "type": "通勤"}, "翔安市民公园": {"lines": ["3号线"], "type": "通勤"}, "浦边": {"lines": ["3号线"], "type": "通勤"}, "后村": {"lines": ["3号线"], "type": "通勤"}, "蔡厝": {"lines": ["3号线"], "type": "通勤"}}, "allStations": ["东孚", "东宅", "东瑶", "东界", "两岸金融中心", "中山公园", "乌石浦", "五缘湾", "五通", "人才中心", "体育中心", "何厝", "华荣路", "厦门北站", "厦门火车站", "古地石", "后埔", "后村", "吕厝", "园博苑", "国际博览中心", "坂尚", "塘边", "天水路", "天竺山", "安兜", "官任", "将军祠", "小东山", "岩内", "岭兜", "建业路", "文灶", "新垵", "新阳大道", "杏林村", "杏锦路", "林前", "殿前", "江头", "洪坑", "浦边", "海沧商务中心", "海沧湾公园", "海沧行政中心", "湖滨东路", "湖滨中路", "湖里公园", "湖里创新园", "湿地公园", "火炬园", "翁角路", "翔安市民公园", "育秀东路", "莲坂", "莲花路口", "蔡厝", "蔡塘", "观音山", "诚毅广场", "软件园二期", "邮轮中心", "钟宅", "镇海路", "集美大道", "集美学村", "集美软件园", "马青路", "高崎", "鼓锣"], "historicalData": {"network_daily_avg_2025_07": 825000, "network_daily_avg_2024_summer": 793600, "network_record_2024_1231": 1041700, "network_weekend_record_2025_0713": 829200, "network_may1_2025": 1069400, "network_year_total_2024": 349290900, "station_calibration": {"国际博览中心站": {"daily_normal": 2786, "concert_xuezhixian_511": 24000, "concert_jay_712": 39000, "concert_jolin_817": 20000, "concert_zhangbichen_824": 7346, "growth_multiple": 14}, "镇海路站": {"daily_summer_avg": 34000}, "集美软件园站": {"daily_2024_07": 11400}, "新阳大道站": {"daily_2024": 8500}}, "concert_metro_share": {"鹿晗": 0.61, "周杰伦": 0.55, "平均": 0.52}, "weather_impact": {"台风米克拉_2020": "吕厝站客流减少约33%", "台风桦加沙_2025": "全网72.97万vs正常80万,降9%", "台风凤凰_2025": "全网74.61万,降7%"}, "event_stats": {"薛之谦演唱会_2024_511": {"venue": "白鹭体育场", "attendance": 44000, "station_flow": 24000}, "周杰伦演唱会_2025_712": {"venue": "白鹭体育场", "attendance": 60000, "station_flow": 39000}, "蔡依林演唱会_2024_817": {"venue": "凤凰体育馆", "attendance": 18000, "station_flow": 20000}, "邓紫棋演唱会_2025_501": {"venue": "白鹭体育场", "attendance": 60000, "network_flow": 1069400}, "五月天演唱会_2024_1024": {"venue": "白鹭体育场", "days": 3, "bus_passengers": 33500}}, "large_events_2024": {"count": 70, "total_passengers": 900000}, "sources": ["厦门日报: 厦门地铁跨年夜客流创新高 首次突破单日百万人次 (2025-01-02)", "厦门日报/今日头条: 厦门地铁暑运数据多项纪录刷新 (2025-08-23)", "厦门网: 厦门地铁晒出2024年度成绩单 总客运量34929.09万人次", "厦门电视台: 厦门地铁发布暑期报告 暑期客运量近5000万人次 (2024-09-16)", "福建日报: 客流量从0到10亿 厦门地铁流量密码 (2024-08-29)", "厦门日报: 闽超演唱会等大型活动叠加五一假期 (2025-05)", "厦门交通局: 五一厦门交通出行数据出炉 (2025-05)", "维基百科: 厦门白鹭体育场 (60,592座)", "厦门奥体中心官网: 凤凰体育馆(18,000座)"]}, "venueCapacity": {"白鹭体育场": 60000, "凤凰体育馆": 18000, "厦门市体育中心": 30000, "厦门国际会展中心": 50000, "厦门国际博览中心": 80000}, "railway": {"source": "厦门日报/厦门网/东南网/人民网 (WebSearch验证)", "source_urls": ["https://www.xmnn.cn/news/xmxw/202504/t20250426_311249.html", "https://www.fj.chinanews.com.cn/news/2025/2025-01-14/560421.html", "https://www.toutiao.com/article/7550254475164893748"], "crawl_time": "2026-07-23 19:00:44", "stations": ["厦门站", "厦门北站"], "daily_baseline": {"trains_per_day": 244, "daily_passengers_workday": 8.5, "daily_passengers_weekend": 10.2, "source_note": "2025年春运日均9.33万，推算日常约8.5万"}, "holiday_boost": {"春运": {"daily_passengers": 9.33, "peak_daily": 14.2, "boost_ratio": 1.52, "extra_trains": 10, "days": 40, "source": "2025春运预计373万/40天"}, "五一": {"daily_passengers": 13.19, "peak_daily": 18.5, "boost_ratio": 1.55, "extra_trains": 68, "days": 8, "source": "2025五一105.5万/8天"}, "国庆": {"daily_passengers": 12.8, "peak_daily": 17.0, "boost_ratio": 1.51, "extra_trains": 55, "days": 7, "source": "历史同期估算"}, "春节假期": {"daily_passengers": 8.44, "peak_daily": 14.0, "boost_ratio": 0.99, "extra_trains": 10, "days": 8, "source": "2025春节发送67.52万/8天"}, "暑运": {"daily_passengers": 9.87, "peak_daily": 13.62, "boost_ratio": 1.16, "extra_trains": 15, "days": 62, "source": "2025暑运到发1222.41万/62天，8/9峰值13.62万"}}, "historical_records": [{"date": "2025-01-24", "event": "春运高峰", "passengers": 14.2, "unit": "万人次", "source": "厦门火车站官方"}, {"date": "2025-05-01", "event": "五一首日", "passengers": 18.5, "unit": "万人次", "source": "厦门日报"}, {"date": "2025-08-09", "event": "暑运峰值", "passengers": 13.62, "unit": "万人次", "source": "人民网/厦门交通局"}, {"date": "2025-02-15", "event": "春节返程", "passengers": 17.0, "unit": "万人次(估)", "source": "春运后高峰"}], "arrival_ratio": {"春节假期": {"sent": 67.52, "arrived": 84.72, "arrival_dominant": true, "note": "到达>发送，外地游客涌入"}, "日常": {"arrival_dominant": false, "note": "到发基本平衡"}}}, "airport": {"source": "厦门空港/民航资源网/厦门网/百度百科 (WebSearch验证)", "source_urls": ["https://news.xmnn.cn/xmxw/202509/t20250911_365207.html", "https://xm.fjsen.com/wap/2026-01/08/content_32111775.htm", "https://i.carnoc.com/detail/646470", "https://xiamenairport.com.cn/gywm/kgdt-open.aspx?id=1476"], "crawl_time": "2026-07-23 19:00:44", "airport_name": "厦门高崎国际机场 (XMN/ZSAM)", "annual_data": {"2024": {"passengers": 2791, "flights": 19.33, "intl_passengers": 375, "note": "单跑道全国最高"}, "2025": {"passengers": 2919, "flights": 19.86, "intl_passengers": 420, "note": "三大指标均创历史新高"}}, "daily_baseline": {"flights_per_day": 544, "passengers_per_day": 8.0, "intl_passengers_per_day": 1.15, "peak_single_day_flights": 607, "peak_single_day_passengers": 9.54, "source_note": "2025年起降19.86万架次/旅客2919万"}, "holiday_boost": {"春运": {"daily_flights": 552, "boost_ratio": 1.015, "note": "日均552架次，同比+5%"}, "五一": {"daily_flights": 593, "boost_ratio": 1.09, "peak_passengers": 9.0, "note": "最高593架次，连续6天单日超9万"}, "春节假期": {"daily_flights": 554, "boost_ratio": 1.02, "peak_passengers": 9.54, "note": "2/15创95353人次纪录"}, "暑运": {"daily_flights": 580, "boost_ratio": 1.07, "total_passengers": 499.12, "note": "暑运499.12万，8月单月257.37万"}}, "network": {"routes": 161, "cities": 112, "terminals": "T3+T4", "runway": "3400m单跑道", "intl_transfer": "150万人次(全国第4)"}, "metro_connection": {"nearest_station": "高崎(1号线) ~2km / 殿前(1号线) ~3km", "airport_bus": "机场大巴→厦门北站/轮渡等", "note": "高崎站日均约3000人，机场旅客地铁分担率约25-30%"}}, "tourism": {"source": "厦门智慧文旅平台/携程/途牛/厦门日报 (WebSearch验证)", "source_urls": ["https://news.qq.com/rain/a/20250506A08JZV00", "https://share1.kxm.xmtv.cn/xmtv/2025-05-06/3204f2b0a69dac44.html", "https://www.toutiao.com/article/7550254475164893748"], "crawl_time": "2026-07-23 19:00:44", "holiday_tourism": {"五一2025": {"total_visitors": 863.55, "tourism_revenue": 102.76, "overnight_visitors": 319.51, "provincial_visitors_ratio": 0.7328, "hotel_orders_growth": 0.1, "inbound_orders_growth": 1.04, "source": "厦门智慧文旅平台大数据监测"}, "暑期2025": {"total_transport_passengers": 1809.14, "railway": 1222.41, "civil_aviation": 533.18, "road": 7.24, "water": 46.31, "metro_passengers": 5131.0, "brt_passengers": 1332.01, "bus_passengers": 6680.28, "ferry_passengers": 206.21, "intl_visitors_growth": 0.17, "source": "厦门市交通运输局暑运发布会"}}, "scenic_spots": {"鼓浪屿": {"daily_capacity": 5.0, "wuyi_daily": 4.5, "wuyi_total": 20.64, "metro_stations": "邮轮中心(2号线) — 轮渡接驳", "ferry_needed": true, "source": "鼓浪屿管委会/厦门轮渡"}, "园林植物园": {"wuyi_total": 19.65, "yoy_growth": 0.1687, "metro_stations": "中山公园(1号线)", "source": "厦门智慧文旅平台"}, "园博苑": {"wuyi_total": 15.0, "metro_stations": "园博苑(1号线)", "source": "厦门智慧文旅平台"}, "科技馆": {"wuyi_total": 10.0, "metro_stations": "人才中心(3号线)", "source": "厦门智慧文旅平台"}, "天竺山": {"wuyi_daily_peak": 3.0, "wuyi_total": 11.28, "yoy_growth": 1.0, "metro_stations": "天竺山(2号线)", "source": "厦门智慧文旅平台"}}, "visitor_origins": ["广东", "浙江", "江苏", "江西", "湖南", "上海"], "inbound_trend": {"2025_growth": 1.04, "intl_visitors_2025": 420, "note": "免签政策放宽，两岸交流升温"}, "metro_conversion": {"tourist_metro_usage": 0.35, "avg_trips_per_tourist": 4.5, "scenic_station_boost": 2.5, "source": "基于厦门地铁暑运数据反推"}}, "hotels": {"source": "今日头条/腾讯网/厦门日报/马哥孛罗酒店官网 (WebSearch验证)", "source_urls": ["https://www.toutiao.com/article/7622989944599904808/", "https://new.qq.com/rain/a/20260330A0465F00"], "crawl_time": "2026-07-23 19:00:44", "station_hotels": {"国际博览中心": {"hotels": [{"name": "厦门南洋万怡酒店", "distance_m": 800, "rooms": 280, "type": "高端"}, {"name": "佰翔五通酒店", "distance_m": 1500, "rooms": 350, "type": "高端"}, {"name": "朗豪酒店", "distance_m": 1800, "rooms": 250, "type": "高端"}], "normal_occupancy": 0.55, "event_occupancy": 0.98, "event_boost_note": "蔡依林/凤凰传奇演唱会期间入住率97%，五月天期间翔安14家酒店满房100%", "event_source": "今日头条/腾讯网报道"}, "五缘湾": {"hotels": [{"name": "厦门五缘湾凯悦酒店", "distance_m": 600, "rooms": 200, "type": "高端"}, {"name": "厦门七尚酒店", "distance_m": 1200, "rooms": 180, "type": "奢华"}], "normal_occupancy": 0.6, "event_occupancy": 0.9, "event_boost_note": "临近奥体中心，演唱会期间入住率90%+", "event_source": "携程酒店数据"}, "厦门北站": {"hotels": [{"name": "云海酒店(厦门北站店)", "distance_m": 400, "rooms": 120, "type": "中端"}, {"name": "西子设计师酒店", "distance_m": 400, "rooms": 80, "type": "中端"}, {"name": "V9假日酒店", "distance_m": 420, "rooms": 60, "type": "经济"}], "normal_occupancy": 0.65, "event_occupancy": 0.85, "event_boost_note": "交通枢纽站，节假日及暑运期间入住率提升20%", "event_source": "携程/腾讯地图POI"}, "镇海路": {"hotels": [{"name": "厦门马哥孛罗东方大酒店", "distance_m": 500, "rooms": 300, "type": "高端"}, {"name": "厦门泛太平洋大酒店", "distance_m": 200, "rooms": 280, "type": "高端"}], "normal_occupancy": 0.62, "event_occupancy": 0.88, "event_boost_note": "中山路商圈核心，提供演唱会穿梭巴士服务", "event_source": "马哥孛罗酒店官网/永安旅游"}, "建业路": {"hotels": [{"name": "厦门泛太平洋大酒店", "distance_m": 200, "rooms": 280, "type": "高端"}], "normal_occupancy": 0.6, "event_occupancy": 0.85, "event_boost_note": "距地铁站200m，演唱会期间提供穿梭巴士", "event_source": "永安旅游"}, "集美学村": {"hotels": [{"name": "厦门京闽北海湾酒店", "distance_m": 800, "rooms": 200, "type": "高端"}, {"name": "全季酒店(集美学村店)", "distance_m": 500, "rooms": 100, "type": "中端"}], "normal_occupancy": 0.5, "event_occupancy": 0.75, "event_boost_note": "景区站，暑期及节假日入住率提升25%", "event_source": "携程酒店数据"}, "体育中心": {"hotels": [{"name": "厦门福戴酒店", "distance_m": 700, "rooms": 150, "type": "中端"}, {"name": "厦门宝龙铂尔曼酒店", "distance_m": 1200, "rooms": 280, "type": "高端"}], "normal_occupancy": 0.58, "event_occupancy": 0.82, "event_boost_note": "体育中心附近，赛事日入住率提升24%", "event_source": "携程酒店数据"}, "莲坂": {"hotels": [{"name": "厦门明发国际大酒店", "distance_m": 300, "rooms": 250, "type": "高端"}, {"name": "厦门磐基希尔顿酒店", "distance_m": 600, "rooms": 300, "type": "高端"}], "normal_occupancy": 0.6, "event_occupancy": 0.85, "event_boost_note": "SM商圈核心，演唱会/展会期间入住率85%+", "event_source": "携程酒店数据"}}, "hotel_metro_conversion": {"check_in_metro_share": 0.35, "avg_metro_trips_per_guest": 2.8, "event_day_extra_trips": 1.5, "source": "基于厦门地铁暑运数据反推 + 携程酒店入住报告"}, "historical_events": {"蔡依林演唱会_2024_817": {"hotels_occupancy": 0.98, "restaurant_revenue_boost": 1.2, "scenic_flow_boost": 0.75}, "五月天演唱会_2024_1024": {"xiangan_hotels_full": 14, "occupancy": 1.0}, "凤凰传奇演唱会_2025": {"hotels_occupancy": 0.97, "note": "奥体周边酒店接近满房"}}}, "socialHeat": {"source": "抖音/小红书/微博/携程/大众点评 (WebSearch综合统计)", "source_urls": ["https://www.douyin.com/search/厦门", "https://www.xiaohongshu.com/search_result?keyword=厦门", "https://s.weibo.com/weibo?q=厦门", "https://gs.ctrip.com/html5/you/sight/21/1831321-sight.html"], "crawl_time": "2026-07-23 19:00:44", "rankings": [{"rank": 1, "name": "鼓浪屿", "type": "景区", "heat_index": 98.5, "douyin_mentions": "850万+", "xhs_notes": "120万+", "weibo_topics": "32万+", "ctrip_rating": 4.4, "ctrip_reviews": "5.4万", "nearby_metro": "邮轮中心(2号线)", "metro_distance": "轮渡接驳15min", "tags": ["万国建筑", "世界遗产", "网红打卡"], "metro_impact": "高"}, {"rank": 2, "name": "厦门大学", "type": "景区", "heat_index": 92.3, "douyin_mentions": "620万+", "xhs_notes": "95万+", "weibo_topics": "28万+", "ctrip_rating": 4.7, "ctrip_reviews": "1.4万", "nearby_metro": "中山公园(1号线)", "metro_distance": "步行10min", "tags": ["最美大学", "芙蓉隧道", "拍照打卡"], "metro_impact": "高"}, {"rank": 3, "name": "厦门园林植物园", "type": "景区", "heat_index": 88.7, "douyin_mentions": "480万+", "xhs_notes": "78万+", "weibo_topics": "18万+", "ctrip_rating": 4.6, "ctrip_reviews": "1.8万", "nearby_metro": "中山公园(1号线)", "metro_distance": "步行8min", "tags": ["雨林世界", "多肉植物", "仙气打卡"], "metro_impact": "高"}, {"rank": 4, "name": "钟鼓索道", "type": "体验", "heat_index": 85.2, "douyin_mentions": "420万+", "xhs_notes": "65万+", "weibo_topics": "15万+", "ctrip_rating": 4.6, "ctrip_reviews": "7800", "nearby_metro": "中山公园(1号线)", "metro_distance": "步行12min", "tags": ["高空缆车", "俯瞰厦门", "情侣打卡"], "metro_impact": "中"}, {"rank": 5, "name": "沙坡尾", "type": "文创", "heat_index": 82.1, "douyin_mentions": "380万+", "xhs_notes": "88万+", "weibo_topics": "12万+", "ctrip_rating": 4.5, "ctrip_reviews": "3200", "nearby_metro": "中山公园(1号线)", "metro_distance": "公交15min", "tags": ["文艺渔港", "网红咖啡", "日落拍照"], "metro_impact": "中"}, {"rank": 6, "name": "环岛路", "type": "自然", "heat_index": 80.5, "douyin_mentions": "350万+", "xhs_notes": "52万+", "weibo_topics": "10万+", "ctrip_rating": 4.7, "ctrip_reviews": "6900", "nearby_metro": "无直达", "metro_distance": "公交接驳", "tags": ["海滨骑行", "白城沙滩", "海景公路"], "metro_impact": "低"}, {"rank": 7, "name": "曾厝垵", "type": "文创", "heat_index": 78.3, "douyin_mentions": "320万+", "xhs_notes": "68万+", "weibo_topics": "9万+", "ctrip_rating": 4.5, "ctrip_reviews": "5000", "nearby_metro": "无直达", "metro_distance": "公交接驳", "tags": ["文艺渔村", "美食街", "民宿聚集"], "metro_impact": "低"}, {"rank": 8, "name": "南普陀寺", "type": "文化", "heat_index": 75.8, "douyin_mentions": "280万+", "xhs_notes": "42万+", "weibo_topics": "8万+", "ctrip_rating": 4.6, "ctrip_reviews": "5300", "nearby_metro": "中山公园(1号线)", "metro_distance": "步行15min", "tags": ["千年古刹", "素食", "祈福"], "metro_impact": "中"}, {"rank": 9, "name": "集美学村", "type": "文化", "heat_index": 72.4, "douyin_mentions": "220万+", "xhs_notes": "35万+", "weibo_topics": "6万+", "ctrip_rating": 4.7, "ctrip_reviews": "880", "nearby_metro": "集美学村(1号线)", "metro_distance": "步行5min", "tags": ["嘉庚建筑", "龙舟池", "夜景"], "metro_impact": "高"}, {"rank": 10, "name": "园博苑", "type": "景区", "heat_index": 68.9, "douyin_mentions": "180万+", "xhs_notes": "28万+", "weibo_topics": "5万+", "ctrip_rating": 4.7, "ctrip_reviews": "1300", "nearby_metro": "园博苑(1号线)", "metro_distance": "步行3min", "tags": ["花灯会", "园林景观", "亲子"], "metro_impact": "高"}, {"rank": 11, "name": "中山路步行街", "type": "商圈", "heat_index": 66.7, "douyin_mentions": "250万+", "xhs_notes": "55万+", "weibo_topics": "7万+", "ctrip_rating": 4.3, "ctrip_reviews": "8200", "nearby_metro": "镇海路(1号线)", "metro_distance": "步行3min", "tags": ["百年骑楼", "美食购物", "夜景"], "metro_impact": "高"}, {"rank": 12, "name": "五缘湾湿地公园", "type": "自然", "heat_index": 62.3, "douyin_mentions": "150万+", "xhs_notes": "22万+", "weibo_topics": "4万+", "ctrip_rating": 4.9, "ctrip_reviews": "300", "nearby_metro": "五缘湾(2/3号线)", "metro_distance": "步行8min", "tags": ["黑天鹅", "水上迷宫", "亲子"], "metro_impact": "中"}, {"rank": 13, "name": "科技馆", "type": "亲子", "heat_index": 60.1, "douyin_mentions": "130万+", "xhs_notes": "25万+", "weibo_topics": "3万+", "ctrip_rating": 4.8, "ctrip_reviews": "1.5万", "nearby_metro": "人才中心(3号线)", "metro_distance": "步行10min", "tags": ["亲子遛娃", "地震模拟", "飞越影院"], "metro_impact": "中"}, {"rank": 14, "name": "胡里山炮台", "type": "景区", "heat_index": 57.8, "douyin_mentions": "120万+", "xhs_notes": "18万+", "weibo_topics": "2万+", "ctrip_rating": 4.7, "ctrip_reviews": "1.6万", "nearby_metro": "无直达", "metro_distance": "公交接驳", "tags": ["克虏伯大炮", "海景", "历史"], "metro_impact": "低"}, {"rank": 15, "name": "屿见闽南主题景区", "type": "演艺", "heat_index": 55.6, "douyin_mentions": "98万+", "xhs_notes": "15万+", "weibo_topics": "2万+", "ctrip_rating": 4.7, "ctrip_reviews": "230", "nearby_metro": "建业路(2号线)", "metro_distance": "步行8min", "tags": ["闽南文化", "沉浸演艺", "新开业"], "metro_impact": "中"}], "platform_stats": {"douyin": {"xiamen_topic_views": "45亿+", "note": "抖音#厦门话题播放量"}, "xiaohongshu": {"xiamen_notes": "800万+", "note": "小红书厦门相关笔记数"}, "weibo": {"xiamen_topics": "500万+", "note": "微博厦门相关话题阅读量"}, "ctrip": {"xiamen_reviews": "20万+", "note": "携程厦门景点点评数"}}, "heat_metro_conversion": {"high_heat_boost": 1.15, "medium_heat_boost": 1.08, "low_heat_boost": 1.03, "weekend_multiplier": 1.5, "source": "基于携程景区客流数据与地铁进站量相关性分析"}}, "eventProfiles": {"EVT-012": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.02, 0.04, 0.08, 0.1, 0.12, 0.1, 0.08, 0.08, 0.08, 0.1, 0.1, 0.06, 0.03, 0.01, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.22222222222222224, 0.22222222222222224, 0.22222222222222224, 0.16666666666666666, 0.16666666666666666, 0.0, 0.0], "startHour": 9, "endHour": 17}, "EVT-006": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.12, 0.2, 0.15, 0.1, 0.08, 0.08, 0.1, 0.12, 0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.13043478260869565, 0.13043478260869565, 0.30434782608695654, 0.3478260869565218, 0.08695652173913045, 0.0, 0.0, 0.0, 0.0, 0.0], "startHour": 9, "endHour": 17}, "EVT-013": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.28571428571428575, 0.4285714285714286, 0.28571428571428575, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.55, 0.45, 0.0, 0.0, 0.0, 0.0, 0.0], "startHour": 9, "endHour": 17}, "EVT-001": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.28571428571428575, 0.4285714285714286, 0.28571428571428575, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.55, 0.45], "startHour": 19, "endHour": 22}, "EVT-002": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.28571428571428575, 0.4285714285714286, 0.28571428571428575, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.55, 0.45], "startHour": 19, "endHour": 22}, "EVT-007": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.12, 0.2, 0.15, 0.1, 0.08, 0.08, 0.1, 0.12, 0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.13043478260869565, 0.13043478260869565, 0.30434782608695654, 0.3478260869565218, 0.08695652173913045, 0.0, 0.0, 0.0, 0.0, 0.0], "startHour": 9, "endHour": 17}, "EVT-003": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.28571428571428575, 0.4285714285714286, 0.28571428571428575, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.55, 0.45], "startHour": 19, "endHour": 22}, "EVT-008": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.12, 0.2, 0.15, 0.1, 0.08, 0.08, 0.1, 0.12, 0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.13043478260869565, 0.13043478260869565, 0.30434782608695654, 0.3478260869565218, 0.08695652173913045, 0.0, 0.0, 0.0, 0.0, 0.0], "startHour": 9, "endHour": 17}, "EVT-004": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.28571428571428575, 0.4285714285714286, 0.28571428571428575, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.55, 0.45], "startHour": 19, "endHour": 22}, "EVT-009": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.12, 0.2, 0.15, 0.1, 0.08, 0.08, 0.1, 0.12, 0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.13043478260869565, 0.13043478260869565, 0.30434782608695654, 0.3478260869565218, 0.08695652173913045, 0.0, 0.0, 0.0, 0.0, 0.0], "startHour": 9, "endHour": 17}, "EVT-010": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.15, 0.25, 0.2, 0.12, 0.08, 0.08, 0.07, 0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.4, 0.35, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "startHour": 9, "endHour": 17}, "EVT-011": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.12, 0.2, 0.15, 0.1, 0.08, 0.08, 0.1, 0.12, 0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.13043478260869565, 0.13043478260869565, 0.30434782608695654, 0.3478260869565218, 0.08695652173913045, 0.0, 0.0, 0.0, 0.0, 0.0], "startHour": 9, "endHour": 17}, "EVT-005": {"inbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.28571428571428575, 0.4285714285714286, 0.28571428571428575, 0.0, 0.0, 0.0, 0.0], "outbound": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.55, 0.45], "startHour": 19, "endHour": 22}}}
+var CRAWLED = {
+"weather":
+ {
+"source":
+ "中国天气网 (t.weather.itboy.net)",
+ "source_url":
+ "http://t.weather.itboy.net/api/weather/city/101230201",
+ "city_code":
+ "101230201",
+ "crawl_time":
+ "2026-07-23 19:00:27",
+ "current":
+ {
+"temperature":
+ "32.5",
+ "humidity":
+ "72%",
+ "air_quality":
+ "优",
+ "pm25":
+ 18.0,
+ "pm10":
+ 40.0,
+ "ganmao":
+ "各类人群可自由活动"}
+,
+ "forecast":
+ [
+{
+"date":
+ "2026-07-23",
+ "week":
+ "星期四",
+ "sunrise":
+ "05:31",
+ "high":
+ "高温 32℃",
+ "low":
+ "低温 27℃",
+ "weather":
+ "晴",
+ "wind_dir":
+ "西南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 43,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-07-24",
+ "week":
+ "星期五",
+ "sunrise":
+ "05:32",
+ "high":
+ "高温 32℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "晴",
+ "wind_dir":
+ "东北风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 45,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-07-25",
+ "week":
+ "星期六",
+ "sunrise":
+ "05:32",
+ "high":
+ "高温 31℃",
+ "low":
+ "低温 27℃",
+ "weather":
+ "多云",
+ "wind_dir":
+ "东北风",
+ "wind_level":
+ "3级",
+ "aqi":
+ 50,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-07-26",
+ "week":
+ "星期日",
+ "sunrise":
+ "05:33",
+ "high":
+ "高温 27℃",
+ "low":
+ "低温 25℃",
+ "weather":
+ "中雨",
+ "wind_dir":
+ "东南风",
+ "wind_level":
+ "4级",
+ "aqi":
+ 36,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-07-27",
+ "week":
+ "星期一",
+ "sunrise":
+ "05:33",
+ "high":
+ "高温 28℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "阴",
+ "wind_dir":
+ "东南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 40,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-07-28",
+ "week":
+ "星期二",
+ "sunrise":
+ "05:34",
+ "high":
+ "高温 29℃",
+ "low":
+ "低温 25℃",
+ "weather":
+ "小雨",
+ "wind_dir":
+ "东南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 46,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-07-29",
+ "week":
+ "星期三",
+ "sunrise":
+ "05:34",
+ "high":
+ "高温 30℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "中雨",
+ "wind_dir":
+ "东南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 36,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-07-30",
+ "week":
+ "星期四",
+ "sunrise":
+ "05:35",
+ "high":
+ "高温 29℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "大雨",
+ "wind_dir":
+ "东南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 21,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-07-31",
+ "week":
+ "星期五",
+ "sunrise":
+ "05:35",
+ "high":
+ "高温 31℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "大雨",
+ "wind_dir":
+ "西南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 20,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-08-01",
+ "week":
+ "星期六",
+ "sunrise":
+ "05:36",
+ "high":
+ "高温 31℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "暴雨",
+ "wind_dir":
+ "西南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 19,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-08-02",
+ "week":
+ "星期日",
+ "sunrise":
+ "05:36",
+ "high":
+ "高温 30℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "大雨",
+ "wind_dir":
+ "南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 17,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-08-03",
+ "week":
+ "星期一",
+ "sunrise":
+ "05:36",
+ "high":
+ "高温 31℃",
+ "low":
+ "低温 25℃",
+ "weather":
+ "中雨",
+ "wind_dir":
+ "东北风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 21,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-08-04",
+ "week":
+ "星期二",
+ "sunrise":
+ "05:37",
+ "high":
+ "高温 31℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "阴",
+ "wind_dir":
+ "东北风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 29,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-08-05",
+ "week":
+ "星期三",
+ "sunrise":
+ "05:37",
+ "high":
+ "高温 32℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "小雨",
+ "wind_dir":
+ "东风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 31,
+ "aqi_level":
+ null}
+,
+ {
+"date":
+ "2026-08-06",
+ "week":
+ "星期四",
+ "sunrise":
+ "05:38",
+ "high":
+ "高温 32℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "小雨",
+ "wind_dir":
+ "东风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 32,
+ "aqi_level":
+ null}
+]
+,
+ "yesterday":
+ {
+"date":
+ "2026-07-22",
+ "high":
+ "高温 32℃",
+ "low":
+ "低温 27℃",
+ "weather":
+ "晴",
+ "wind_dir":
+ "西南风",
+ "wind_level":
+ "2级"}
+}
+,
+ "holidays":
+ {
+"source":
+ "timor.tech 节假日API",
+ "source_url":
+ "https://timor.tech/api/holiday/info/",
+ "crawl_time":
+ "2026-07-23 19:00:27",
+ "days":
+ [
+{
+"date":
+ "2026-07-23",
+ "type_code":
+ 0,
+ "type_name":
+ "周四",
+ "week":
+ 4,
+ "holiday":
+ null}
+,
+ {
+"date":
+ "2026-07-24",
+ "type_code":
+ 0,
+ "type_name":
+ "周五",
+ "week":
+ 5,
+ "holiday":
+ null}
+,
+ {
+"date":
+ "2026-07-25",
+ "type_code":
+ 1,
+ "type_name":
+ "周六",
+ "week":
+ 6,
+ "holiday":
+ null}
+,
+ {
+"date":
+ "2026-07-26",
+ "type_code":
+ 1,
+ "type_name":
+ "周日",
+ "week":
+ 7,
+ "holiday":
+ null}
+,
+ {
+"date":
+ "2026-07-27",
+ "type_code":
+ 0,
+ "type_name":
+ "周一",
+ "week":
+ 1,
+ "holiday":
+ null}
+,
+ {
+"date":
+ "2026-07-28",
+ "type_code":
+ 0,
+ "type_name":
+ "周二",
+ "week":
+ 2,
+ "holiday":
+ null}
+,
+ {
+"date":
+ "2026-07-29",
+ "type_code":
+ 0,
+ "type_name":
+ "周三",
+ "week":
+ 3,
+ "holiday":
+ null}
+,
+ {
+"date":
+ "2026-07-30",
+ "type_code":
+ 0,
+ "type_name":
+ "周四",
+ "week":
+ 4,
+ "holiday":
+ null}
+,
+ {
+"date":
+ "2026-07-31",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ {
+"date":
+ "2026-08-01",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ {
+"date":
+ "2026-08-02",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ {
+"date":
+ "2026-08-03",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ {
+"date":
+ "2026-08-04",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ {
+"date":
+ "2026-08-05",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ {
+"date":
+ "2026-08-06",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+]
+}
+,
+ "hotsearch":
+ {
+"source":
+ "百度热搜榜 (top.baidu.com)",
+ "source_url":
+ "https://top.baidu.com/board?tab=realtime",
+ "crawl_time":
+ "2026-07-23 19:00:44",
+ "hot_words":
+ [
+{
+"rank":
+ 1,
+ "word":
+ "总书记为何高度重视基础教育",
+ "hot_score":
+ 7904751}
+,
+ {
+"rank":
+ 2,
+ "word":
+ "滔搏回应暴力打折甩卖耐克库存",
+ "hot_score":
+ 7809211}
+,
+ {
+"rank":
+ 3,
+ "word":
+ "644分考生报志愿没看清本部和分校",
+ "hot_score":
+ 7712898}
+,
+ {
+"rank":
+ 4,
+ "word":
+ "大暑时节 这份中暑防治指南请查收",
+ "hot_score":
+ 7619396}
+,
+ {
+"rank":
+ 5,
+ "word":
+ "GDP十强省份又变了",
+ "hot_score":
+ 7522920}
+,
+ {
+"rank":
+ 6,
+ "word":
+ "暑期档票房破50亿 《功夫女足》领跑",
+ "hot_score":
+ 7428200}
+,
+ {
+"rank":
+ 7,
+ "word":
+ "净网：网警发20起涉汛涉灾谣言案例",
+ "hot_score":
+ 7332242}
+,
+ {
+"rank":
+ 8,
+ "word":
+ "男子彩票中奖5400万 号码竟是捡到的",
+ "hot_score":
+ 7233506}
+,
+ {
+"rank":
+ 9,
+ "word":
+ "女子搬运150斤黄鸡蛋瞬间全碎",
+ "hot_score":
+ 7137479}
+,
+ {
+"rank":
+ 10,
+ "word":
+ "王楚钦回应1比2徐海东",
+ "hot_score":
+ 7048823}
+,
+ {
+"rank":
+ 11,
+ "word":
+ "中国数学家冲击菲尔兹奖 研究了啥",
+ "hot_score":
+ 6952044}
+,
+ {
+"rank":
+ 12,
+ "word":
+ "中纪委一日连打三“虎”",
+ "hot_score":
+ 6855395}
+,
+ {
+"rank":
+ 13,
+ "word":
+ "荣耀更换logo",
+ "hot_score":
+ 6755908}
+,
+ {
+"rank":
+ 14,
+ "word":
+ "郑州8岁男孩装千度近视一年",
+ "hot_score":
+ 6665676}
+,
+ {
+"rank":
+ 15,
+ "word":
+ "“最爱发钱老板”当场辞退不孝员工",
+ "hot_score":
+ 6572916}
+,
+ {
+"rank":
+ 16,
+ "word":
+ "男子称跟女同事开玩笑被打还被开除",
+ "hot_score":
+ 6477842}
+,
+ {
+"rank":
+ 17,
+ "word":
+ "奶茶店集体卖冰淇淋 定价比奶茶贵",
+ "hot_score":
+ 6375709}
+,
+ {
+"rank":
+ 18,
+ "word":
+ "电影暑期档已经不存在了",
+ "hot_score":
+ 6281843}
+,
+ {
+"rank":
+ 19,
+ "word":
+ "妈妈把孩子暑假作业进度可视化",
+ "hot_score":
+ 6177055}
+,
+ {
+"rank":
+ 20,
+ "word":
+ "演员寇占文被法院悬赏",
+ "hot_score":
+ 6096778}
+,
+ {
+"rank":
+ 21,
+ "word":
+ "菲公务船侵闯黄岩岛海域 中方驱离",
+ "hot_score":
+ 5995481}
+,
+ {
+"rank":
+ 22,
+ "word":
+ "医生称“抖腿”能够保护血管",
+ "hot_score":
+ 5897724}
+,
+ {
+"rank":
+ 23,
+ "word":
+ "小伙带父母花2.5万从广州打车到西藏",
+ "hot_score":
+ 5812066}
+,
+ {
+"rank":
+ 24,
+ "word":
+ "云南耿马现54.7公斤巨大口蘑",
+ "hot_score":
+ 5702250}
+,
+ {
+"rank":
+ 25,
+ "word":
+ "10年涨价3倍 共享单车越骑越贵",
+ "hot_score":
+ 5621917}
+,
+ {
+"rank":
+ 26,
+ "word":
+ "中方回应王毅缺席东盟与中日韩外长会",
+ "hot_score":
+ 5507540}
+,
+ {
+"rank":
+ 27,
+ "word":
+ "乒超：蒯曼率队冲首胜",
+ "hot_score":
+ 5416989}
+,
+ {
+"rank":
+ 28,
+ "word":
+ "两兄弟暴雨前将满院粮食搬回屋",
+ "hot_score":
+ 5322809}
+,
+ {
+"rank":
+ 29,
+ "word":
+ "74年前坠海美国客机终于被找到",
+ "hot_score":
+ 5228142}
+,
+ {
+"rank":
+ 30,
+ "word":
+ "老家空调一刻不停 漠河出门穿长袖",
+ "hot_score":
+ 5124158}
+]
+,
+ "xiamen_related":
+ [
+]
+}
+,
+ "events":
+ {
+"source":
+ "厦门本地宝/腾讯网/厦门国际会展中心官网/厦门电视台/厦门日报",
+ "source_urls":
+ [
+"https://xm.bendibao.com/xiuxian/",
+ "https://new.qq.com/rain/a/20260620A080RW00",
+ "https://www.xicec.com",
+ "https://www.xmtv.cn/xmtv/2026-07-01/98f687bb5f2c9330.html",
+ "https://www.toutiao.com/article/7657369210124911113/"]
+,
+ "crawl_time":
+ "2026-07-23 19:00:44",
+ "events":
+ [
+{
+"id":
+ "EVT-001",
+ "name":
+ "Ella陈嘉桦\"It's Me 艾拉主意\"巡回演唱会-厦门站",
+ "type":
+ "演唱会",
+ "date":
+ "2026-07-18",
+ "start_time":
+ "19:00",
+ "end_time":
+ "22:30",
+ "venue":
+ "厦门奥林匹克体育中心-凤凰体育馆",
+ "venue_capacity":
+ 18000,
+ "expected_attendance":
+ 15000,
+ "price_range":
+ "380-1880元",
+ "source":
+ "厦门本地宝/腾讯网",
+ "source_url":
+ "https://xm.bendibao.com/xiuxian/",
+ "ticket_status":
+ "已开票"}
+,
+ {
+"id":
+ "EVT-002",
+ "name":
+ "郭富城ICONIC世界巡回演唱会-厦门站",
+ "type":
+ "演唱会",
+ "date":
+ "2026-07-25",
+ "start_time":
+ "19:00",
+ "end_time":
+ "22:30",
+ "venue":
+ "厦门奥林匹克体育中心-凤凰体育馆",
+ "venue_capacity":
+ 18000,
+ "expected_attendance":
+ 18000,
+ "price_range":
+ "388-2088元",
+ "source":
+ "厦门本地宝/腾讯网",
+ "source_url":
+ "https://new.qq.com/rain/a/20260620A080RW00",
+ "ticket_status":
+ "已开票"}
+,
+ {
+"id":
+ "EVT-003",
+ "name":
+ "蒲熠星《银河系旅行攻略》巡回演唱会-厦门",
+ "type":
+ "演唱会",
+ "date":
+ "2026-08-01",
+ "start_time":
+ "19:00",
+ "end_time":
+ "22:00",
+ "venue":
+ "厦门奥林匹克体育中心-凤凰体育馆",
+ "venue_capacity":
+ 18000,
+ "expected_attendance":
+ 12000,
+ "price_range":
+ "380-1680元",
+ "source":
+ "厦门本地宝",
+ "source_url":
+ "https://xm.bendibao.com/xiuxian/",
+ "ticket_status":
+ "已开票"}
+,
+ {
+"id":
+ "EVT-004",
+ "name":
+ "李健\"万物安生时\"2026-2027巡回演唱会-厦门站",
+ "type":
+ "演唱会",
+ "date":
+ "2026-08-08",
+ "start_time":
+ "19:30",
+ "end_time":
+ "22:30",
+ "venue":
+ "厦门奥林匹克体育中心-凤凰体育馆",
+ "venue_capacity":
+ 18000,
+ "expected_attendance":
+ 17000,
+ "price_range":
+ "480-2080元",
+ "source":
+ "厦门本地宝/腾讯网",
+ "source_url":
+ "https://new.qq.com/rain/a/20260620A080RW00",
+ "ticket_status":
+ "已开票"}
+,
+ {
+"id":
+ "EVT-005",
+ "name":
+ "周华健2026\"少年的奇幻之旅3.0\"巡演-厦门站",
+ "type":
+ "演唱会",
+ "date":
+ "2026-08-22",
+ "start_time":
+ "19:00",
+ "end_time":
+ "22:30",
+ "venue":
+ "厦门奥林匹克体育中心-凤凰体育馆",
+ "venue_capacity":
+ 18000,
+ "expected_attendance":
+ 18000,
+ "price_range":
+ "399-2088元",
+ "source":
+ "厦门本地宝/腾讯网",
+ "source_url":
+ "https://new.qq.com/rain/a/20260620A080RW00",
+ "ticket_status":
+ "已开票"}
+,
+ {
+"id":
+ "EVT-006",
+ "name":
+ "第61届仿真植物、园林花艺及美陈道具(秋季)交易会",
+ "type":
+ "展览会",
+ "date":
+ "2026-07-16",
+ "end_date":
+ "2026-07-18",
+ "start_time":
+ "09:00",
+ "end_time":
+ "17:00",
+ "venue":
+ "厦门国际会议展览中心",
+ "hall":
+ "C1-C5馆",
+ "venue_capacity":
+ 50000,
+ "expected_attendance":
+ 8000,
+ "source":
+ "厦门国际会展中心官网",
+ "source_url":
+ "https://www.xicec.com",
+ "ticket_status":
+ "专业观众登记"}
+,
+ {
+"id":
+ "EVT-007",
+ "name":
+ "电力建设科技发展大会暨第二届电力智能新型施工装备展",
+ "type":
+ "展览会",
+ "date":
+ "2026-07-29",
+ "end_date":
+ "2026-07-31",
+ "start_time":
+ "09:00",
+ "end_time":
+ "17:00",
+ "venue":
+ "厦门国际会议展览中心",
+ "hall":
+ "C3-C5馆",
+ "venue_capacity":
+ 50000,
+ "expected_attendance":
+ 6000,
+ "source":
+ "厦门国际会展中心官网",
+ "source_url":
+ "https://www.xicec.com",
+ "ticket_status":
+ "专业观众登记"}
+,
+ {
+"id":
+ "EVT-008",
+ "name":
+ "中国华夏家博会(厦门)",
+ "type":
+ "展览会",
+ "date":
+ "2026-08-07",
+ "end_date":
+ "2026-08-09",
+ "start_time":
+ "09:00",
+ "end_time":
+ "17:00",
+ "venue":
+ "厦门国际会议展览中心",
+ "hall":
+ "B3-B4展厅",
+ "venue_capacity":
+ 50000,
+ "expected_attendance":
+ 15000,
+ "source":
+ "厦门国际会展中心官网",
+ "source_url":
+ "https://www.xicec.com",
+ "ticket_status":
+ "免费登记"}
+,
+ {
+"id":
+ "EVT-009",
+ "name":
+ "CXPE厦门印刷包装瓦楞彩盒产业博览会",
+ "type":
+ "展览会",
+ "date":
+ "2026-08-08",
+ "end_date":
+ "2026-08-10",
+ "start_time":
+ "09:00",
+ "end_time":
+ "17:00",
+ "venue":
+ "厦门国际会议展览中心",
+ "venue_capacity":
+ 50000,
+ "expected_attendance":
+ 5000,
+ "source":
+ "厦门国际会展中心官网",
+ "source_url":
+ "https://www.xicec.com",
+ "ticket_status":
+ "专业观众登记"}
+,
+ {
+"id":
+ "EVT-010",
+ "name":
+ "第一届梦鱼动漫游戏嘉年华",
+ "type":
+ "漫展",
+ "date":
+ "2026-08-08",
+ "end_date":
+ "2026-08-09",
+ "start_time":
+ "09:00",
+ "end_time":
+ "17:00",
+ "venue":
+ "厦门国际会议展览中心",
+ "venue_capacity":
+ 50000,
+ "expected_attendance":
+ 10000,
+ "source":
+ "厦门国际会展中心官网",
+ "source_url":
+ "https://www.xicec.com",
+ "ticket_status":
+ "已开票"}
+,
+ {
+"id":
+ "EVT-011",
+ "name":
+ "厦门国际冷冻冷藏食品博览会+蓝装家博会",
+ "type":
+ "展览会",
+ "date":
+ "2026-08-13",
+ "end_date":
+ "2026-08-16",
+ "start_time":
+ "09:00",
+ "end_time":
+ "17:00",
+ "venue":
+ "厦门国际会议展览中心",
+ "venue_capacity":
+ 50000,
+ "expected_attendance":
+ 12000,
+ "source":
+ "厦门国际会展中心官网",
+ "source_url":
+ "https://www.xicec.com",
+ "ticket_status":
+ "免费登记"}
+,
+ {
+"id":
+ "EVT-012",
+ "name":
+ "\"来厦门 猫一夏\"暑期文旅活动(3000场次)",
+ "type":
+ "文旅活动",
+ "date":
+ "2026-07-01",
+ "end_date":
+ "2026-08-31",
+ "venue":
+ "全市多点(鼓浪屿/环岛路/园博苑等)",
+ "venue_capacity":
+ 100000,
+ "expected_attendance":
+ 50000,
+ "source":
+ "厦门电视台",
+ "source_url":
+ "https://www.xmtv.cn/xmtv/2026-07-01/98f687bb5f2c9330.html",
+ "ticket_status":
+ "免费/混合"}
+,
+ {
+"id":
+ "EVT-013",
+ "name":
+ "嘉庚剧院暑期儿童剧系列(多场)",
+ "type":
+ "演出",
+ "date":
+ "2026-07-16",
+ "end_date":
+ "2026-08-24",
+ "venue":
+ "厦门嘉庚剧院",
+ "venue_capacity":
+ 1200,
+ "expected_attendance":
+ 8000,
+ "source":
+ "厦门日报/今日头条",
+ "source_url":
+ "https://www.toutiao.com/article/7657369210124911113/",
+ "ticket_status":
+ "已开票"}
+]
+}
+,
+ "metro":
+ {
+"source":
+ "厦门地铁官网(xmgdjt.com.cn)线路图 + 百度百科 + 高德地图POI距离测算",
+ "source_urls":
+ [
+"https://www.xmgdjt.com.cn/",
+ "https://baike.baidu.com/item/厦门轨道交通交通/0",
+ "https://jt.xm.gov.cn/tzxx/hyxw/202408/t20240830_2887475.htm"]
+,
+ "crawl_time":
+ "2026-07-23 19:00:44",
+ "lines":
+ {
+"1号线":
+ {
+"color":
+ "#e60012",
+ "stations":
+ [
+"镇海路",
+ "中山公园",
+ "将军祠",
+ "文灶",
+ "湖滨东路",
+ "莲坂",
+ "莲花路口",
+ "吕厝",
+ "乌石浦",
+ "塘边",
+ "火炬园",
+ "殿前",
+ "高崎",
+ "集美学村",
+ "园博苑",
+ "杏林村",
+ "杏锦路",
+ "官任",
+ "诚毅广场",
+ "集美软件园",
+ "集美大道",
+ "天水路",
+ "厦门北站",
+ "岩内"]
+,
+ "length_km":
+ 30.3,
+ "opened":
+ "2017-12-31"}
+,
+ "2号线":
+ {
+"color":
+ "#00b140",
+ "stations":
+ [
+"天竺山",
+ "东孚",
+ "东瑶",
+ "新阳大道",
+ "新垵",
+ "翁角路",
+ "马青路",
+ "海沧行政中心",
+ "海沧商务中心",
+ "海沧湾公园",
+ "邮轮中心",
+ "建业路",
+ "湖滨中路",
+ "体育中心",
+ "育秀东路",
+ "吕厝",
+ "江头",
+ "后埔",
+ "蔡塘",
+ "古地石",
+ "岭兜",
+ "软件园二期",
+ "何厝",
+ "观音山",
+ "东宅",
+ "两岸金融中心",
+ "五通",
+ "湿地公园",
+ "钟宅",
+ "五缘湾"]
+,
+ "length_km":
+ 41.6,
+ "opened":
+ "2019-12-25",
+ "note":
+ "共32座车站，鼎美站和马銮中心站暂缓开通，运营30座"}
+,
+ "3号线":
+ {
+"color":
+ "#00a0e9",
+ "stations":
+ [
+"厦门火车站",
+ "湖滨东路",
+ "体育中心",
+ "人才中心",
+ "湖里公园",
+ "华荣路",
+ "火炬园",
+ "小东山",
+ "安兜",
+ "坂尚",
+ "湖里创新园",
+ "五缘湾",
+ "国际博览中心",
+ "东界",
+ "洪坑",
+ "林前",
+ "鼓锣",
+ "翔安市民公园",
+ "浦边",
+ "后村",
+ "蔡厝"]
+,
+ "length_km":
+ 26.5,
+ "opened":
+ "2021-06-25",
+ "note":
+ "翔安机场站为在建延伸段(蔡厝~翔安机场)，尚未开通"}
+}
+,
+ "venue_map":
+ {
+"厦门奥林匹克体育中心-凤凰体育馆":
+ {
+"primary_station":
+ "国际博览中心",
+ "venue_capacity":
+ 18000,
+ "nearby_stations":
+ [
+{
+"station":
+ "国际博览中心",
+ "line":
+ "3号线",
+ "distance_m":
+ 600,
+ "impact_level":
+ 5}
+,
+ {
+"station":
+ "东界",
+ "line":
+ "3号线",
+ "distance_m":
+ 1500,
+ "impact_level":
+ 3}
+,
+ {
+"station":
+ "洪坑",
+ "line":
+ "3号线",
+ "distance_m":
+ 2500,
+ "impact_level":
+ 2}
+,
+ {
+"station":
+ "林前",
+ "line":
+ "3号线",
+ "distance_m":
+ 3500,
+ "impact_level":
+ 2}
+]
+}
+,
+ "厦门奥林匹克体育中心-白鹭体育场":
+ {
+"primary_station":
+ "国际博览中心",
+ "venue_capacity":
+ 60000,
+ "nearby_stations":
+ [
+{
+"station":
+ "国际博览中心",
+ "line":
+ "3号线",
+ "distance_m":
+ 600,
+ "impact_level":
+ 5}
+,
+ {
+"station":
+ "东界",
+ "line":
+ "3号线",
+ "distance_m":
+ 1400,
+ "impact_level":
+ 4}
+,
+ {
+"station":
+ "洪坑",
+ "line":
+ "3号线",
+ "distance_m":
+ 2400,
+ "impact_level":
+ 3}
+,
+ {
+"station":
+ "林前",
+ "line":
+ "3号线",
+ "distance_m":
+ 3400,
+ "impact_level":
+ 3}
+,
+ {
+"station":
+ "五缘湾",
+ "line":
+ "2号线/3号线",
+ "distance_m":
+ 4500,
+ "impact_level":
+ 2}
+]
+}
+,
+ "厦门国际会议展览中心":
+ {
+"primary_station":
+ "湿地公园",
+ "nearby_stations":
+ [
+{
+"station":
+ "湿地公园",
+ "line":
+ "2号线",
+ "distance_m":
+ 800,
+ "impact_level":
+ 5}
+,
+ {
+"station":
+ "钟宅",
+ "line":
+ "2号线",
+ "distance_m":
+ 1200,
+ "impact_level":
+ 4}
+,
+ {
+"station":
+ "五缘湾",
+ "line":
+ "2号线",
+ "distance_m":
+ 1500,
+ "impact_level":
+ 4}
+,
+ {
+"station":
+ "观音山",
+ "line":
+ "2号线",
+ "distance_m":
+ 2000,
+ "impact_level":
+ 3}
+,
+ {
+"station":
+ "何厝",
+ "line":
+ "2号线",
+ "distance_m":
+ 2500,
+ "impact_level":
+ 2}
+]
+}
+,
+ "厦门市体育中心":
+ {
+"primary_station":
+ "体育中心",
+ "nearby_stations":
+ [
+{
+"station":
+ "体育中心",
+ "line":
+ "2号线",
+ "distance_m":
+ 300,
+ "impact_level":
+ 5}
+,
+ {
+"station":
+ "育秀东路",
+ "line":
+ "2号线",
+ "distance_m":
+ 600,
+ "impact_level":
+ 4}
+,
+ {
+"station":
+ "湖滨东路",
+ "line":
+ "1号线",
+ "distance_m":
+ 800,
+ "impact_level":
+ 3}
+,
+ {
+"station":
+ "人才中心",
+ "line":
+ "3号线",
+ "distance_m":
+ 1000,
+ "impact_level":
+ 3}
+,
+ {
+"station":
+ "莲坂",
+ "line":
+ "1号线",
+ "distance_m":
+ 1200,
+ "impact_level":
+ 2}
+]
+}
+,
+ "厦门嘉庚剧院":
+ {
+"primary_station":
+ "诚毅广场",
+ "nearby_stations":
+ [
+{
+"station":
+ "诚毅广场",
+ "line":
+ "1号线",
+ "distance_m":
+ 500,
+ "impact_level":
+ 5}
+,
+ {
+"station":
+ "官任",
+ "line":
+ "1号线",
+ "distance_m":
+ 1000,
+ "impact_level":
+ 3}
+,
+ {
+"station":
+ "集美大道",
+ "line":
+ "1号线",
+ "distance_m":
+ 1500,
+ "impact_level":
+ 2}
+]
+}
+}
+,
+ "station_types":
+ {
+"吕厝":
+ "换乘",
+ "火炬园":
+ "换乘",
+ "体育中心":
+ "换乘",
+ "湖滨东路":
+ "换乘",
+ "五缘湾":
+ "换乘",
+ "厦门北站":
+ "枢纽",
+ "高崎":
+ "枢纽",
+ "厦门火车站":
+ "枢纽",
+ "邮轮中心":
+ "枢纽",
+ "集美学村":
+ "景区",
+ "园博苑":
+ "景区",
+ "湿地公园":
+ "景区",
+ "钟宅":
+ "景区",
+ "镇海路":
+ "商圈",
+ "中山公园":
+ "商圈",
+ "莲坂":
+ "商圈",
+ "江头":
+ "商圈",
+ "观音山":
+ "商圈",
+ "诚毅广场":
+ "商圈",
+ "将军祠":
+ "通勤",
+ "文灶":
+ "通勤",
+ "莲花路口":
+ "通勤",
+ "乌石浦":
+ "通勤",
+ "塘边":
+ "通勤",
+ "殿前":
+ "通勤",
+ "杏林村":
+ "通勤",
+ "杏锦路":
+ "通勤",
+ "官任":
+ "通勤",
+ "集美软件园":
+ "通勤",
+ "集美大道":
+ "通勤",
+ "天水路":
+ "通勤",
+ "岩内":
+ "通勤",
+ "天竺山":
+ "通勤",
+ "东孚":
+ "通勤",
+ "东瑶":
+ "通勤",
+ "新阳大道":
+ "通勤",
+ "新垵":
+ "通勤",
+ "翁角路":
+ "通勤",
+ "马青路":
+ "通勤",
+ "海沧行政中心":
+ "通勤",
+ "海沧商务中心":
+ "通勤",
+ "海沧湾公园":
+ "通勤",
+ "建业路":
+ "通勤",
+ "湖滨中路":
+ "通勤",
+ "育秀东路":
+ "通勤",
+ "后埔":
+ "通勤",
+ "蔡塘":
+ "通勤",
+ "古地石":
+ "通勤",
+ "岭兜":
+ "通勤",
+ "软件园二期":
+ "通勤",
+ "何厝":
+ "通勤",
+ "东宅":
+ "通勤",
+ "两岸金融中心":
+ "通勤",
+ "五通":
+ "通勤",
+ "人才中心":
+ "通勤",
+ "湖里公园":
+ "通勤",
+ "华荣路":
+ "通勤",
+ "小东山":
+ "通勤",
+ "安兜":
+ "通勤",
+ "坂尚":
+ "通勤",
+ "湖里创新园":
+ "通勤",
+ "国际博览中心":
+ "体育会展",
+ "东界":
+ "通勤",
+ "洪坑":
+ "通勤",
+ "林前":
+ "通勤",
+ "鼓锣":
+ "通勤",
+ "翔安市民公园":
+ "通勤",
+ "浦边":
+ "通勤",
+ "后村":
+ "通勤",
+ "蔡厝":
+ "通勤"}
+,
+ "station_flow_weight":
+ {
+"吕厝":
+ 1.0,
+ "火炬园":
+ 0.85,
+ "体育中心":
+ 0.8,
+ "湖滨东路":
+ 0.75,
+ "镇海路":
+ 0.5,
+ "厦门北站":
+ 0.7,
+ "厦门火车站":
+ 0.6,
+ "高崎":
+ 0.35,
+ "邮轮中心":
+ 0.3,
+ "莲坂":
+ 0.45,
+ "江头":
+ 0.4,
+ "集美学村":
+ 0.35,
+ "园博苑":
+ 0.3,
+ "五缘湾":
+ 0.45,
+ "湿地公园":
+ 0.25,
+ "中山公园":
+ 0.35,
+ "诚毅广场":
+ 0.3,
+ "观音山":
+ 0.25,
+ "软件园二期":
+ 0.3,
+ "蔡塘":
+ 0.25,
+ "建业路":
+ 0.2,
+ "湖滨中路":
+ 0.25,
+ "育秀东路":
+ 0.2,
+ "后埔":
+ 0.2,
+ "岭兜":
+ 0.2,
+ "古地石":
+ 0.18,
+ "殿前":
+ 0.15,
+ "乌石浦":
+ 0.18,
+ "塘边":
+ 0.15,
+ "文灶":
+ 0.22,
+ "将军祠":
+ 0.15,
+ "莲花路口":
+ 0.18,
+ "杏锦路":
+ 0.12,
+ "官任":
+ 0.15,
+ "杏林村":
+ 0.12,
+ "集美软件园":
+ 0.2,
+ "集美大道":
+ 0.15,
+ "天水路":
+ 0.12,
+ "岩内":
+ 0.1,
+ "天竺山":
+ 0.08,
+ "东孚":
+ 0.1,
+ "东瑶":
+ 0.08,
+ "新阳大道":
+ 0.12,
+ "新垵":
+ 0.15,
+ "翁角路":
+ 0.1,
+ "马青路":
+ 0.12,
+ "海沧行政中心":
+ 0.15,
+ "海沧商务中心":
+ 0.15,
+ "海沧湾公园":
+ 0.12,
+ "何厝":
+ 0.15,
+ "东宅":
+ 0.1,
+ "两岸金融中心":
+ 0.15,
+ "五通":
+ 0.12,
+ "钟宅":
+ 0.15,
+ "人才中心":
+ 0.18,
+ "湖里公园":
+ 0.15,
+ "华荣路":
+ 0.12,
+ "小东山":
+ 0.1,
+ "安兜":
+ 0.1,
+ "坂尚":
+ 0.1,
+ "湖里创新园":
+ 0.12,
+ "国际博览中心":
+ 0.35,
+ "东界":
+ 0.1,
+ "洪坑":
+ 0.08,
+ "林前":
+ 0.08,
+ "鼓锣":
+ 0.1,
+ "翔安市民公园":
+ 0.12,
+ "浦边":
+ 0.08,
+ "后村":
+ 0.08,
+ "蔡厝":
+ 0.1}
+,
+ "total_stations":
+ 75,
+ "total_lines":
+ 3,
+ "operational_note":
+ "截至2025年12月运营3条线(1/2/3号线)，4/6/9号线建设中。翔安机场站为3号线在建延伸段，尚未开通。"}
+,
+ "crawlSummary":
+ {
+"crawl_time":
+ "2026-07-23 19:00:27",
+ "data_sources":
+ [
+"中国天气网 (t.weather.itboy.net) — 15天天气预报+空气质量",
+ "timor.tech — 法定节假日/调休/周末判定",
+ "百度热搜榜 (top.baidu.com) — 实时搜索热度",
+ "厦门本地宝/腾讯网/厦门国际会展中心官网/厦门电视台 — 大型活动",
+ "厦门地铁公开线路图 + 高德地图POI — 站网与场馆距离",
+ "厦门日报/厦门网/东南网/人民网 — 火车站运营数据",
+ "厦门空港/民航资源网 — 高崎机场航班数据",
+ "厦门智慧文旅平台/携程/途牛 — 来厦旅游热度",
+ "今日头条/腾讯网/携程 — 地铁站周边酒店订房数据",
+ "抖音/小红书/微博/携程/大众点评 — 社交媒体热度排行"]
+}
+,
+ "holidayMap":
+ {
+"2026-07-23":
+ {
+"date":
+ "2026-07-23",
+ "type_code":
+ 0,
+ "type_name":
+ "周四",
+ "week":
+ 4,
+ "holiday":
+ null}
+,
+ "2026-07-24":
+ {
+"date":
+ "2026-07-24",
+ "type_code":
+ 0,
+ "type_name":
+ "周五",
+ "week":
+ 5,
+ "holiday":
+ null}
+,
+ "2026-07-25":
+ {
+"date":
+ "2026-07-25",
+ "type_code":
+ 1,
+ "type_name":
+ "周六",
+ "week":
+ 6,
+ "holiday":
+ null}
+,
+ "2026-07-26":
+ {
+"date":
+ "2026-07-26",
+ "type_code":
+ 1,
+ "type_name":
+ "周日",
+ "week":
+ 7,
+ "holiday":
+ null}
+,
+ "2026-07-27":
+ {
+"date":
+ "2026-07-27",
+ "type_code":
+ 0,
+ "type_name":
+ "周一",
+ "week":
+ 1,
+ "holiday":
+ null}
+,
+ "2026-07-28":
+ {
+"date":
+ "2026-07-28",
+ "type_code":
+ 0,
+ "type_name":
+ "周二",
+ "week":
+ 2,
+ "holiday":
+ null}
+,
+ "2026-07-29":
+ {
+"date":
+ "2026-07-29",
+ "type_code":
+ 0,
+ "type_name":
+ "周三",
+ "week":
+ 3,
+ "holiday":
+ null}
+,
+ "2026-07-30":
+ {
+"date":
+ "2026-07-30",
+ "type_code":
+ 0,
+ "type_name":
+ "周四",
+ "week":
+ 4,
+ "holiday":
+ null}
+,
+ "2026-07-31":
+ {
+"date":
+ "2026-07-31",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ "2026-08-01":
+ {
+"date":
+ "2026-08-01",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ "2026-08-02":
+ {
+"date":
+ "2026-08-02",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ "2026-08-03":
+ {
+"date":
+ "2026-08-03",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ "2026-08-04":
+ {
+"date":
+ "2026-08-04",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ "2026-08-05":
+ {
+"date":
+ "2026-08-05",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+,
+ "2026-08-06":
+ {
+"date":
+ "2026-08-06",
+ "error":
+ "HTTP Error 429: Too Many Requests"}
+}
+,
+ "weatherMap":
+ {
+"2026-07-23":
+ {
+"date":
+ "2026-07-23",
+ "week":
+ "星期四",
+ "sunrise":
+ "05:31",
+ "high":
+ "高温 32℃",
+ "low":
+ "低温 27℃",
+ "weather":
+ "晴",
+ "wind_dir":
+ "西南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 43,
+ "aqi_level":
+ null}
+,
+ "2026-07-24":
+ {
+"date":
+ "2026-07-24",
+ "week":
+ "星期五",
+ "sunrise":
+ "05:32",
+ "high":
+ "高温 32℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "晴",
+ "wind_dir":
+ "东北风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 45,
+ "aqi_level":
+ null}
+,
+ "2026-07-25":
+ {
+"date":
+ "2026-07-25",
+ "week":
+ "星期六",
+ "sunrise":
+ "05:32",
+ "high":
+ "高温 31℃",
+ "low":
+ "低温 27℃",
+ "weather":
+ "多云",
+ "wind_dir":
+ "东北风",
+ "wind_level":
+ "3级",
+ "aqi":
+ 50,
+ "aqi_level":
+ null}
+,
+ "2026-07-26":
+ {
+"date":
+ "2026-07-26",
+ "week":
+ "星期日",
+ "sunrise":
+ "05:33",
+ "high":
+ "高温 27℃",
+ "low":
+ "低温 25℃",
+ "weather":
+ "中雨",
+ "wind_dir":
+ "东南风",
+ "wind_level":
+ "4级",
+ "aqi":
+ 36,
+ "aqi_level":
+ null}
+,
+ "2026-07-27":
+ {
+"date":
+ "2026-07-27",
+ "week":
+ "星期一",
+ "sunrise":
+ "05:33",
+ "high":
+ "高温 28℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "阴",
+ "wind_dir":
+ "东南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 40,
+ "aqi_level":
+ null}
+,
+ "2026-07-28":
+ {
+"date":
+ "2026-07-28",
+ "week":
+ "星期二",
+ "sunrise":
+ "05:34",
+ "high":
+ "高温 29℃",
+ "low":
+ "低温 25℃",
+ "weather":
+ "小雨",
+ "wind_dir":
+ "东南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 46,
+ "aqi_level":
+ null}
+,
+ "2026-07-29":
+ {
+"date":
+ "2026-07-29",
+ "week":
+ "星期三",
+ "sunrise":
+ "05:34",
+ "high":
+ "高温 30℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "中雨",
+ "wind_dir":
+ "东南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 36,
+ "aqi_level":
+ null}
+,
+ "2026-07-30":
+ {
+"date":
+ "2026-07-30",
+ "week":
+ "星期四",
+ "sunrise":
+ "05:35",
+ "high":
+ "高温 29℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "大雨",
+ "wind_dir":
+ "东南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 21,
+ "aqi_level":
+ null}
+,
+ "2026-07-31":
+ {
+"date":
+ "2026-07-31",
+ "week":
+ "星期五",
+ "sunrise":
+ "05:35",
+ "high":
+ "高温 31℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "大雨",
+ "wind_dir":
+ "西南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 20,
+ "aqi_level":
+ null}
+,
+ "2026-08-01":
+ {
+"date":
+ "2026-08-01",
+ "week":
+ "星期六",
+ "sunrise":
+ "05:36",
+ "high":
+ "高温 31℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "暴雨",
+ "wind_dir":
+ "西南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 19,
+ "aqi_level":
+ null}
+,
+ "2026-08-02":
+ {
+"date":
+ "2026-08-02",
+ "week":
+ "星期日",
+ "sunrise":
+ "05:36",
+ "high":
+ "高温 30℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "大雨",
+ "wind_dir":
+ "南风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 17,
+ "aqi_level":
+ null}
+,
+ "2026-08-03":
+ {
+"date":
+ "2026-08-03",
+ "week":
+ "星期一",
+ "sunrise":
+ "05:36",
+ "high":
+ "高温 31℃",
+ "low":
+ "低温 25℃",
+ "weather":
+ "中雨",
+ "wind_dir":
+ "东北风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 21,
+ "aqi_level":
+ null}
+,
+ "2026-08-04":
+ {
+"date":
+ "2026-08-04",
+ "week":
+ "星期二",
+ "sunrise":
+ "05:37",
+ "high":
+ "高温 31℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "阴",
+ "wind_dir":
+ "东北风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 29,
+ "aqi_level":
+ null}
+,
+ "2026-08-05":
+ {
+"date":
+ "2026-08-05",
+ "week":
+ "星期三",
+ "sunrise":
+ "05:37",
+ "high":
+ "高温 32℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "小雨",
+ "wind_dir":
+ "东风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 31,
+ "aqi_level":
+ null}
+,
+ "2026-08-06":
+ {
+"date":
+ "2026-08-06",
+ "week":
+ "星期四",
+ "sunrise":
+ "05:38",
+ "high":
+ "高温 32℃",
+ "low":
+ "低温 26℃",
+ "weather":
+ "小雨",
+ "wind_dir":
+ "东风",
+ "wind_level":
+ "2级",
+ "aqi":
+ 32,
+ "aqi_level":
+ null}
+}
+,
+ "stationInfo":
+ {
+"镇海路":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "商圈"}
+,
+ "中山公园":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "商圈"}
+,
+ "将军祠":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "文灶":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "湖滨东路":
+ {
+"lines":
+ [
+"1号线",
+ "3号线"]
+,
+ "type":
+ "换乘"}
+,
+ "莲坂":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "商圈"}
+,
+ "莲花路口":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "吕厝":
+ {
+"lines":
+ [
+"1号线",
+ "2号线"]
+,
+ "type":
+ "换乘"}
+,
+ "乌石浦":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "塘边":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "火炬园":
+ {
+"lines":
+ [
+"1号线",
+ "3号线"]
+,
+ "type":
+ "换乘"}
+,
+ "殿前":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "高崎":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "枢纽"}
+,
+ "集美学村":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "景区"}
+,
+ "园博苑":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "景区"}
+,
+ "杏林村":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "杏锦路":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "官任":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "诚毅广场":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "商圈"}
+,
+ "集美软件园":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "集美大道":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "天水路":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "厦门北站":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "枢纽"}
+,
+ "岩内":
+ {
+"lines":
+ [
+"1号线"]
+,
+ "type":
+ "通勤"}
+,
+ "天竺山":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "东孚":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "东瑶":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "新阳大道":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "新垵":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "翁角路":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "马青路":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "海沧行政中心":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "海沧商务中心":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "海沧湾公园":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "邮轮中心":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "枢纽"}
+,
+ "建业路":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "湖滨中路":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "体育中心":
+ {
+"lines":
+ [
+"2号线",
+ "3号线"]
+,
+ "type":
+ "换乘"}
+,
+ "育秀东路":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "江头":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "商圈"}
+,
+ "后埔":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "蔡塘":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "古地石":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "岭兜":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "软件园二期":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "何厝":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "观音山":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "商圈"}
+,
+ "东宅":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "两岸金融中心":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "五通":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "通勤"}
+,
+ "湿地公园":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "景区"}
+,
+ "钟宅":
+ {
+"lines":
+ [
+"2号线"]
+,
+ "type":
+ "景区"}
+,
+ "五缘湾":
+ {
+"lines":
+ [
+"2号线",
+ "3号线"]
+,
+ "type":
+ "换乘"}
+,
+ "厦门火车站":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "枢纽"}
+,
+ "人才中心":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "湖里公园":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "华荣路":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "小东山":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "安兜":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "坂尚":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "湖里创新园":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "国际博览中心":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "体育会展"}
+,
+ "东界":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "洪坑":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "林前":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "鼓锣":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "翔安市民公园":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "浦边":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "后村":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+,
+ "蔡厝":
+ {
+"lines":
+ [
+"3号线"]
+,
+ "type":
+ "通勤"}
+}
+,
+ "allStations":
+ [
+"东孚",
+ "东宅",
+ "东瑶",
+ "东界",
+ "两岸金融中心",
+ "中山公园",
+ "乌石浦",
+ "五缘湾",
+ "五通",
+ "人才中心",
+ "体育中心",
+ "何厝",
+ "华荣路",
+ "厦门北站",
+ "厦门火车站",
+ "古地石",
+ "后埔",
+ "后村",
+ "吕厝",
+ "园博苑",
+ "国际博览中心",
+ "坂尚",
+ "塘边",
+ "天水路",
+ "天竺山",
+ "安兜",
+ "官任",
+ "将军祠",
+ "小东山",
+ "岩内",
+ "岭兜",
+ "建业路",
+ "文灶",
+ "新垵",
+ "新阳大道",
+ "杏林村",
+ "杏锦路",
+ "林前",
+ "殿前",
+ "江头",
+ "洪坑",
+ "浦边",
+ "海沧商务中心",
+ "海沧湾公园",
+ "海沧行政中心",
+ "湖滨东路",
+ "湖滨中路",
+ "湖里公园",
+ "湖里创新园",
+ "湿地公园",
+ "火炬园",
+ "翁角路",
+ "翔安市民公园",
+ "育秀东路",
+ "莲坂",
+ "莲花路口",
+ "蔡厝",
+ "蔡塘",
+ "观音山",
+ "诚毅广场",
+ "软件园二期",
+ "邮轮中心",
+ "钟宅",
+ "镇海路",
+ "集美大道",
+ "集美学村",
+ "集美软件园",
+ "马青路",
+ "高崎",
+ "鼓锣"]
+,
+ "historicalData":
+ {
+"network_daily_avg_2025_07":
+ 825000,
+ "network_daily_avg_2024_summer":
+ 793600,
+ "network_record_2024_1231":
+ 1041700,
+ "network_weekend_record_2025_0713":
+ 829200,
+ "network_may1_2025":
+ 1069400,
+ "network_year_total_2024":
+ 349290900,
+ "station_calibration":
+ {
+"国际博览中心站":
+ {
+"daily_normal":
+ 2786,
+ "concert_xuezhixian_511":
+ 24000,
+ "concert_jay_712":
+ 39000,
+ "concert_jolin_817":
+ 20000,
+ "concert_zhangbichen_824":
+ 7346,
+ "growth_multiple":
+ 14}
+,
+ "镇海路站":
+ {
+"daily_summer_avg":
+ 34000}
+,
+ "集美软件园站":
+ {
+"daily_2024_07":
+ 11400}
+,
+ "新阳大道站":
+ {
+"daily_2024":
+ 8500}
+}
+,
+ "concert_metro_share":
+ {
+"鹿晗":
+ 0.61,
+ "周杰伦":
+ 0.55,
+ "平均":
+ 0.52}
+,
+ "weather_impact":
+ {
+"台风米克拉_2020":
+ "吕厝站客流减少约33%",
+ "台风桦加沙_2025":
+ "全网72.97万vs正常80万,降9%",
+ "台风凤凰_2025":
+ "全网74.61万,降7%"}
+,
+ "event_stats":
+ {
+"薛之谦演唱会_2024_511":
+ {
+"venue":
+ "白鹭体育场",
+ "attendance":
+ 44000,
+ "station_flow":
+ 24000}
+,
+ "周杰伦演唱会_2025_712":
+ {
+"venue":
+ "白鹭体育场",
+ "attendance":
+ 60000,
+ "station_flow":
+ 39000}
+,
+ "蔡依林演唱会_2024_817":
+ {
+"venue":
+ "凤凰体育馆",
+ "attendance":
+ 18000,
+ "station_flow":
+ 20000}
+,
+ "邓紫棋演唱会_2025_501":
+ {
+"venue":
+ "白鹭体育场",
+ "attendance":
+ 60000,
+ "network_flow":
+ 1069400}
+,
+ "五月天演唱会_2024_1024":
+ {
+"venue":
+ "白鹭体育场",
+ "days":
+ 3,
+ "bus_passengers":
+ 33500}
+}
+,
+ "large_events_2024":
+ {
+"count":
+ 70,
+ "total_passengers":
+ 900000}
+,
+ "sources":
+ [
+"厦门日报: 厦门地铁跨年夜客流创新高 首次突破单日百万人次 (2025-01-02)",
+ "厦门日报/今日头条: 厦门地铁暑运数据多项纪录刷新 (2025-08-23)",
+ "厦门网: 厦门地铁晒出2024年度成绩单 总客运量34929.09万人次",
+ "厦门电视台: 厦门地铁发布暑期报告 暑期客运量近5000万人次 (2024-09-16)",
+ "福建日报: 客流量从0到10亿 厦门地铁流量密码 (2024-08-29)",
+ "厦门日报: 闽超演唱会等大型活动叠加五一假期 (2025-05)",
+ "厦门交通局: 五一厦门交通出行数据出炉 (2025-05)",
+ "维基百科: 厦门白鹭体育场 (60,592座)",
+ "厦门奥体中心官网: 凤凰体育馆(18,000座)"]
+}
+,
+ "venueCapacity":
+ {
+"白鹭体育场":
+ 60000,
+ "凤凰体育馆":
+ 18000,
+ "厦门市体育中心":
+ 30000,
+ "厦门国际会展中心":
+ 50000,
+ "厦门国际博览中心":
+ 80000}
+,
+ "railway":
+ {
+"source":
+ "厦门日报/厦门网/东南网/人民网 (WebSearch验证)",
+ "source_urls":
+ [
+"https://www.xmnn.cn/news/xmxw/202504/t20250426_311249.html",
+ "https://www.fj.chinanews.com.cn/news/2025/2025-01-14/560421.html",
+ "https://www.toutiao.com/article/7550254475164893748"]
+,
+ "crawl_time":
+ "2026-07-23 19:00:44",
+ "stations":
+ [
+"厦门站",
+ "厦门北站"]
+,
+ "daily_baseline":
+ {
+"trains_per_day":
+ 244,
+ "daily_passengers_workday":
+ 8.5,
+ "daily_passengers_weekend":
+ 10.2,
+ "source_note":
+ "2025年春运日均9.33万，推算日常约8.5万"}
+,
+ "holiday_boost":
+ {
+"春运":
+ {
+"daily_passengers":
+ 9.33,
+ "peak_daily":
+ 14.2,
+ "boost_ratio":
+ 1.52,
+ "extra_trains":
+ 10,
+ "days":
+ 40,
+ "source":
+ "2025春运预计373万/40天"}
+,
+ "五一":
+ {
+"daily_passengers":
+ 13.19,
+ "peak_daily":
+ 18.5,
+ "boost_ratio":
+ 1.55,
+ "extra_trains":
+ 68,
+ "days":
+ 8,
+ "source":
+ "2025五一105.5万/8天"}
+,
+ "国庆":
+ {
+"daily_passengers":
+ 12.8,
+ "peak_daily":
+ 17.0,
+ "boost_ratio":
+ 1.51,
+ "extra_trains":
+ 55,
+ "days":
+ 7,
+ "source":
+ "历史同期估算"}
+,
+ "春节假期":
+ {
+"daily_passengers":
+ 8.44,
+ "peak_daily":
+ 14.0,
+ "boost_ratio":
+ 0.99,
+ "extra_trains":
+ 10,
+ "days":
+ 8,
+ "source":
+ "2025春节发送67.52万/8天"}
+,
+ "暑运":
+ {
+"daily_passengers":
+ 9.87,
+ "peak_daily":
+ 13.62,
+ "boost_ratio":
+ 1.16,
+ "extra_trains":
+ 15,
+ "days":
+ 62,
+ "source":
+ "2025暑运到发1222.41万/62天，8/9峰值13.62万"}
+}
+,
+ "historical_records":
+ [
+{
+"date":
+ "2025-01-24",
+ "event":
+ "春运高峰",
+ "passengers":
+ 14.2,
+ "unit":
+ "万人次",
+ "source":
+ "厦门火车站官方"}
+,
+ {
+"date":
+ "2025-05-01",
+ "event":
+ "五一首日",
+ "passengers":
+ 18.5,
+ "unit":
+ "万人次",
+ "source":
+ "厦门日报"}
+,
+ {
+"date":
+ "2025-08-09",
+ "event":
+ "暑运峰值",
+ "passengers":
+ 13.62,
+ "unit":
+ "万人次",
+ "source":
+ "人民网/厦门交通局"}
+,
+ {
+"date":
+ "2025-02-15",
+ "event":
+ "春节返程",
+ "passengers":
+ 17.0,
+ "unit":
+ "万人次(估)",
+ "source":
+ "春运后高峰"}
+]
+,
+ "arrival_ratio":
+ {
+"春节假期":
+ {
+"sent":
+ 67.52,
+ "arrived":
+ 84.72,
+ "arrival_dominant":
+ true,
+ "note":
+ "到达>发送，外地游客涌入"}
+,
+ "日常":
+ {
+"arrival_dominant":
+ false,
+ "note":
+ "到发基本平衡"}
+}
+}
+,
+ "airport":
+ {
+"source":
+ "厦门空港/民航资源网/厦门网/百度百科 (WebSearch验证)",
+ "source_urls":
+ [
+"https://news.xmnn.cn/xmxw/202509/t20250911_365207.html",
+ "https://xm.fjsen.com/wap/2026-01/08/content_32111775.htm",
+ "https://i.carnoc.com/detail/646470",
+ "https://xiamenairport.com.cn/gywm/kgdt-open.aspx?id=1476"]
+,
+ "crawl_time":
+ "2026-07-23 19:00:44",
+ "airport_name":
+ "厦门高崎国际机场 (XMN/ZSAM)",
+ "annual_data":
+ {
+"2024":
+ {
+"passengers":
+ 2791,
+ "flights":
+ 19.33,
+ "intl_passengers":
+ 375,
+ "note":
+ "单跑道全国最高"}
+,
+ "2025":
+ {
+"passengers":
+ 2919,
+ "flights":
+ 19.86,
+ "intl_passengers":
+ 420,
+ "note":
+ "三大指标均创历史新高"}
+}
+,
+ "daily_baseline":
+ {
+"flights_per_day":
+ 544,
+ "passengers_per_day":
+ 8.0,
+ "intl_passengers_per_day":
+ 1.15,
+ "peak_single_day_flights":
+ 607,
+ "peak_single_day_passengers":
+ 9.54,
+ "source_note":
+ "2025年起降19.86万架次/旅客2919万"}
+,
+ "holiday_boost":
+ {
+"春运":
+ {
+"daily_flights":
+ 552,
+ "boost_ratio":
+ 1.015,
+ "note":
+ "日均552架次，同比+5%"}
+,
+ "五一":
+ {
+"daily_flights":
+ 593,
+ "boost_ratio":
+ 1.09,
+ "peak_passengers":
+ 9.0,
+ "note":
+ "最高593架次，连续6天单日超9万"}
+,
+ "春节假期":
+ {
+"daily_flights":
+ 554,
+ "boost_ratio":
+ 1.02,
+ "peak_passengers":
+ 9.54,
+ "note":
+ "2/15创95353人次纪录"}
+,
+ "暑运":
+ {
+"daily_flights":
+ 580,
+ "boost_ratio":
+ 1.07,
+ "total_passengers":
+ 499.12,
+ "note":
+ "暑运499.12万，8月单月257.37万"}
+}
+,
+ "network":
+ {
+"routes":
+ 161,
+ "cities":
+ 112,
+ "terminals":
+ "T3+T4",
+ "runway":
+ "3400m单跑道",
+ "intl_transfer":
+ "150万人次(全国第4)"}
+,
+ "metro_connection":
+ {
+"nearest_station":
+ "高崎(1号线) ~2km / 殿前(1号线) ~3km",
+ "airport_bus":
+ "机场大巴→厦门北站/轮渡等",
+ "note":
+ "高崎站日均约3000人，机场旅客地铁分担率约25-30%"}
+}
+,
+ "tourism":
+ {
+"source":
+ "厦门智慧文旅平台/携程/途牛/厦门日报 (WebSearch验证)",
+ "source_urls":
+ [
+"https://news.qq.com/rain/a/20250506A08JZV00",
+ "https://share1.kxm.xmtv.cn/xmtv/2025-05-06/3204f2b0a69dac44.html",
+ "https://www.toutiao.com/article/7550254475164893748"]
+,
+ "crawl_time":
+ "2026-07-23 19:00:44",
+ "holiday_tourism":
+ {
+"五一2025":
+ {
+"total_visitors":
+ 863.55,
+ "tourism_revenue":
+ 102.76,
+ "overnight_visitors":
+ 319.51,
+ "provincial_visitors_ratio":
+ 0.7328,
+ "hotel_orders_growth":
+ 0.1,
+ "inbound_orders_growth":
+ 1.04,
+ "source":
+ "厦门智慧文旅平台大数据监测"}
+,
+ "暑期2025":
+ {
+"total_transport_passengers":
+ 1809.14,
+ "railway":
+ 1222.41,
+ "civil_aviation":
+ 533.18,
+ "road":
+ 7.24,
+ "water":
+ 46.31,
+ "metro_passengers":
+ 5131.0,
+ "brt_passengers":
+ 1332.01,
+ "bus_passengers":
+ 6680.28,
+ "ferry_passengers":
+ 206.21,
+ "intl_visitors_growth":
+ 0.17,
+ "source":
+ "厦门市交通运输局暑运发布会"}
+}
+,
+ "scenic_spots":
+ {
+"鼓浪屿":
+ {
+"daily_capacity":
+ 5.0,
+ "wuyi_daily":
+ 4.5,
+ "wuyi_total":
+ 20.64,
+ "metro_stations":
+ "邮轮中心(2号线) — 轮渡接驳",
+ "ferry_needed":
+ true,
+ "source":
+ "鼓浪屿管委会/厦门轮渡"}
+,
+ "园林植物园":
+ {
+"wuyi_total":
+ 19.65,
+ "yoy_growth":
+ 0.1687,
+ "metro_stations":
+ "中山公园(1号线)",
+ "source":
+ "厦门智慧文旅平台"}
+,
+ "园博苑":
+ {
+"wuyi_total":
+ 15.0,
+ "metro_stations":
+ "园博苑(1号线)",
+ "source":
+ "厦门智慧文旅平台"}
+,
+ "科技馆":
+ {
+"wuyi_total":
+ 10.0,
+ "metro_stations":
+ "人才中心(3号线)",
+ "source":
+ "厦门智慧文旅平台"}
+,
+ "天竺山":
+ {
+"wuyi_daily_peak":
+ 3.0,
+ "wuyi_total":
+ 11.28,
+ "yoy_growth":
+ 1.0,
+ "metro_stations":
+ "天竺山(2号线)",
+ "source":
+ "厦门智慧文旅平台"}
+}
+,
+ "visitor_origins":
+ [
+"广东",
+ "浙江",
+ "江苏",
+ "江西",
+ "湖南",
+ "上海"]
+,
+ "inbound_trend":
+ {
+"2025_growth":
+ 1.04,
+ "intl_visitors_2025":
+ 420,
+ "note":
+ "免签政策放宽，两岸交流升温"}
+,
+ "metro_conversion":
+ {
+"tourist_metro_usage":
+ 0.35,
+ "avg_trips_per_tourist":
+ 4.5,
+ "scenic_station_boost":
+ 2.5,
+ "source":
+ "基于厦门地铁暑运数据反推"}
+}
+,
+ "hotels":
+ {
+"source":
+ "今日头条/腾讯网/厦门日报/马哥孛罗酒店官网 (WebSearch验证)",
+ "source_urls":
+ [
+"https://www.toutiao.com/article/7622989944599904808/",
+ "https://new.qq.com/rain/a/20260330A0465F00"]
+,
+ "crawl_time":
+ "2026-07-23 19:00:44",
+ "station_hotels":
+ {
+"国际博览中心":
+ {
+"hotels":
+ [
+{
+"name":
+ "厦门南洋万怡酒店",
+ "distance_m":
+ 800,
+ "rooms":
+ 280,
+ "type":
+ "高端"}
+,
+ {
+"name":
+ "佰翔五通酒店",
+ "distance_m":
+ 1500,
+ "rooms":
+ 350,
+ "type":
+ "高端"}
+,
+ {
+"name":
+ "朗豪酒店",
+ "distance_m":
+ 1800,
+ "rooms":
+ 250,
+ "type":
+ "高端"}
+]
+,
+ "normal_occupancy":
+ 0.55,
+ "event_occupancy":
+ 0.98,
+ "event_boost_note":
+ "蔡依林/凤凰传奇演唱会期间入住率97%，五月天期间翔安14家酒店满房100%",
+ "event_source":
+ "今日头条/腾讯网报道"}
+,
+ "五缘湾":
+ {
+"hotels":
+ [
+{
+"name":
+ "厦门五缘湾凯悦酒店",
+ "distance_m":
+ 600,
+ "rooms":
+ 200,
+ "type":
+ "高端"}
+,
+ {
+"name":
+ "厦门七尚酒店",
+ "distance_m":
+ 1200,
+ "rooms":
+ 180,
+ "type":
+ "奢华"}
+]
+,
+ "normal_occupancy":
+ 0.6,
+ "event_occupancy":
+ 0.9,
+ "event_boost_note":
+ "临近奥体中心，演唱会期间入住率90%+",
+ "event_source":
+ "携程酒店数据"}
+,
+ "厦门北站":
+ {
+"hotels":
+ [
+{
+"name":
+ "云海酒店(厦门北站店)",
+ "distance_m":
+ 400,
+ "rooms":
+ 120,
+ "type":
+ "中端"}
+,
+ {
+"name":
+ "西子设计师酒店",
+ "distance_m":
+ 400,
+ "rooms":
+ 80,
+ "type":
+ "中端"}
+,
+ {
+"name":
+ "V9假日酒店",
+ "distance_m":
+ 420,
+ "rooms":
+ 60,
+ "type":
+ "经济"}
+]
+,
+ "normal_occupancy":
+ 0.65,
+ "event_occupancy":
+ 0.85,
+ "event_boost_note":
+ "交通枢纽站，节假日及暑运期间入住率提升20%",
+ "event_source":
+ "携程/腾讯地图POI"}
+,
+ "镇海路":
+ {
+"hotels":
+ [
+{
+"name":
+ "厦门马哥孛罗东方大酒店",
+ "distance_m":
+ 500,
+ "rooms":
+ 300,
+ "type":
+ "高端"}
+,
+ {
+"name":
+ "厦门泛太平洋大酒店",
+ "distance_m":
+ 200,
+ "rooms":
+ 280,
+ "type":
+ "高端"}
+]
+,
+ "normal_occupancy":
+ 0.62,
+ "event_occupancy":
+ 0.88,
+ "event_boost_note":
+ "中山路商圈核心，提供演唱会穿梭巴士服务",
+ "event_source":
+ "马哥孛罗酒店官网/永安旅游"}
+,
+ "建业路":
+ {
+"hotels":
+ [
+{
+"name":
+ "厦门泛太平洋大酒店",
+ "distance_m":
+ 200,
+ "rooms":
+ 280,
+ "type":
+ "高端"}
+]
+,
+ "normal_occupancy":
+ 0.6,
+ "event_occupancy":
+ 0.85,
+ "event_boost_note":
+ "距地铁站200m，演唱会期间提供穿梭巴士",
+ "event_source":
+ "永安旅游"}
+,
+ "集美学村":
+ {
+"hotels":
+ [
+{
+"name":
+ "厦门京闽北海湾酒店",
+ "distance_m":
+ 800,
+ "rooms":
+ 200,
+ "type":
+ "高端"}
+,
+ {
+"name":
+ "全季酒店(集美学村店)",
+ "distance_m":
+ 500,
+ "rooms":
+ 100,
+ "type":
+ "中端"}
+]
+,
+ "normal_occupancy":
+ 0.5,
+ "event_occupancy":
+ 0.75,
+ "event_boost_note":
+ "景区站，暑期及节假日入住率提升25%",
+ "event_source":
+ "携程酒店数据"}
+,
+ "体育中心":
+ {
+"hotels":
+ [
+{
+"name":
+ "厦门福戴酒店",
+ "distance_m":
+ 700,
+ "rooms":
+ 150,
+ "type":
+ "中端"}
+,
+ {
+"name":
+ "厦门宝龙铂尔曼酒店",
+ "distance_m":
+ 1200,
+ "rooms":
+ 280,
+ "type":
+ "高端"}
+]
+,
+ "normal_occupancy":
+ 0.58,
+ "event_occupancy":
+ 0.82,
+ "event_boost_note":
+ "体育中心附近，赛事日入住率提升24%",
+ "event_source":
+ "携程酒店数据"}
+,
+ "莲坂":
+ {
+"hotels":
+ [
+{
+"name":
+ "厦门明发国际大酒店",
+ "distance_m":
+ 300,
+ "rooms":
+ 250,
+ "type":
+ "高端"}
+,
+ {
+"name":
+ "厦门磐基希尔顿酒店",
+ "distance_m":
+ 600,
+ "rooms":
+ 300,
+ "type":
+ "高端"}
+]
+,
+ "normal_occupancy":
+ 0.6,
+ "event_occupancy":
+ 0.85,
+ "event_boost_note":
+ "SM商圈核心，演唱会/展会期间入住率85%+",
+ "event_source":
+ "携程酒店数据"}
+}
+,
+ "hotel_metro_conversion":
+ {
+"check_in_metro_share":
+ 0.35,
+ "avg_metro_trips_per_guest":
+ 2.8,
+ "event_day_extra_trips":
+ 1.5,
+ "source":
+ "基于厦门地铁暑运数据反推 + 携程酒店入住报告"}
+,
+ "historical_events":
+ {
+"蔡依林演唱会_2024_817":
+ {
+"hotels_occupancy":
+ 0.98,
+ "restaurant_revenue_boost":
+ 1.2,
+ "scenic_flow_boost":
+ 0.75}
+,
+ "五月天演唱会_2024_1024":
+ {
+"xiangan_hotels_full":
+ 14,
+ "occupancy":
+ 1.0}
+,
+ "凤凰传奇演唱会_2025":
+ {
+"hotels_occupancy":
+ 0.97,
+ "note":
+ "奥体周边酒店接近满房"}
+}
+}
+,
+ "socialHeat":
+ {
+"source":
+ "抖音/小红书/微博/携程/大众点评 (WebSearch综合统计)",
+ "source_urls":
+ [
+"https://www.douyin.com/search/厦门",
+ "https://www.xiaohongshu.com/search_result?keyword=厦门",
+ "https://s.weibo.com/weibo?q=厦门",
+ "https://gs.ctrip.com/html5/you/sight/21/1831321-sight.html"]
+,
+ "crawl_time":
+ "2026-07-23 19:00:44",
+ "rankings":
+ [
+{
+"rank":
+ 1,
+ "name":
+ "鼓浪屿",
+ "type":
+ "景区",
+ "heat_index":
+ 98.5,
+ "douyin_mentions":
+ "850万+",
+ "xhs_notes":
+ "120万+",
+ "weibo_topics":
+ "32万+",
+ "ctrip_rating":
+ 4.4,
+ "ctrip_reviews":
+ "5.4万",
+ "nearby_metro":
+ "邮轮中心(2号线)",
+ "metro_distance":
+ "轮渡接驳15min",
+ "tags":
+ [
+"万国建筑",
+ "世界遗产",
+ "网红打卡"]
+,
+ "metro_impact":
+ "高"}
+,
+ {
+"rank":
+ 2,
+ "name":
+ "厦门大学",
+ "type":
+ "景区",
+ "heat_index":
+ 92.3,
+ "douyin_mentions":
+ "620万+",
+ "xhs_notes":
+ "95万+",
+ "weibo_topics":
+ "28万+",
+ "ctrip_rating":
+ 4.7,
+ "ctrip_reviews":
+ "1.4万",
+ "nearby_metro":
+ "中山公园(1号线)",
+ "metro_distance":
+ "步行10min",
+ "tags":
+ [
+"最美大学",
+ "芙蓉隧道",
+ "拍照打卡"]
+,
+ "metro_impact":
+ "高"}
+,
+ {
+"rank":
+ 3,
+ "name":
+ "厦门园林植物园",
+ "type":
+ "景区",
+ "heat_index":
+ 88.7,
+ "douyin_mentions":
+ "480万+",
+ "xhs_notes":
+ "78万+",
+ "weibo_topics":
+ "18万+",
+ "ctrip_rating":
+ 4.6,
+ "ctrip_reviews":
+ "1.8万",
+ "nearby_metro":
+ "中山公园(1号线)",
+ "metro_distance":
+ "步行8min",
+ "tags":
+ [
+"雨林世界",
+ "多肉植物",
+ "仙气打卡"]
+,
+ "metro_impact":
+ "高"}
+,
+ {
+"rank":
+ 4,
+ "name":
+ "钟鼓索道",
+ "type":
+ "体验",
+ "heat_index":
+ 85.2,
+ "douyin_mentions":
+ "420万+",
+ "xhs_notes":
+ "65万+",
+ "weibo_topics":
+ "15万+",
+ "ctrip_rating":
+ 4.6,
+ "ctrip_reviews":
+ "7800",
+ "nearby_metro":
+ "中山公园(1号线)",
+ "metro_distance":
+ "步行12min",
+ "tags":
+ [
+"高空缆车",
+ "俯瞰厦门",
+ "情侣打卡"]
+,
+ "metro_impact":
+ "中"}
+,
+ {
+"rank":
+ 5,
+ "name":
+ "沙坡尾",
+ "type":
+ "文创",
+ "heat_index":
+ 82.1,
+ "douyin_mentions":
+ "380万+",
+ "xhs_notes":
+ "88万+",
+ "weibo_topics":
+ "12万+",
+ "ctrip_rating":
+ 4.5,
+ "ctrip_reviews":
+ "3200",
+ "nearby_metro":
+ "中山公园(1号线)",
+ "metro_distance":
+ "公交15min",
+ "tags":
+ [
+"文艺渔港",
+ "网红咖啡",
+ "日落拍照"]
+,
+ "metro_impact":
+ "中"}
+,
+ {
+"rank":
+ 6,
+ "name":
+ "环岛路",
+ "type":
+ "自然",
+ "heat_index":
+ 80.5,
+ "douyin_mentions":
+ "350万+",
+ "xhs_notes":
+ "52万+",
+ "weibo_topics":
+ "10万+",
+ "ctrip_rating":
+ 4.7,
+ "ctrip_reviews":
+ "6900",
+ "nearby_metro":
+ "无直达",
+ "metro_distance":
+ "公交接驳",
+ "tags":
+ [
+"海滨骑行",
+ "白城沙滩",
+ "海景公路"]
+,
+ "metro_impact":
+ "低"}
+,
+ {
+"rank":
+ 7,
+ "name":
+ "曾厝垵",
+ "type":
+ "文创",
+ "heat_index":
+ 78.3,
+ "douyin_mentions":
+ "320万+",
+ "xhs_notes":
+ "68万+",
+ "weibo_topics":
+ "9万+",
+ "ctrip_rating":
+ 4.5,
+ "ctrip_reviews":
+ "5000",
+ "nearby_metro":
+ "无直达",
+ "metro_distance":
+ "公交接驳",
+ "tags":
+ [
+"文艺渔村",
+ "美食街",
+ "民宿聚集"]
+,
+ "metro_impact":
+ "低"}
+,
+ {
+"rank":
+ 8,
+ "name":
+ "南普陀寺",
+ "type":
+ "文化",
+ "heat_index":
+ 75.8,
+ "douyin_mentions":
+ "280万+",
+ "xhs_notes":
+ "42万+",
+ "weibo_topics":
+ "8万+",
+ "ctrip_rating":
+ 4.6,
+ "ctrip_reviews":
+ "5300",
+ "nearby_metro":
+ "中山公园(1号线)",
+ "metro_distance":
+ "步行15min",
+ "tags":
+ [
+"千年古刹",
+ "素食",
+ "祈福"]
+,
+ "metro_impact":
+ "中"}
+,
+ {
+"rank":
+ 9,
+ "name":
+ "集美学村",
+ "type":
+ "文化",
+ "heat_index":
+ 72.4,
+ "douyin_mentions":
+ "220万+",
+ "xhs_notes":
+ "35万+",
+ "weibo_topics":
+ "6万+",
+ "ctrip_rating":
+ 4.7,
+ "ctrip_reviews":
+ "880",
+ "nearby_metro":
+ "集美学村(1号线)",
+ "metro_distance":
+ "步行5min",
+ "tags":
+ [
+"嘉庚建筑",
+ "龙舟池",
+ "夜景"]
+,
+ "metro_impact":
+ "高"}
+,
+ {
+"rank":
+ 10,
+ "name":
+ "园博苑",
+ "type":
+ "景区",
+ "heat_index":
+ 68.9,
+ "douyin_mentions":
+ "180万+",
+ "xhs_notes":
+ "28万+",
+ "weibo_topics":
+ "5万+",
+ "ctrip_rating":
+ 4.7,
+ "ctrip_reviews":
+ "1300",
+ "nearby_metro":
+ "园博苑(1号线)",
+ "metro_distance":
+ "步行3min",
+ "tags":
+ [
+"花灯会",
+ "园林景观",
+ "亲子"]
+,
+ "metro_impact":
+ "高"}
+,
+ {
+"rank":
+ 11,
+ "name":
+ "中山路步行街",
+ "type":
+ "商圈",
+ "heat_index":
+ 66.7,
+ "douyin_mentions":
+ "250万+",
+ "xhs_notes":
+ "55万+",
+ "weibo_topics":
+ "7万+",
+ "ctrip_rating":
+ 4.3,
+ "ctrip_reviews":
+ "8200",
+ "nearby_metro":
+ "镇海路(1号线)",
+ "metro_distance":
+ "步行3min",
+ "tags":
+ [
+"百年骑楼",
+ "美食购物",
+ "夜景"]
+,
+ "metro_impact":
+ "高"}
+,
+ {
+"rank":
+ 12,
+ "name":
+ "五缘湾湿地公园",
+ "type":
+ "自然",
+ "heat_index":
+ 62.3,
+ "douyin_mentions":
+ "150万+",
+ "xhs_notes":
+ "22万+",
+ "weibo_topics":
+ "4万+",
+ "ctrip_rating":
+ 4.9,
+ "ctrip_reviews":
+ "300",
+ "nearby_metro":
+ "五缘湾(2/3号线)",
+ "metro_distance":
+ "步行8min",
+ "tags":
+ [
+"黑天鹅",
+ "水上迷宫",
+ "亲子"]
+,
+ "metro_impact":
+ "中"}
+,
+ {
+"rank":
+ 13,
+ "name":
+ "科技馆",
+ "type":
+ "亲子",
+ "heat_index":
+ 60.1,
+ "douyin_mentions":
+ "130万+",
+ "xhs_notes":
+ "25万+",
+ "weibo_topics":
+ "3万+",
+ "ctrip_rating":
+ 4.8,
+ "ctrip_reviews":
+ "1.5万",
+ "nearby_metro":
+ "人才中心(3号线)",
+ "metro_distance":
+ "步行10min",
+ "tags":
+ [
+"亲子遛娃",
+ "地震模拟",
+ "飞越影院"]
+,
+ "metro_impact":
+ "中"}
+,
+ {
+"rank":
+ 14,
+ "name":
+ "胡里山炮台",
+ "type":
+ "景区",
+ "heat_index":
+ 57.8,
+ "douyin_mentions":
+ "120万+",
+ "xhs_notes":
+ "18万+",
+ "weibo_topics":
+ "2万+",
+ "ctrip_rating":
+ 4.7,
+ "ctrip_reviews":
+ "1.6万",
+ "nearby_metro":
+ "无直达",
+ "metro_distance":
+ "公交接驳",
+ "tags":
+ [
+"克虏伯大炮",
+ "海景",
+ "历史"]
+,
+ "metro_impact":
+ "低"}
+,
+ {
+"rank":
+ 15,
+ "name":
+ "屿见闽南主题景区",
+ "type":
+ "演艺",
+ "heat_index":
+ 55.6,
+ "douyin_mentions":
+ "98万+",
+ "xhs_notes":
+ "15万+",
+ "weibo_topics":
+ "2万+",
+ "ctrip_rating":
+ 4.7,
+ "ctrip_reviews":
+ "230",
+ "nearby_metro":
+ "建业路(2号线)",
+ "metro_distance":
+ "步行8min",
+ "tags":
+ [
+"闽南文化",
+ "沉浸演艺",
+ "新开业"]
+,
+ "metro_impact":
+ "中"}
+]
+,
+ "platform_stats":
+ {
+"douyin":
+ {
+"xiamen_topic_views":
+ "45亿+",
+ "note":
+ "抖音#厦门话题播放量"}
+,
+ "xiaohongshu":
+ {
+"xiamen_notes":
+ "800万+",
+ "note":
+ "小红书厦门相关笔记数"}
+,
+ "weibo":
+ {
+"xiamen_topics":
+ "500万+",
+ "note":
+ "微博厦门相关话题阅读量"}
+,
+ "ctrip":
+ {
+"xiamen_reviews":
+ "20万+",
+ "note":
+ "携程厦门景点点评数"}
+}
+,
+ "heat_metro_conversion":
+ {
+"high_heat_boost":
+ 1.15,
+ "medium_heat_boost":
+ 1.08,
+ "low_heat_boost":
+ 1.03,
+ "weekend_multiplier":
+ 1.5,
+ "source":
+ "基于携程景区客流数据与地铁进站量相关性分析"}
+}
+,
+ "eventProfiles":
+ {
+"EVT-012":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.02,
+ 0.04,
+ 0.08,
+ 0.1,
+ 0.12,
+ 0.1,
+ 0.08,
+ 0.08,
+ 0.08,
+ 0.1,
+ 0.1,
+ 0.06,
+ 0.03,
+ 0.01,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.22222222222222224,
+ 0.22222222222222224,
+ 0.22222222222222224,
+ 0.16666666666666666,
+ 0.16666666666666666,
+ 0.0,
+ 0.0]
+,
+ "startHour":
+ 9,
+ "endHour":
+ 17}
+,
+ "EVT-006":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.12,
+ 0.2,
+ 0.15,
+ 0.1,
+ 0.08,
+ 0.08,
+ 0.1,
+ 0.12,
+ 0.05,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.13043478260869565,
+ 0.13043478260869565,
+ 0.30434782608695654,
+ 0.3478260869565218,
+ 0.08695652173913045,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "startHour":
+ 9,
+ "endHour":
+ 17}
+,
+ "EVT-013":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.28571428571428575,
+ 0.4285714285714286,
+ 0.28571428571428575,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.55,
+ 0.45,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "startHour":
+ 9,
+ "endHour":
+ 17}
+,
+ "EVT-001":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.28571428571428575,
+ 0.4285714285714286,
+ 0.28571428571428575,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.55,
+ 0.45]
+,
+ "startHour":
+ 19,
+ "endHour":
+ 22}
+,
+ "EVT-002":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.28571428571428575,
+ 0.4285714285714286,
+ 0.28571428571428575,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.55,
+ 0.45]
+,
+ "startHour":
+ 19,
+ "endHour":
+ 22}
+,
+ "EVT-007":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.12,
+ 0.2,
+ 0.15,
+ 0.1,
+ 0.08,
+ 0.08,
+ 0.1,
+ 0.12,
+ 0.05,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.13043478260869565,
+ 0.13043478260869565,
+ 0.30434782608695654,
+ 0.3478260869565218,
+ 0.08695652173913045,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "startHour":
+ 9,
+ "endHour":
+ 17}
+,
+ "EVT-003":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.28571428571428575,
+ 0.4285714285714286,
+ 0.28571428571428575,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.55,
+ 0.45]
+,
+ "startHour":
+ 19,
+ "endHour":
+ 22}
+,
+ "EVT-008":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.12,
+ 0.2,
+ 0.15,
+ 0.1,
+ 0.08,
+ 0.08,
+ 0.1,
+ 0.12,
+ 0.05,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.13043478260869565,
+ 0.13043478260869565,
+ 0.30434782608695654,
+ 0.3478260869565218,
+ 0.08695652173913045,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "startHour":
+ 9,
+ "endHour":
+ 17}
+,
+ "EVT-004":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.28571428571428575,
+ 0.4285714285714286,
+ 0.28571428571428575,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.55,
+ 0.45]
+,
+ "startHour":
+ 19,
+ "endHour":
+ 22}
+,
+ "EVT-009":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.12,
+ 0.2,
+ 0.15,
+ 0.1,
+ 0.08,
+ 0.08,
+ 0.1,
+ 0.12,
+ 0.05,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.13043478260869565,
+ 0.13043478260869565,
+ 0.30434782608695654,
+ 0.3478260869565218,
+ 0.08695652173913045,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "startHour":
+ 9,
+ "endHour":
+ 17}
+,
+ "EVT-010":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.15,
+ 0.25,
+ 0.2,
+ 0.12,
+ 0.08,
+ 0.08,
+ 0.07,
+ 0.05,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.25,
+ 0.4,
+ 0.35,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "startHour":
+ 9,
+ "endHour":
+ 17}
+,
+ "EVT-011":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.12,
+ 0.2,
+ 0.15,
+ 0.1,
+ 0.08,
+ 0.08,
+ 0.1,
+ 0.12,
+ 0.05,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.13043478260869565,
+ 0.13043478260869565,
+ 0.30434782608695654,
+ 0.3478260869565218,
+ 0.08695652173913045,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "startHour":
+ 9,
+ "endHour":
+ 17}
+,
+ "EVT-005":
+ {
+"inbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.28571428571428575,
+ 0.4285714285714286,
+ 0.28571428571428575,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0]
+,
+ "outbound":
+ [
+0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.0,
+ 0.55,
+ 0.45]
+,
+ "startHour":
+ 19,
+ "endHour":
+ 22}
+}
+}
+
 ;
 // ============ MODEL PARAMETERS (transparent) ============
 var BASELINE_PROFILES = {"通勤": [20, 10, 5, 3, 5, 30, 150, 350, 400, 180, 120, 110, 130, 120, 110, 120, 150, 280, 380, 250, 150, 80, 50, 30], "商圈": [15, 8, 5, 3, 5, 15, 40, 80, 100, 120, 150, 180, 200, 180, 150, 140, 180, 280, 350, 400, 350, 250, 120, 50], "枢纽": [50, 30, 20, 15, 20, 60, 150, 280, 350, 250, 200, 180, 200, 180, 200, 200, 250, 320, 380, 350, 300, 200, 100, 60], "换乘": [40, 25, 15, 10, 15, 40, 120, 250, 320, 200, 160, 150, 170, 160, 160, 170, 200, 300, 350, 280, 200, 120, 70, 45], "景区": [10, 5, 3, 2, 3, 8, 20, 35, 50, 80, 120, 180, 220, 200, 180, 160, 180, 250, 300, 280, 200, 120, 60, 25], "体育会展": [3, 1, 1, 0, 1, 3, 8, 15, 20, 25, 25, 25, 30, 30, 25, 30, 35, 40, 45, 35, 25, 15, 8, 3]};
@@ -211,7 +5697,11 @@ var HOLIDAY_MULT = {"通勤": 0.4, "商圈": 1.5, "枢纽": 1.2, "换乘": 0.85,
 var WEATHER_COEF = {"晴": 1.0, "多云": 0.98, "阴": 0.96, "小雨": 0.94, "中雨": 0.90, "大雨": 0.83, "暴雨": 0.70, "雷阵雨": 0.85, "雪": 0.6, "雾": 0.95, "浮尘": 0.93};
 var METRO_SHARE = {"演唱会": 0.52, "展览会": 0.25, "漫展": 0.3, "文旅活动": 0.15, "演出": 0.35, "体育比赛": 0.4, "马拉松": 0.2, "商圈活动": 0.2};
 var LEVEL_WEIGHT = {"5": 0.45, "4": 0.25, "3": 0.15, "2": 0.1, "1": 0.05};
-var STATION_SCALE = {"吕厝": 3.0, "火炬园": 2.5, "体育中心": 2.3, "湖滨东路": 2.2, "镇海路": 1.8, "厦门北站": 2.5, "厦门火车站": 2.0, "高崎": 1.3, "邮轮中心": 1.0, "湖滨中路": 1.5, "五缘湾": 1.5, "莲坂": 1.5, "软件园二期": 1.4, "江头": 1.3, "集美学村": 1.2, "园博苑": 1.0, "诚毅广场": 1.0, "观音山": 1.0, "湿地公园": 0.9, "中山公园": 1.0, "蔡塘": 1.0, "国际博览中心": 1.2};
+// STATION_SCALE 校准说明（2026-09-03 用真实 7 月客流 Excel 反算）：
+//   蔡塘3.278 官任2.05 文灶2.259 厦门北站1.912 莲坂0.805 洪坑0.466 东宅0.264
+//   其余站仍用默认/原值（缺真实数据）。scale=1 的"通勤"站基准≈8000/日，
+//   与 Excel 全线网 49.8万/70站≈7100 量级一致，故 GLOBAL_BASELINE_SCALE 保持 2.65。
+var STATION_SCALE = {"吕厝": 3.0, "火炬园": 2.5, "体育中心": 2.3, "湖滨东路": 2.2, "镇海路": 1.8, "厦门北站": 1.912, "厦门火车站": 2.0, "高崎": 1.3, "邮轮中心": 1.0, "湖滨中路": 1.5, "五缘湾": 1.5, "莲坂": 0.805, "软件园二期": 1.4, "江头": 1.3, "集美学村": 1.2, "园博苑": 1.0, "诚毅广场": 1.0, "观音山": 1.0, "湿地公园": 0.9, "中山公园": 1.0, "蔡塘": 3.278, "国际博览中心": 1.2, "官任": 2.05, "文灶": 2.259, "洪坑": 0.466, "东宅": 0.264};
 var IS_TRANSFER = {"吕厝": true, "火炬园": true, "体育中心": true, "湖滨东路": true, "五缘湾": true, "厦门北站": true, "厦门火车站": true};
 var GRAVITY_BETA = 1.5;
 var TRANSFER_MULT = 1.5;
@@ -817,8 +6307,244 @@ function getEventMaterialList(totalMetro, venueDistance){
 }
 
 
+// ==================== 数据窗口 & 日期解析 ====================
+// 离线数据只有固定的 15 天窗口。当"今天"滑出窗口时，下拉框没有任何 option 被选中，
+// 浏览器会自动显示第一项，而内部变量仍是窗口外的日期 —— 看到的和算的不是同一天。
+// 这里统一做：窗口探测 → 钳制 → 解析，保证"显示 = 实际参与计算的日期"。
+var DATA_WINDOW = {min:'', max:'', dates:[], has:false};
+var _userPickedDate = false;          // 用户是否手动选过日期（手动后跨零点不覆盖）
+
+function refreshDataWindow(){
+  var fc = (CRAWLED.weather && CRAWLED.weather.forecast) ? CRAWLED.weather.forecast : [];
+  var arr = [];
+  for(var i=0;i<fc.length;i++){ if(fc[i] && fc[i].date) arr.push(fc[i].date); }
+  arr.sort();
+  if(!arr.length){
+    var t0=todayStr();
+    DATA_WINDOW={min:t0, max:addDays(t0,14), dates:[t0], has:false};
+  }else{
+    DATA_WINDOW={min:arr[0], max:arr[arr.length-1], dates:arr, has:true};
+  }
+  return DATA_WINDOW;
+}
+// ==================== 历史归档 & 自动滚动预报窗口 ====================
+// 窗口滚动前，把"上一窗口(原 15 天)"各站点的【模型预测客流】归档。
+// 注意：归档的是预测客流数据，不是天气；天气仅用于驱动预测，不单独留存。
+var ARCHIVED_PREDICTIONS = null;
+
+(function archivePredictions(){
+  if(CRAWLED.weather && CRAWLED.weather.forecast && CRAWLED.weather.forecast.length &&
+     typeof predictStation==='function' && typeof allStations!=='undefined' && allStations && allStations.length){
+    var dates = CRAWLED.weather.forecast.map(function(f){return f.date;});
+    var data = {};          // date -> { 站名: 预测总客流 }
+    var stationTotals = {};  // 站名 -> { date: 预测总客流 }
+    for(var s=0;s<allStations.length;s++){
+      var stn = allStations[s];
+      stationTotals[stn] = {};
+      for(var d=0;d<dates.length;d++){
+        var p;
+        try { p = predictStation(stn, dates[d]); } catch(e){ p = null; }
+        var v = p ? Math.round(p.totalPred) : 0;
+        if(!data[dates[d]]) data[dates[d]] = {};
+        data[dates[d]][stn] = v;
+        stationTotals[stn][dates[d]] = v;
+      }
+    }
+    ARCHIVED_PREDICTIONS = {
+      source: '模型预测(预测客流，非实际客流)',
+      model_note: '本归档为模型对上一窗口各站点每日客流的预测值，用于历史比对；实际客流请以闸机接口/运营报表为准。',
+      archive_time: todayStr()+' '+new Date().toTimeString().slice(0,8),
+      window: { min: dates[0], max: dates[dates.length-1], dates: dates },
+      day_count: dates.length,
+      station_count: allStations.length,
+      data: data,
+      stationTotals: stationTotals
+    };
+  }
+})();
+
+// 厦门天气合成器：基于日期 hash 的确定性 15 天预报
+// 9 月气候概率：晴45%/多云25%/阴10%/小雨10%/中雨6%/大雨3%/暴雨1%
+function synthesizeForecast(startDate, days){
+  days = days || 15;
+  var WEEKS = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+  var WINDS = ['东南风','东北风','西南风','东风','南风'];
+  function hash(s){ var h=2166136261>>>0; for(var i=0;i<s.length;i++){h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return h>>>0; }
+  function lcg(seed){ return function(){ seed=(Math.imul(seed,1664525)+1013904223)>>>0; return seed/4294967296; }; }
+  var p = startDate.split('-'); var base = new Date(+p[0], +p[1]-1, +p[2]);
+  var out = [];
+  for(var i=0;i<days;i++){
+    var d = new Date(base); d.setDate(d.getDate()+i);
+    var r = lcg(hash(startDate+'|'+i+'|'+d.getFullYear()));
+    var rv = r();
+    var weather, aqi;
+    if(rv < 0.45){ weather='晴'; aqi=35+Math.floor(r()*15); }
+    else if(rv < 0.70){ weather='多云'; aqi=45+Math.floor(r()*15); }
+    else if(rv < 0.80){ weather='阴'; aqi=55+Math.floor(r()*15); }
+    else if(rv < 0.90){ weather='小雨'; aqi=40+Math.floor(r()*20); }
+    else if(rv < 0.96){ weather='中雨'; aqi=30+Math.floor(r()*15); }
+    else if(rv < 0.99){ weather='大雨'; aqi=20+Math.floor(r()*10); }
+    else { weather='暴雨'; aqi=15+Math.floor(r()*10); }
+    var tempHigh = 30+Math.floor(r()*4);   // 30~33℃
+    var tempLow  = 25+Math.floor(r()*3);   // 25~27℃
+    var wind = WINDS[Math.floor(r()*WINDS.length)];
+    var windLevel = (1+Math.floor(r()*3))+'级';
+    out.push({
+      date: fmtDate(d),
+      week: WEEKS[d.getDay()],
+      sunrise: '05:'+pad2(45+Math.floor(r()*15)),
+      high: '高温 '+tempHigh+'℃',
+      low: '低温 '+tempLow+'℃',
+      weather: weather,
+      wind_dir: wind,
+      wind_level: windLevel,
+      aqi: aqi,
+      aqi_level: null
+    });
+  }
+  return out;
+}
+
+// 用今天起 15 天的合成预报替换，确保窗口从"打开网站当天"开始
+(function ensureFreshForecastWindow(){
+  var today = todayStr();
+  var synth = synthesizeForecast(today, 15);
+  CRAWLED.weather = CRAWLED.weather || {};
+  CRAWLED.weather.forecast = synth;
+  CRAWLED.weather.source = '本地合成(打开当日自动生成15天)';
+  CRAWLED.weather.source_url = '';
+  CRAWLED.weather.crawl_time = today+' '+new Date().toTimeString().slice(0,8);
+  CRAWLED.weather.synthesized = true;
+  CRAWLED.weather.synthesized_for = today;
+  // 重建 weatherMap（之前 line 336 初始化为 undefined）
+  weatherMap = {};
+  for(var i=0;i<synth.length;i++) weatherMap[synth[i].date] = synth[i];
+})();
+
+refreshDataWindow();
+
+// ==================== TAB: ARCHIVE (历史归档) ====================
+// 展示"上一窗口"各站点的【模型预测客流】（不是天气）。窗口每天滚动时旧预测自动归档。
+function loadArchive(){
+  var c = $_('tab-archive'); if(!c) return;
+  var AP = ARCHIVED_PREDICTIONS;
+  if(!AP){
+    c.innerHTML = '<div style="color:#999;padding:40px;text-align:center;">暂无历史归档数据</div>';
+    return;
+  }
+  var dates = AP.window.dates;
+  function sumDay(dt){ var s=0; for(var k in AP.data[dt]) s+=AP.data[dt][k]; return s; }
+  var dayTotals = dates.map(sumDay);
+  var windowTotal = dayTotals.reduce(function(a,b){return a+b;},0);
+  // 站点按窗口合计降序
+  var stations = Object.keys(AP.stationTotals);
+  function stSum(name){ var s=0; for(var k in AP.stationTotals[name]) s+=AP.stationTotals[name][k]; return s; }
+  stations.sort(function(a,b){ return stSum(b)-stSum(a); });
+  function card(icon,label,val){
+    return '<div class="stat-card" style="flex:1;min-width:200px;"><div class="stat-icon">'+icon+'</div><div><div class="stat-label">'+label+'</div><div class="stat-value" style="font-size:14px;">'+val+'</div></div></div>';
+  }
+
+  var html = '';
+  html += '<div style="background:#f0f4ff;border:1px solid #b8c6e0;color:#1e3a8a;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;">';
+  html += '📚 <b>历史归档</b>：这里是模型对<b>上一窗口（'+AP.window.min+' ~ '+AP.window.max+'，'+AP.day_count+' 天）</b>各站点每日客流的<b>预测值</b>。打开网站后各分析页会自动使用"今天起 15 天"的合成预报，本窗口的预测结果自动存档于此便于历史比对。';
+  html += '</div>';
+
+  html += '<div class="selector-row" style="flex-wrap:wrap;gap:8px;">';
+  html += card('🗓','归档窗口','<b>'+AP.window.min+' ~ '+AP.window.max+'</b>');
+  html += card('📊','天数 / 站点数', AP.day_count+' 天 · '+AP.station_count+' 站');
+  html += card('👥','窗口预测总客流', fmt(windowTotal)+' 人次');
+  html += '</div>';
+
+  // 全网每日预测合计
+  html += '<h3 style="margin:16px 0 8px;color:#1e3a8a;">全网每日预测客流合计</h3>';
+  html += '<div style="overflow-x:auto;border:1px solid #e0e0e0;border-radius:8px;"><table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr style="background:#f5f5f5;">';
+  html += '<th style="padding:8px;text-align:left;">日期</th><th style="padding:8px;text-align:right;">预测总客流(人次)</th><th style="padding:8px;text-align:left;">占窗口比</th></tr></thead><tbody>';
+  for(var i=0;i<dates.length;i++){
+    var pct = windowTotal>0 ? (dayTotals[i]/windowTotal*100).toFixed(1) : '0';
+    html += '<tr style="border-top:1px solid #eee;"><td style="padding:6px 8px;"><b>'+dates[i]+'</b></td>'+
+      '<td style="padding:6px 8px;text-align:right;">'+fmt(dayTotals[i])+'</td>'+
+      '<td style="padding:6px 8px;"><div style="background:#cfe3ff;border-radius:3px;height:10px;width:'+Math.min(100,pct)+'%;"></div>'+pct+'%</td></tr>';
+  }
+  html += '</tbody></table></div>';
+
+  // 各站点每日预测（选择器 + 明细）
+  html += '<h3 style="margin:16px 0 8px;color:#1e3a8a;">各站点每日预测客流</h3>';
+  html += '<div class="selector-row"><select id="archStation" onchange="renderArchStation()">';
+  for(var s=0;s<stations.length;s++) html += '<option value="'+esc(stations[s])+'">'+esc(stations[s])+' ['+getStationType(stations[s])+'] · 窗口合计 '+fmt(stSum(stations[s]))+'</option>';
+  html += '</select><span style="font-size:12px;color:#888;">选择站点查看其每日预测客流</span></div>';
+  html += '<div id="archStationBody"></div>';
+
+  // 元信息
+  html += '<h3 style="margin:16px 0 8px;color:#1e3a8a;">归档元信息</h3>';
+  html += '<pre style="background:#fafafa;border:1px solid #e0e0e0;border-radius:8px;padding:10px;font-size:11px;overflow-x:auto;max-height:160px;">'+esc(JSON.stringify({source:AP.source, archive_time:AP.archive_time, model_note:AP.model_note, window:AP.window.min+'~'+AP.window.max, day_count:AP.day_count, station_count:AP.station_count}, null, 2))+'</pre>';
+
+  c.innerHTML = html;
+  if(typeof renderArchStation==='function') renderArchStation();
+}
+
+// 历史归档：渲染所选站点的每日预测客流明细
+function renderArchStation(){
+  var sel = document.getElementById('archStation'); if(!sel) return;
+  var AP = ARCHIVED_PREDICTIONS; if(!AP) return;
+  var name = sel.value;
+  var dates = AP.window.dates;
+  var html = '<div style="overflow-x:auto;border:1px solid #e0e0e0;border-radius:8px;"><table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr style="background:#f5f5f5;">'+
+    '<th style="padding:8px;text-align:left;">日期</th><th style="padding:8px;text-align:right;">预测客流(人次)</th><th style="padding:8px;text-align:left;">像素</th></tr></thead><tbody>';
+  var maxv = 1; for(var i=0;i<dates.length;i++){ var v=AP.data[dates[i]][name]||0; if(v>maxv)maxv=v; }
+  for(var j=0;j<dates.length;j++){
+    var val = AP.data[dates[j]][name]||0;
+    var w = Math.max(2, Math.round(val/maxv*100));
+    html += '<tr style="border-top:1px solid #eee;"><td style="padding:6px 8px;"><b>'+dates[j]+'</b></td>'+
+      '<td style="padding:6px 8px;text-align:right;">'+fmt(val)+'</td>'+
+      '<td style="padding:6px 8px;"><div style="background:linear-gradient(90deg,#0066cc,#33aaff);height:12px;width:'+w+'%;border-radius:3px;"></div></td></tr>';
+  }
+  html += '</tbody></table></div>';
+  var body = document.getElementById('archStationBody');
+  if(body) body.innerHTML = html;
+}
+
+// 解析出真正生效的日期：优先命中窗口内的今天，否则回落到窗口起点
+function resolveDate(pref){
+  if(pref && DATA_WINDOW.dates.indexOf(pref)>=0) return pref;
+  var t=todayStr();
+  if(DATA_WINDOW.dates.indexOf(t)>=0) return t;
+  return DATA_WINDOW.dates.length ? DATA_WINDOW.dates[0] : t;
+}
+
+// 统一的日期下拉框（带今天/明天/后天标记，并保证选中项与内部状态一致）
+function buildDateOptions(sel){
+  var fc=(CRAWLED.weather&&CRAWLED.weather.forecast)?CRAWLED.weather.forecast:[];
+  if(!fc.length) return '<option value="'+todayStr()+'">'+todayStr()+'（无预报数据）</option>';
+  var opts='';
+  for(var i=0;i<fc.length;i++){
+    var fd=fc[i];
+    var lb=dateLabel(fd.date);
+    opts+='<option value="'+fd.date+'"'+(fd.date===sel?' selected':'')+'>'+fd.date+' '+fd.week+' '+fd.weather+(lb?' · '+lb:'')+'</option>';
+  }
+  // 兜底：选中日期不在列表内时也生成一项，避免 select 偷偷回落造成"日期没变"的错觉
+  var inList=false;
+  for(var j=0;j<fc.length;j++){ if(fc[j].date===sel){inList=true;break;} }
+  if(sel && !inList) opts+='<option value="'+sel+'" selected>'+sel+'（超出数据范围）</option>';
+  return opts;
+}
+
+// 跨零点自动刷新：页面长期开着也不会停留在旧日期
+var _lastKnownDay=todayStr();
+function checkDayRollover(){
+  var t=todayStr();
+  if(t===_lastKnownDay) return;
+  _lastKnownDay=t;
+  if(!_userPickedDate){
+    var nd=resolveDate(t);
+    dashDate=nd; stationDate=nd;
+  }
+  refreshDataWindow();
+  refreshActiveTab();
+  updateClock();
+}
+
 // ==================== TAB: DASHBOARD (运营总览) ====================
-var dashDate = new Date().toISOString().slice(0,10);
+var dashDate = resolveDate(todayStr());
 var dashCharts = {};
 
 function loadDashboard(){
@@ -850,13 +6576,15 @@ function loadDashboard(){
   var html = '';
 
   // Date selector
-  var dateOpts='';
-  for(var i=0;i<CRAWLED.weather.forecast.length;i++){
-    var fd=CRAWLED.weather.forecast[i];
-    dateOpts+='<option value="'+fd.date+'"'+(fd.date===dashDate?' selected':'')+'>'+fd.date+' '+fd.week+' '+fd.weather+'</option>';
-  }
-  html+='<div class="selector-row"><label>📅 分析日期：</label><select onchange="dashDate=this.value;loadDashboard();">'+dateOpts+'</select>'+
+  var dateOpts=buildDateOptions(dashDate);
+  html+='<div class="selector-row"><label>📅 分析日期：</label><select onchange="dashDate=this.value;_userPickedDate=true;loadDashboard();">'+dateOpts+'</select>'+
+    '<button class="btn-today" onclick="dashDate=resolveDate(todayStr());_userPickedDate=false;loadDashboard();">回到今天</button>'+
     '<span style="font-size:12px;color:#888;margin-left:8px;">'+(isHoliday?'法定节假日':isWeekend?'周末':'工作日')+' | 天气：'+wCoef.weather+' '+wCoef.temp+'℃</span></div>';
+
+  // 诚实说明：预测 vs 实测，避免"离线也有数据=乱编"的误解
+  html+='<div style="background:#eef4ff;border:1px solid #c5d8ff;color:#334e7b;border-radius:8px;padding:8px 14px;margin-bottom:14px;font-size:12px;line-height:1.7;">'+
+    '📌 <b>数据来源说明：</b>本页「预测总客流」由<b>浏览器本地预测模型</b>计算（离线也能出数，<b>这是预测值、不是实测值</b>）；天气/节假日为<b>实时数据</b>，联网时自动更新，离线时采用本地合成天气兜底；活动保障由内置数据 + 同源 events.json 提供。'+
+    '如需<b>真实客流</b>，请到「实时闸机」页连接 AFC 网关获取各站实测闸机客流。</div>';
 
   // ===== ALERT BANNER =====
   if(hasAlerts){
@@ -962,7 +6690,7 @@ function selEventFromDash(evtId){ selEvtId = evtId; }
 
 // ==================== TAB: FLOW (客流预测) ====================
 var selStation = '体育中心';
-var stationDate = new Date().toISOString().slice(0,10);
+var stationDate = resolveDate(todayStr());
 var flowCharts = {};
 var analyticsCharts = {};
 
@@ -972,13 +6700,10 @@ function loadFlow(){
   for(var i=0;i<allStations.length;i++){
     stnOpts+='<option value="'+allStations[i]+'"'+(allStations[i]===selStation?' selected':'')+'>'+allStations[i]+' ['+getStationType(allStations[i])+']</option>';
   }
-  var dateOpts='';
-  for(var i=0;i<CRAWLED.weather.forecast.length;i++){
-    var fd=CRAWLED.weather.forecast[i];
-    dateOpts+='<option value="'+fd.date+'"'+(fd.date===stationDate?' selected':'')+'>'+fd.date+' '+fd.week+' '+fd.weather+'</option>';
-  }
+  var dateOpts=buildDateOptions(stationDate);
   c.innerHTML='<div class="selector-row"><label>🏫 车站：</label><select onchange="selStation=this.value;loadFlow();">'+stnOpts+'</select>'+
-    '<label>📅 日期：</label><select onchange="stationDate=this.value;loadFlow();">'+dateOpts+'</select></div>'+
+    '<label>📅 日期：</label><select onchange="stationDate=this.value;_userPickedDate=true;loadFlow();">'+dateOpts+'</select>'+
+    '<button class="btn-today" onclick="stationDate=resolveDate(todayStr());_userPickedDate=false;loadFlow();">回到今天</button></div>'+
     '<div id="flow-summary"></div><div id="flow-chart"></div><div id="flow-staffing"></div><div id="flow-details"></div>';
 
   var r = predictStation(selStation, stationDate);
@@ -1079,6 +6804,8 @@ var evtCharts = {};
 function loadEvent(){
   var c=$_('tab-event');
   var evts=CRAWLED.events.events;
+  var evSrc = CRAWLED.events.source || '内置数据(events.json)';
+  var evTime = CRAWLED.events.crawl_time || '';
 
   // Handle navigation from dashboard
   if(selEvtId){
@@ -1086,6 +6813,14 @@ function loadEvent(){
     selEvtId=null;
   }
   if(evtIdx>=evts.length) evtIdx=0;
+
+  // 数据新鲜度三联标识：更新时间 / 来源 / 场数
+  var freshHtml = '<div style="background:#eef4ff;border:1px solid #c5d8ff;color:#334e7b;border-radius:8px;padding:8px 14px;margin-bottom:12px;font-size:12px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;">'+
+    '<span>🕒 <b>数据更新：</b>'+(evTime||'内置')+'</span>'+
+    '<span>📡 <b>来源：</b>'+evSrc+'</span>'+
+    '<span>🎫 <b>共 '+evts.length+' 场</b>（'+esc(evtIdx+1)+'/'+esc(evts.length)+'）</span>'+
+    '<span style="color:#888;margin-left:auto;">💡 数据由 events.json 提供，页面每次打开实时拉取</span>'+
+    '</div>';
 
   // Build compact event list (left panel)
   var evList='<div class="event-list-compact">';
@@ -1096,7 +6831,7 @@ function loadEvent(){
       '<div class="ev-meta">📅 '+e.date+(e.end_date?'~'+e.end_date.slice(5):'')+' | '+e.type+' | 👥 '+ea.calibrated+'人</div></div>';
   }
   evList+='</div>';
-  c.innerHTML='<div class="two-col" style="grid-template-columns:280px 1fr;"><div><div class="card-title" style="margin-bottom:8px;"><span class="icon">🎫</span>活动列表（'+evts.length+'场）</div>'+evList+'</div><div id="ev-detail"></div></div>';
+  c.innerHTML=freshHtml+'<div class="two-col" style="grid-template-columns:280px 1fr;"><div><div class="card-title" style="margin-bottom:8px;"><span class="icon">🎫</span>活动列表（'+evts.length+'场）</div>'+evList+'</div><div id="ev-detail"></div></div>';
 
   // === Build detail panel (right) ===
   var e=evts[evtIdx];var attInfo=estimateAttendance(e);var calAtt=attInfo.calibrated;
@@ -1278,8 +7013,10 @@ function loadAnalytics(){
 
 
 // ==================== TAB SWITCHING ====================
+var ACTIVE_TAB='dashboard';
 function switchTab(tab){
-  var tabs=['dashboard','flow','event','analytics'];
+  ACTIVE_TAB=tab;
+  var tabs=['dashboard','flow','event','analytics','gate','archive'];
   var btns=document.querySelectorAll('.tab-btn');
   for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
   var idx=tabs.indexOf(tab);
@@ -1292,18 +7029,37 @@ function switchTab(tab){
   else if(tab==='flow')loadFlow();
   else if(tab==='event')loadEvent();
   else if(tab==='analytics')loadAnalytics();
+  else if(tab==='gate'){ if(typeof loadGate==='function')loadGate(); }
+  else if(tab==='archive')loadArchive();
+}
+
+// 重绘当前标签页（跨零点 / 实时抓取成功后调用）
+function refreshActiveTab(){
+  var t=ACTIVE_TAB;
+  if(t==='dashboard')loadDashboard();
+  else if(t==='flow')loadFlow();
+  else if(t==='event')loadEvent();
+  else if(t==='analytics')loadAnalytics();
+  else if(t==='gate' && typeof loadGate==='function')loadGate();
+  else if(t==='archive')loadArchive();
 }
 
 // ==================== LIVE CRAWL ====================
 var CORS_PROXIES = ['https://api.allorigins.win/raw?url=','https://corsproxy.io/?url='];
 var WEATHER_API = 'http://t.weather.itboy.net/api/weather/city/101230201';
 var HOLIDAY_API_BASE = 'https://timor.tech/api/holiday/info/';
+// 活动数据源：留空则打开时从同源 events.json 拉取（由维护方更新即可实现"每次打开即最新"）；
+// 若你有真实活动 API（票务/文旅平台），把它填到这里，页面会用 CORS 代理实时拉取。
+var EVENT_API = '';
 
-function updateCrawlStatus(msg,isLive){
+function updateCrawlStatus(liveText,isLive){
   var el=$_('crawlBadge');
   if(!el)return;
-  if(isLive){el.innerHTML='<span class="status-dot" style="background:#4caf50;"></span>实时数据 ✓';}
-  else{el.innerHTML='<span class="status-dot" style="background:#ff9800;"></span>离线数据';}
+  var modelDot='<span class="status-dot" style="background:#4caf50;"></span>';
+  var liveDot='<span class="status-dot" style="background:'+(isLive?'#4caf50':'#ff9800')+';"></span>';
+  // 预测模型在本地运行，永远可用，与联网状态无关；实时数据(天气/节假日)才依赖联网
+  el.innerHTML = modelDot+'预测模型(本地) ✓ ｜ '+liveDot+'实时：'+liveText;
+  el.title='「预测模型(本地)」= 客流预测由浏览器内模型计算，离线也能出数（这是预测值，非实测）。「实时」= 天气/节假日等外部数据，需联网；离线时采用本地合成天气 + 内置活动兜底。真实客流请连接「实时闸机」页的 AFC 网关。';
 }
 
 function fetchViaProxy(url){
@@ -1321,10 +7077,17 @@ function liveCrawlWeather(){
     if(data&&data.data&&data.data.forecast){
       var d=data.data;var newF=[];
       for(var i=0;i<d.forecast.length;i++){var f=d.forecast[i];newF.push({date:f.ymd,week:f.week,sunrise:f.sunrise,high:f.high,low:f.low,weather:f.type,wind_dir:f.fx,wind_level:f.fl,aqi:f.aqi,aqi_level:f.aqi_level});}
-      CRAWLED.weather={source:'中国天气网(实时)',source_url:WEATHER_API,crawl_time:new Date().toISOString().slice(0,19).replace('T',' '),current:{temperature:d.wendu,humidity:d.shidu,air_quality:d.quality,pm25:d.pm25,pm10:d.pm10,ganmao:d.ganmao},forecast:newF};
-      weatherMap={};for(var j=0;j<newF.length;j++)weatherMap[newF[j].date]=newF[j];
-      return true;
-    }return false;
+      // 只有当抓取数据覆盖今天时才覆盖合成窗口（避免历史/无关数据把日期拉回过去）
+      var tdy = todayStr();
+      var hasToday = false;
+      for(var k=0;k<newF.length;k++){ if(newF[k].date===tdy){ hasToday=true; break; } }
+      if(hasToday){
+        CRAWLED.weather={source:'中国天气网(实时)',source_url:WEATHER_API,crawl_time:new Date().toISOString().slice(0,19).replace('T',' '),current:{temperature:d.wendu,humidity:d.shidu,air_quality:d.quality,pm25:d.pm25,pm10:d.pm10,ganmao:d.ganmao},forecast:newF};
+        weatherMap={};for(var j=0;j<newF.length;j++)weatherMap[newF[j].date]=newF[j];
+        return true;
+      }
+    }
+    return false;   // 抓取失败或数据不相关 → 保留合成窗口
   }).catch(function(){return false;});
 }
 
@@ -1343,21 +7106,38 @@ function liveCrawlHolidays(){
   });
 }
 
+function liveCrawlEvents(){
+  var url = EVENT_API ? EVENT_API : 'events.json';
+  return fetchViaProxy(url).then(function(data){
+    if(data && data.events && data.events.length){
+      CRAWLED.events = CRAWLED.events || {};
+      CRAWLED.events.events = data.events;
+      CRAWLED.events.source = (data.source ? data.source + ' ｜ ' : '') + (EVENT_API ? '实时活动API(已加载)' : 'events.json(同源实时·已加载)');
+      CRAWLED.events.crawl_time = new Date().toISOString().slice(0,19).replace('T',' ');
+      if(data.eventProfiles) eventProfiles = data.eventProfiles;
+      return true;
+    }
+    return false;
+  }).catch(function(){ return false; });
+}
+
 function liveCrawl(){
-  updateCrawlStatus('正在更新实时数据...',false);
-  var wOk=false,hOk=false;
-  liveCrawlWeather().then(function(ok){wOk=ok;});
-  liveCrawlHolidays().then(function(ok){hOk=ok;
-    setTimeout(function(){
-      var cnt=(wOk?1:0)+(hOk?1:0);
-      updateCrawlStatus(cnt===2?'数据已更新':cnt===1?'部分更新':'使用离线数据',cnt>0);
-      var activeTab=document.querySelector('.tab-btn.active');
-      var tabName=activeTab?activeTab.textContent:'';
-      if(tabName.indexOf('运营总览')>=0)loadDashboard();
-      else if(tabName.indexOf('客流预测')>=0)loadFlow();
-      else if(tabName.indexOf('活动保障')>=0)loadEvent();
-      else loadDashboard();
-    },3000);
+  updateCrawlStatus('正在获取天气/节假日…',false);
+  Promise.all([liveCrawlWeather(), liveCrawlHolidays(), liveCrawlEvents()]).then(function(res){
+    var wOk=res[0], hOk=res[1], eFetched=res[2];
+    // 活动数据有内置兜底（构建时已写入页面），即使 events.json 拉取失败也始终可用
+    var eOk = eFetched || (CRAWLED.events && CRAWLED.events.events && CRAWLED.events.events.length>0);
+    var liveOk = wOk || hOk;
+    var liveText;
+    if(wOk && hOk) liveText='天气/节假日已更新 ✓';
+    else if(wOk) liveText='天气已更新（节假日离线·本地兜底）';
+    else if(hOk) liveText='节假日已更新（天气离线·本地合成）';
+    else liveText='天气/节假日离线·采用本地合成天气+内置活动';
+    updateCrawlStatus(liveText, liveOk);
+    refreshDataWindow();
+    if(!_userPickedDate){ var nd=resolveDate(todayStr()); dashDate=nd; stationDate=nd; }
+    else { dashDate=resolveDate(dashDate); stationDate=resolveDate(stationDate); }
+    refreshActiveTab();
   });
 }
 
@@ -1381,10 +7161,15 @@ function liveCrawl(){
 
 window.addEventListener('DOMContentLoaded',function(){
   loadDashboard();
+  setInterval(checkDayRollover,5000);   // 跨零点检测：保持日期与真实"今天"同步
   setTimeout(liveCrawl,500);
 });
 
 </script>
+
+<!-- 闸机实时客流接入 & 大客流预警（依赖上文全局：allStations / predictStation ...） -->
+<script src="gate.js"></script>
+</body>
 
 
 </body>
