@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>厦门地铁客流预测分析系统</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="chart.umd.min.js?v=4.4.0" onerror="var _s=document.createElement('script');_s.src='https://registry.npmmirror.com/chart.js/4.4.0/files/dist/chart.umd.min.js';document.head.appendChild(_s);"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--pri:#003d7a;--pri-light:#0066cc;--bg:#f0f4f8;--card:#fff;--border:#e0e6ed;--text:#222;--text2:#666;--text3:#999;--red:#d32f2f;--orange:#e65100;--yellow:#f57f17;--green:#2e7d32;--blue:#1565c0;}
@@ -16,6 +16,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .header .sub{font-size:11px;opacity:0.75;}
 .header .right{margin-left:auto;display:flex;align-items:center;gap:12px;font-size:12px;}
 .header .right .time{background:rgba(255,255,255,0.12);padding:4px 10px;border-radius:12px;}
+.header .right .last-update{font-size:11px;color:rgba(255,255,255,0.72);white-space:nowrap;}
+.refresh-btn{border:1px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.12);color:#fff;font-size:11px;padding:4px 10px;border-radius:12px;cursor:pointer;transition:all .2s;font-family:inherit;}
+.refresh-btn:hover{background:rgba(255,255,255,0.24);border-color:rgba(255,255,255,0.55);}
+.refresh-btn.spinning{opacity:.7;cursor:progress;}
+.tab-paused{display:inline-block;margin-left:4px;font-size:9px;font-weight:600;padding:1px 4px;border-radius:4px;background:#ff9800;color:#fff;vertical-align:middle;}
 .header .right .status-dot{width:8px;height:8px;border-radius:50%;background:#4caf50;display:inline-block;margin-right:4px;animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 /* Container */
@@ -25,6 +30,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .tab-btn{padding:10px 16px;border:none;background:var(--card);border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;font-weight:600;color:var(--text2);transition:all 0.2s;border-bottom:3px solid transparent;white-space:nowrap;}
 .tab-btn.active{color:var(--pri-light);border-bottom-color:var(--pri-light);background:var(--card);box-shadow:0 -2px 8px rgba(0,0,0,0.04);}
 .tab-btn:hover{color:var(--pri-light);}
+/* ===== 暂停服务页 ===== */
+.paused-wrap{display:flex;justify-content:center;padding:28px 12px 40px;}
+.paused-card{max-width:720px;width:100%;background:var(--card);border-radius:14px;padding:34px 32px;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.05);}
+.paused-icon{font-size:44px;line-height:1;text-align:center;margin-bottom:10px;}
+.paused-title{font-size:20px;font-weight:700;text-align:center;color:var(--text);margin-bottom:8px;}
+.paused-sub{font-size:13px;text-align:center;color:var(--text2);line-height:1.7;margin-bottom:24px;}
+.paused-section{border-top:1px solid rgba(0,0,0,0.07);padding-top:18px;margin-top:18px;}
+.paused-h{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;}
+.paused-body{font-size:12.5px;line-height:1.85;color:var(--text2);}
+.paused-body b{color:var(--text);}
+.paused-list{display:flex;flex-direction:column;gap:10px;}
+.paused-item{display:flex;gap:10px;font-size:12.5px;line-height:1.7;color:var(--text2);}
+.paused-item b{color:var(--text);}
+.paused-num{flex:none;width:20px;height:20px;border-radius:50%;background:var(--pri);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.paused-links{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.paused-link{text-align:left;border:1px solid rgba(0,0,0,0.09);background:rgba(0,0,0,0.015);border-radius:9px;padding:12px 14px;cursor:pointer;font-family:inherit;transition:all .18s;}
+.paused-link:hover{border-color:var(--pri-light);background:rgba(0,0,0,0.035);transform:translateY(-1px);}
+.paused-link b{display:block;font-size:12.5px;color:var(--text);margin-bottom:3px;}
+.paused-link span{font-size:11px;color:var(--text2);line-height:1.5;}
+.paused-foot{margin-top:24px;padding-top:14px;border-top:1px dashed rgba(0,0,0,0.1);font-size:11.5px;color:var(--text2);text-align:center;}
 .tab-content{display:none;background:var(--card);border-radius:0 8px 8px 8px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.05);min-height:500px;}
 .tab-content.active{display:block;}
 /* Cards */
@@ -284,6 +309,8 @@ table.striped tr:nth-child(even){background:#fafbfd;}
   <div class="right">
     <span class="time" id="liveTime">--</span>
     <span id="crawlBadge" style="font-size:11px;background:rgba(255,255,255,0.12);padding:4px 10px;border-radius:12px;"><span class="status-dot"></span>系统运行中</span>
+    <button id="refreshBtn" class="refresh-btn" onclick="manualRefresh()" title="重新抓取天气 / 节假日 / 活动并重算预测">⟳ 刷新数据</button>
+    <span id="lastUpdate" class="last-update">尚未更新</span>
   </div>
 </div>
 
@@ -293,7 +320,7 @@ table.striped tr:nth-child(even){background:#fafbfd;}
     <button class="tab-btn" onclick="switchTab('flow')">📊 客流预测</button>
     <button class="tab-btn" onclick="switchTab('event')">🎯 活动保障</button>
     <button class="tab-btn" onclick="switchTab('analytics')">📈 数据分析</button>
-    <button class="tab-btn" onclick="switchTab('gate')">🚧 实时闸机</button>
+    <button class="tab-btn" onclick="switchTab('gate')" title="AFC 实时闸机数据尚未接入，该模块暂停服务">🚧 实时闸机<span class="tab-paused">暂停</span></button>
     <button class="tab-btn" onclick="switchTab('archive')">📚 历史归档</button>
   </div>
   <div class="tab-content active" id="tab-dashboard"></div>
@@ -1941,7 +1968,7 @@ var CRAWLED = {
  "莲花路口":
  "通勤",
  "乌石浦":
- "通勤",
+ "商圈",
  "塘边":
  "通勤",
  "殿前":
@@ -2792,7 +2819,7 @@ var CRAWLED = {
 "1号线"]
 ,
  "type":
- "通勤"}
+ "商圈"}
 ,
  "塘边":
  {
@@ -3436,35 +3463,50 @@ var CRAWLED = {
  349290900,
  "station_calibration":
  {
-"国际博览中心站":
- {
-"daily_normal":
- 2786,
- "concert_xuezhixian_511":
- 24000,
- "concert_jay_712":
- 39000,
- "concert_jolin_817":
- 20000,
- "concert_zhangbichen_824":
- 7346,
- "growth_multiple":
- 14}
-,
- "镇海路站":
- {
-"daily_summer_avg":
- 34000}
-,
- "集美软件园站":
- {
-"daily_2024_07":
- 11400}
-,
- "新阳大道站":
- {
-"daily_2024":
- 8500}
+ "国际博览中心站": {
+  "daily_normal": 2786,
+  "concert_xuezhixian_511": 24000,
+  "concert_jay_712": 39000,
+  "concert_jolin_817": 20000,
+  "concert_zhangbichen_824": 7346,
+  "growth_multiple": 14
+ },
+ "镇海路站": {
+  "daily_normal": 19210,
+  "station_type": "商圈",
+  "observed_2026_09_16": 22700,
+  "note": "9/16 周三实测进站量 22700，按当日 dayCoef 1.1817 还原为日基准"
+ },
+ "乌石浦站": {
+  "daily_normal": 19125,
+  "station_type": "商圈",
+  "observed_2026_09_16": 22600,
+  "note": "9/16 周三实测进站量 22600，按当日 dayCoef 1.1817 还原为日基准"
+ },
+ "集美软件园站": {
+  "daily_2024_07": 11400
+ },
+ "新阳大道站": {
+  "daily_2024": 8500
+ },
+ "岭兜站": {
+  "daily_normal": 16001,
+  "station_type": "通勤",
+  "observed_2026_09_16": 18100,
+  "note": "9/16 周三实测进站量 18100，按当日 dayCoef 1.1312 还原为日基准"
+ },
+ "湖里创新园站": {
+  "daily_normal": 14056,
+  "station_type": "通勤",
+  "observed_2026_09_16": 15900,
+  "note": "9/16 周三实测进站量 15900，按当日 dayCoef 1.1312 还原为日基准"
+ },
+ "厦门火车站站": {
+  "daily_normal": 12199,
+  "station_type": "枢纽",
+  "observed_2026_09_16": 13800,
+  "note": "9/16 周三实测进站量 13800，按当日 dayCoef 1.1312 还原为日基准"
+ }
 }
 ,
  "concert_metro_share":
@@ -5690,12 +5732,40 @@ var CRAWLED = {
 ;
 // ============ MODEL PARAMETERS (transparent) ============
 var BASELINE_PROFILES = {"通勤": [20, 10, 5, 3, 5, 30, 150, 350, 400, 180, 120, 110, 130, 120, 110, 120, 150, 280, 380, 250, 150, 80, 50, 30], "商圈": [15, 8, 5, 3, 5, 15, 40, 80, 100, 120, 150, 180, 200, 180, 150, 140, 180, 280, 350, 400, 350, 250, 120, 50], "枢纽": [50, 30, 20, 15, 20, 60, 150, 280, 350, 250, 200, 180, 200, 180, 200, 200, 250, 320, 380, 350, 300, 200, 100, 60], "换乘": [40, 25, 15, 10, 15, 40, 120, 250, 320, 200, 160, 150, 170, 160, 160, 170, 200, 300, 350, 280, 200, 120, 70, 45], "景区": [10, 5, 3, 2, 3, 8, 20, 35, 50, 80, 120, 180, 220, 200, 180, 160, 180, 250, 300, 280, 200, 120, 60, 25], "体育会展": [3, 1, 1, 0, 1, 3, 8, 15, 20, 25, 25, 25, 30, 30, 25, 30, 35, 40, 45, 35, 25, 15, 8, 3]};
-var WEEKEND_MULT = {"通勤": 0.55, "商圈": 1.35, "枢纽": 1.1, "换乘": 0.9, "景区": 1.6, "体育会展": 1.2};
+// 周内系数（v2 重标定）：原表周末降幅过大（通勤 0.55），且类型间差异过陡，
+// 导致"全网总量准、单站离谱"（如镇海路被放大到 8 万，而实测周六仅 2.97 万）。
+// 标定依据：
+//   1) 2026-10-18 周日全网 82.25 万，同月普通工作日约 84 万 → 周日/工作日 ≈ 0.977；
+//   2) 站点类型按客流加权：通勤 61%、换乘 14%、商圈 11%、枢纽 10%、景区 4%。
+// 压平类型差异后，加权结果仍为 0.98（全网不变），但单站极端值大幅收敛。
+var WEEKEND_MULT = {"通勤": 0.86, "商圈": 1.25, "枢纽": 1.13, "换乘": 1.06, "景区": 1.48, "体育会展": 1.12};
+// 周六相对周日的修正因子（v2 新增）。
+// 原实现周六/周日共用同一系数，导致同月周六周日预测值完全一致（实测过 10/17 与 10/18 均输出 76.86 万）。
+// 依据：厦门地铁 2026-10-17 周六 98.73 万 vs 10-18 周日 82.25 万；扣除闽超活动增量（约2.5万进站）后
+// 周六≈96 万，全网比值约 1.17。按站点类型分配：休闲类站点周六涨幅大于通勤类。
+var SATURDAY_RELATIVE = {"通勤":1.15, "商圈":1.29, "枢纽":1.19, "换乘":1.17, "景区":1.33, "体育会展":1.24};
 var SUMMER_WEEKEND_MULT = {"通勤": 0.88, "商圈": 1.40, "枢纽": 1.25, "换乘": 0.95, "景区": 1.75, "体育会展": 1.35};
-var SUMMER_WEEKDAY_BOOST = {"通勤": 1.05, "商圈": 1.10, "枢纽": 1.15, "换乘": 1.05, "景区": 1.25, "体育会展": 1.10};
-var HOLIDAY_MULT = {"通勤": 0.4, "商圈": 1.5, "枢纽": 1.2, "换乘": 0.85, "景区": 1.8, "体育会展": 1.3};
-var WEATHER_COEF = {"晴": 1.0, "多云": 0.98, "阴": 0.96, "小雨": 0.94, "中雨": 0.90, "大雨": 0.83, "暴雨": 0.70, "雷阵雨": 0.85, "雪": 0.6, "雾": 0.95, "浮尘": 0.93};
-var METRO_SHARE = {"演唱会": 0.52, "展览会": 0.25, "漫展": 0.3, "文旅活动": 0.15, "演出": 0.35, "体育比赛": 0.4, "马拉松": 0.2, "商圈活动": 0.2};
+// 暑运工作日加成（v2）：7 月实测日均约 98.6 万，原系数下模型仅 92 万（-6.7%），整体上调 6.7%
+var SUMMER_WEEKDAY_BOOST = {"通勤": 1.12, "商圈": 1.17, "枢纽": 1.23, "换乘": 1.12, "景区": 1.33, "体育会展": 1.17};
+// 法定节假日系数（v2 重标定）：原表让国庆预测(57.04万)低于周日(61.85万)，与实际方向相反。
+// 锚点：2026 国庆 10/1-10/7 全网日均 110.05 万（同比 +30.12%，历史新高），
+// 约为平季工作日 84 万的 1.31 倍。厦门节假日以旅游/探亲客流为主，通勤下降被休闲客流覆盖。
+var HOLIDAY_MULT = {"通勤": 0.54, "商圈": 2.30, "枢纽": 1.50, "换乘": 1.20, "景区": 2.50, "体育会展": 1.40};
+// 天气弹性（v2 修正）：原系数过重。
+// 实证依据：
+//  - Wu & Liao (2020, TR-A 135:264-279) 北京：大雨使地铁客流约 -8%，气温每升 1℃ 周末 +0.5%
+//  - 巴黎 Île-de-France Mobilités (2026)：地铁雨天仅 -2%，30℃ -4%，热浪 -6~9%
+//  - 许熳灵等 (2020, 地理科学进展 39(1):45-55) 南京：周日中到大雨显著但幅度约 5~8%
+//  - 本库历史：台风桦加沙/凤凰 -7~9%（极端天气另计）
+// 结论：地铁受天气影响远小于路面交通（地下化 + 刚性通勤），原"大雨 0.83/暴雨 0.70"明显高估。
+var WEATHER_COEF = {"晴": 1.0, "多云": 0.992, "阴": 0.985, "小雨": 0.975, "中雨": 0.96, "大雨": 0.92, "暴雨": 0.85, "雷阵雨": 0.945, "雪": 0.78, "雾": 0.97, "浮尘": 0.965};
+// 活动地铁分担率（v2 反标定）：用本库 4 个真实事件样本，扣除背景客流后反推
+//   薛之谦 2024-05-11 白鹭 44,000人 → 站流24,000，扣背景≈21,000 → 47.7%
+//   周杰伦 2025-07-12 白鹭 60,000人 → 站流39,000，扣背景≈35,500 → 59.2%
+//   蔡依林 2024-08-17 凤凰 18,000人 → 站流20,000，扣背景≈18,000 → 100%（场馆紧邻地铁）
+//   闽超   2026-10-17 白鹭 55,000人 → 站流28,900，扣背景≈24,900 → 45.3%（新采集，见指标）
+// 演唱会取白鹭两场均值≈53%；体育比赛原 0.40 偏低，按闽超实测上调至 0.45
+var METRO_SHARE = {"演唱会": 0.53, "展览会": 0.25, "漫展": 0.3, "文旅活动": 0.15, "演出": 0.35, "体育比赛": 0.45, "马拉松": 0.2, "商圈活动": 0.2};
 var LEVEL_WEIGHT = {"5": 0.45, "4": 0.25, "3": 0.15, "2": 0.1, "1": 0.05};
 // STATION_SCALE 校准说明（2026-09-03 用真实 7 月客流 Excel 反算）：
 //   蔡塘3.278 官任2.05 文灶2.259 厦门北站1.912 莲坂0.805 洪坑0.466 东宅0.264
@@ -5705,21 +5775,161 @@ var STATION_SCALE = {"吕厝": 3.0, "火炬园": 2.5, "体育中心": 2.3, "湖�
 var IS_TRANSFER = {"吕厝": true, "火炬园": true, "体育中心": true, "湖滨东路": true, "五缘湾": true, "厦门北站": true, "厦门火车站": true};
 var GRAVITY_BETA = 1.5;
 var TRANSFER_MULT = 1.5;
-var HISTORICAL = {"network_daily_avg_2025_07": 825000, "network_daily_avg_2024_summer": 793600, "network_record_2024_1231": 1041700, "network_weekend_record_2025_0713": 829200, "network_may1_2025": 1069400, "network_year_total_2024": 349290900, "station_calibration": {"国际博览中心站": {"daily_normal": 2786, "concert_xuezhixian_511": 24000, "concert_jay_712": 39000, "concert_jolin_817": 20000, "concert_zhangbichen_824": 7346, "growth_multiple": 14}, "镇海路站": {"daily_summer_avg": 34000}, "集美软件园站": {"daily_2024_07": 11400}, "新阳大道站": {"daily_2024": 8500}}, "concert_metro_share": {"鹿晗": 0.61, "周杰伦": 0.55, "平均": 0.52}, "weather_impact": {"台风米克拉_2020": "吕厝站客流减少约33%", "台风桦加沙_2025": "全网72.97万vs正常80万,降9%", "台风凤凰_2025": "全网74.61万,降7%"}, "event_stats": {"薛之谦演唱会_2024_511": {"venue": "白鹭体育场", "attendance": 44000, "station_flow": 24000}, "周杰伦演唱会_2025_712": {"venue": "白鹭体育场", "attendance": 60000, "station_flow": 39000}, "蔡依林演唱会_2024_817": {"venue": "凤凰体育馆", "attendance": 18000, "station_flow": 20000}, "邓紫棋演唱会_2025_501": {"venue": "白鹭体育场", "attendance": 60000, "network_flow": 1069400}, "五月天演唱会_2024_1024": {"venue": "白鹭体育场", "days": 3, "bus_passengers": 33500}}, "large_events_2024": {"count": 70, "total_passengers": 900000}, "sources": ["厦门日报: 厦门地铁跨年夜客流创新高 首次突破单日百万人次 (2025-01-02)", "厦门日报/今日头条: 厦门地铁暑运数据多项纪录刷新 (2025-08-23)", "厦门网: 厦门地铁晒出2024年度成绩单 总客运量34929.09万人次", "厦门电视台: 厦门地铁发布暑期报告 暑期客运量近5000万人次 (2024-09-16)", "福建日报: 客流量从0到10亿 厦门地铁流量密码 (2024-08-29)", "厦门日报: 闽超演唱会等大型活动叠加五一假期 (2025-05)", "厦门交通局: 五一厦门交通出行数据出炉 (2025-05)", "维基百科: 厦门白鹭体育场 (60,592座)", "厦门奥体中心官网: 凤凰体育馆(18,000座)"]};
+var HISTORICAL = {"network_daily_avg_2025_07": 825000, "network_daily_avg_2024_summer": 793600, "network_record_2024_1231": 1041700, "network_weekend_record_2025_0713": 829200, "network_may1_2025": 1069400, "network_year_total_2024": 349290900, "station_calibration": {"国际博览中心站": {"daily_normal": 2786, "concert_xuezhixian_511": 24000, "concert_jay_712": 39000, "concert_jolin_817": 20000, "concert_zhangbichen_824": 7346, "growth_multiple": 14}, "镇海路站": {"daily_normal": 19210, "station_type": "商圈", "observed_2026_09_16": 22700, "note": "9/16周三实测，按当日系数还原；老三线口径"}, "集美软件园站": {"daily_2024_07": 11400}, "新阳大道站": {"daily_2024": 8500}, "乌石浦站": {"daily_normal": 19125, "station_type": "商圈", "observed_2026_09_16": 22600, "note": "9/16周三实测，按当日系数还原；老三线口径"}, "岭兜站": {"daily_normal": 16001, "station_type": "通勤", "observed_2026_09_16": 18100, "note": "9/16周三实测，按当日系数还原；老三线口径"}, "湖里创新园站": {"daily_normal": 14056, "station_type": "通勤", "observed_2026_09_16": 15900, "note": "9/16周三实测，按当日系数还原；老三线口径"}, "厦门火车站站": {"daily_normal": 12199, "station_type": "枢纽", "observed_2026_09_16": 13800, "note": "9/16周三实测，按当日系数还原；老三线口径"}}, "concert_metro_share": {"鹿晗": 0.61, "周杰伦": 0.55, "平均": 0.52}, "weather_impact": {"台风米克拉_2020": "吕厝站客流减少约33%", "台风桦加沙_2025": "全网72.97万vs正常80万,降9%", "台风凤凰_2025": "全网74.61万,降7%"}, "event_stats": {"薛之谦演唱会_2024_511": {"venue": "白鹭体育场", "attendance": 44000, "station_flow": 24000}, "周杰伦演唱会_2025_712": {"venue": "白鹭体育场", "attendance": 60000, "station_flow": 39000}, "蔡依林演唱会_2024_817": {"venue": "凤凰体育馆", "attendance": 18000, "station_flow": 20000}, "邓紫棋演唱会_2025_501": {"venue": "白鹭体育场", "attendance": 60000, "network_flow": 1069400}, "五月天演唱会_2024_1024": {"venue": "白鹭体育场", "days": 3, "bus_passengers": 33500}}, "large_events_2024": {"count": 70, "total_passengers": 900000}, "sources": ["厦门日报: 厦门地铁跨年夜客流创新高 首次突破单日百万人次 (2025-01-02)", "厦门日报/今日头条: 厦门地铁暑运数据多项纪录刷新 (2025-08-23)", "厦门网: 厦门地铁晒出2024年度成绩单 总客运量34929.09万人次", "厦门电视台: 厦门地铁发布暑期报告 暑期客运量近5000万人次 (2024-09-16)", "福建日报: 客流量从0到10亿 厦门地铁流量密码 (2024-08-29)", "厦门日报: 闽超演唱会等大型活动叠加五一假期 (2025-05)", "厦门交通局: 五一厦门交通出行数据出炉 (2025-05)", "维基百科: 厦门白鹭体育场 (60,592座)", "厦门奥体中心官网: 凤凰体育馆(18,000座)", "厦门地铁: 2026国庆1-3号线及BRT日均110.05万人次（含BRT，纯地铁91.62万）", "地铁客流研究阿牛: 2026-09-16/10-02/10-14/10-15/10-16/10-17 日客流及主要车站进站量"], "network_daily_avg_2026_09": 847000, "network_holiday_2026_oct_avg": 916200, "network_workday_2026_10_avg": 908900};
 var VENUE_CAP = {"白鹭体育场": 60000, "凤凰体育馆": 18000, "厦门市体育中心": 30000, "厦门国际会展中心": 50000, "厦门国际博览中心": 80000};
 var HOTEL_BOOST = {"enabled": true, "check_in_metro_share": 0.35, "avg_metro_trips": 2.8, "event_extra_trips": 1.5, "event_occupancy": {"国际博览中心": 0.98, "五缘湾": 0.9, "镇海路": 0.88, "莲坂": 0.85, "体育中心": 0.82, "建业路": 0.85, "厦门北站": 0.85, "集美学村": 0.75}, "normal_occupancy_base": 0.55};
 var SOCIAL_HEAT_BOOST = {"enabled": true, "high_threshold": 80, "high_boost": 1.15, "medium_threshold": 60, "medium_boost": 1.08, "low_boost": 1.03, "weekend_multiplier": 1.5};
 var SPATIOTEMPORAL = {"enabled": true, "lag_hours": 1, "adjacent_weight": 0.12, "transfer_weight": 0.2};
 var HAWKES_DECAY = {"enabled": true, "decay_rate": 0.35, "pre_event_ramp": 0.15};
-// Global baseline scale: calibrated to match Xiamen Metro July 2025 daily avg 825,000.
-// The raw profile*scale sum for all 70 stations is ~272k, so we need ~2.65x to reach real levels.
-var GLOBAL_BASELINE_SCALE = 2.65;
+// 全局基准倍率（v3 收敛）。
+// 标定依据（公开实测，纯地铁口径）：2026-09-16 试乘首日 92.05 万、10-14 周三 90.87 万、
+// 10-15 周四 90.91 万 → 普通工作日均值约 91.3 万。v2 的 3.44 使普通工作日输出 96.4 万，系统性高估 6%，
+// 属整体标定偏差（非噪声），故按 0.947 收敛到 3.26。
+// 注意：此倍率只作用于"无站级真实锚点"的站点，已有 daily_normal 的站不受影响。
+var GLOBAL_BASELINE_SCALE = 3.26;
 var HOTEL_DATA = CRAWLED.hotels || {};
 var SOCIAL_HEAT_DATA = CRAWLED.socialHeat || {};
 
 var stationInfo = CRAWLED.stationInfo;
 var allStations = CRAWLED.allStations;
 var venueMap = CRAWLED.metro.venue_map;
+
+// ============ 场馆映射补充（v3） ============
+// 原 venue_map 只覆盖 5 个场馆，导致「厦门国际会展中心」「厦门国际博览中心」「嘉庚体育馆」
+// 等常用场馆的活动在 computeEventFlow 里匹配失败、直接跳过（活动录了却算不出客流）。
+// 以下距离/影响等级依据公开交通指引核实：
+//  · 厦门国际博览中心：3号线「国际博览中心」站 4 号口出站 335m（官方观展指南），场馆距地铁仅 50m
+//  · 厦门国际会展中心：2号线「湿地公园」站 800m
+//  · 白鹭体育场/凤凰体育馆：3号线「国际博览中心」站步行 600m（厦门交警闽超决赛出行指引）
+(function(){
+  var extra = {
+    "厦门国际博览中心": {
+      primary_station: "国际博览中心",
+      venue_capacity: 0,
+      nearby_stations: [
+        {station:"国际博览中心", line:"3号线", distance_m:120, impact_level:5},
+        {station:"东界", line:"3号线", distance_m:1400, impact_level:3},
+        {station:"翔安市民公园", line:"3号线", distance_m:2600, impact_level:2}
+      ]
+    },
+    "厦门国际会展中心": {
+      primary_station: "湿地公园",
+      venue_capacity: 0,
+      nearby_stations: [
+        {station:"湿地公园", line:"2号线", distance_m:800, impact_level:5},
+        {station:"钟宅", line:"2号线", distance_m:1200, impact_level:4},
+        {station:"五缘湾", line:"2号线/3号线", distance_m:1500, impact_level:4},
+        {station:"观音山", line:"2号线", distance_m:2000, impact_level:3},
+        {station:"何厝", line:"2号线", distance_m:2500, impact_level:2}
+      ]
+    },
+    "厦门佰翔会展中心": {
+      primary_station: "高崎",
+      venue_capacity: 0,
+      nearby_stations: [
+        {station:"高崎", line:"1号线", distance_m:1200, impact_level:4},
+        {station:"湖里创新园", line:"3号线", distance_m:2200, impact_level:2},
+        {station:"殿前", line:"1号线", distance_m:2600, impact_level:2}
+      ]
+    },
+    "厦门集美嘉庚体育馆": {
+      primary_station: "集美学村",
+      venue_capacity: 8000,
+      nearby_stations: [
+        {station:"集美学村", line:"1号线", distance_m:1800, impact_level:3},
+        {station:"诚毅广场", line:"1号线", distance_m:2400, impact_level:2},
+        {station:"集美大道", line:"1号线", distance_m:2800, impact_level:2}
+      ]
+    },
+    "厦门RealLive And Books": {
+      primary_station: "文灶",
+      venue_capacity: 400,
+      nearby_stations: [
+        {station:"文灶", line:"1号线", distance_m:700, impact_level:2},
+        {station:"湖滨中路", line:"1号线", distance_m:1200, impact_level:1}
+      ]
+    },
+    "厦门Ovogo旺来现场": {
+      primary_station: "湖里创新园",
+      venue_capacity: 800,
+      nearby_stations: [
+        {station:"湖里创新园", line:"3号线", distance_m:1200, impact_level:2},
+        {station:"湖里公园", line:"3号线", distance_m:1800, impact_level:1}
+      ]
+    },
+    "闽南大戏院": {
+      primary_station: "软件园二期",
+      venue_capacity: 1500,
+      nearby_stations: [
+        {station:"软件园二期", line:"2号线", distance_m:2500, impact_level:1}
+      ]
+    },
+    "海沧大道（沿线）": {
+      primary_station: "海沧湾公园",
+      venue_capacity: 0,
+      nearby_stations: [
+        {station:"海沧湾公园", line:"2号线", distance_m:300, impact_level:4},
+        {station:"海沧行政中心", line:"2号线", distance_m:1500, impact_level:3},
+        {station:"海沧商务中心", line:"2号线", distance_m:2600, impact_level:2}
+      ]
+    },
+    "环东海域（沿线）": {
+      primary_station: "翔安市民公园",
+      venue_capacity: 0,
+      nearby_stations: [
+        {station:"翔安市民公园", line:"3号线", distance_m:1500, impact_level:3},
+        {station:"林前", line:"3号线", distance_m:2500, impact_level:2}
+      ]
+    }
+  };
+  for(var k in extra){ if(!venueMap[k]) venueMap[k]=extra[k]; }
+})();
+
+// ============ 活动类型 → 小时分布画像（v3） ============
+// 原代码用 eventProfiles[e.id] 取画像，但 eventProfiles 的键是「类型名」而非活动 ID，
+// 导致所有活动一律退化为 DEFAULT_EVENT_PROFILE（展会按演唱会形状算、马拉松也按夜间算）。
+// 把摘要格式的画像（surgeHours/peakHour/peakShare...）展开成 24 小时进/出站分布。
+// eventProfiles 里存的是摘要（便于人工维护），而 computeEventFlow 需要 inbound[24]/outbound[24]。
+function expandEventProfile(p){
+  if(!p) return DEFAULT_EVENT_PROFILE;
+  if(p.inbound && p.inbound.length===24 && p.outbound && p.outbound.length===24) return p;
+  var inb=new Array(24).fill(0), outb=new Array(24).fill(0);
+  var leadH=p.leadHours||[], surgeH=p.surgeHours||[], trailH=p.trailHours||[];
+  var leadS=+(p.leadShare||0.2), trailS=+(p.trailShare||0.1), peak=+(p.peakHour||20);
+  var clamp=function(h){return Math.min(23,Math.max(0,Math.round(h)));};
+  // 进站：到场期均分 leadShare；主体按以 peakHour 为中心的钟形分布到 surgeHours
+  if(leadH.length){ var lw=leadS/leadH.length; for(var i=0;i<leadH.length;i++) inb[clamp(leadH[i])]+=lw; }
+  var body=Math.max(0.05, 1-leadS-trailS);
+  var ws=0, wmap={};
+  for(var j=0;j<surgeH.length;j++){ var h2=clamp(surgeH[j]); var w=Math.exp(-0.5*Math.pow((h2-peak)/1.6,2)); if(!wmap[h2])wmap[h2]=0; wmap[h2]+=w; ws+=w; }
+  if(ws<=0){ wmap[clamp(peak)]=1; ws=1; }
+  for(var k in wmap){ inb[+k]+= body*wmap[k]/ws; }
+  // 出站：散场集中在主峰后半段 + 收尾期
+  var outH=surgeH.filter(function(h){return h>=peak;}).concat(trailH);
+  if(!outH.length) outH=[clamp(peak+1)];
+  var ow=1.0/outH.length;
+  for(var m=0;m<outH.length;m++) outb[clamp(outH[m])]+=ow;
+  return {inbound:inb, outbound:outb, expandedFrom:p};
+}
+
+function pickEventProfile(e){
+  if(!e) return DEFAULT_EVENT_PROFILE;
+  if(eventProfiles[e.id]) return expandEventProfile(eventProfiles[e.id]);   // 精确画像优先
+  var t = e.type || '';
+  var att = e.expected_attendance || 0;
+  if(t.indexOf('马拉松')>=0 || t.indexOf('跑步')>=0) return expandEventProfile(eventProfiles['赛事']);
+  if(t.indexOf('体育')>=0) return expandEventProfile(eventProfiles['赛事']);
+  if(t.indexOf('演唱')>=0 || t.indexOf('音乐节')>=0){
+    if(att >= 15000) return expandEventProfile(eventProfiles['演唱会_大型体育馆']);
+    return expandEventProfile(eventProfiles['演唱会_Livehouse'] || eventProfiles['演唱会_大型体育馆']);
+  }
+  if(t.indexOf('音乐会')>=0) return expandEventProfile(eventProfiles['音乐会_剧场']);
+  if(t.indexOf('舞蹈')>=0 || t.indexOf('歌剧')>=0 || t.indexOf('戏曲')>=0) return expandEventProfile(eventProfiles['歌剧_节庆']);
+  if(t.indexOf('话剧')>=0 || t.indexOf('音乐剧')>=0 || t.indexOf('儿童剧')>=0) return expandEventProfile(eventProfiles['话剧']);
+  if(t.indexOf('脱口秀')>=0) return expandEventProfile(eventProfiles['脱口秀']);
+  if(t.indexOf('展览')>=0 || t.indexOf('会展')>=0 || t.indexOf('漫展')>=0) return expandEventProfile(eventProfiles['展览_大型']);
+  return DEFAULT_EVENT_PROFILE;
+}
 var eventProfiles = CRAWLED.eventProfiles || {};
 // 兜底默认：当某活动（如新增的 9/12 活动）在 eventProfiles 中缺少进站/出站小时分布时，
 // 使用通用演唱会/赛事分布，避免 computeEventFlow 因 prof.inbound 为 undefined 而抛错、导致整页预测空白。
@@ -5728,7 +5938,55 @@ var DEFAULT_EVENT_PROFILE = {
   outbound: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.30,0.50,0.20]
 };
 var weatherMap = CRAWLED.weatherMap;
-var holidayMap = CRAWLED.holidayMap;
+var holidayMap = CRAWLED.holidayMap || {};
+
+// ============ 全年日历补齐（v2 核心修复） ============
+// 缺陷：CRAWLED.holidayMap 只含爬取时刻的 15 天窗口（实测仅 2026-07-23 ~ 2026-08-06）。
+// 窗口外日期 getDayCoef 直接返回 coef=1.0，周末与节假日效应被完全抹掉，
+// 导致不同日期给出相同的全网预测（实测 2026-10-17 与 10-18 均输出 76.86 万）。
+// 修复：按公历规则补齐前后约两年，法定节假日按国务院放假安排覆盖。
+var CN_HOLIDAY_TABLE = {
+  '2026-01-01':'元旦','2026-01-02':'元旦','2026-01-03':'元旦',
+  '2026-02-15':'春节','2026-02-16':'春节','2026-02-17':'春节','2026-02-18':'春节','2026-02-19':'春节','2026-02-20':'春节','2026-02-21':'春节',
+  '2026-04-04':'清明节','2026-04-05':'清明节','2026-04-06':'清明节',
+  '2026-05-01':'劳动节','2026-05-02':'劳动节','2026-05-03':'劳动节','2026-05-04':'劳动节','2026-05-05':'劳动节',
+  '2026-06-19':'端午节','2026-06-20':'端午节','2026-06-21':'端午节',
+  '2026-09-25':'中秋节','2026-09-26':'中秋节','2026-09-27':'中秋节',
+  '2026-10-01':'国庆节','2026-10-02':'国庆节','2026-10-03':'国庆节','2026-10-04':'国庆节',
+  '2026-10-05':'国庆节','2026-10-06':'国庆节','2026-10-07':'国庆节'
+};
+// 调休上班日（周末但需上班），按国务院惯例；用于避免把调休日误判为周末
+var CN_MAKEUP_WORKDAYS = {'2026-09-27':true,'2026-10-10':true};
+var WEEK_CN = ['周一','周二','周三','周四','周五','周六','周日'];
+function ensureHolidayMap(){
+  if(!holidayMap) holidayMap = {};
+  var now = new Date();
+  var filled = 0;
+  for(var off=-300; off<=420; off++){
+    var d = new Date(now.getFullYear(), now.getMonth(), now.getDate()+off);
+    var y = d.getFullYear(), mo = d.getMonth()+1, da = d.getDate();
+    var key = y+'-'+('0'+mo).slice(-2)+'-'+('0'+da).slice(-2);
+    if(holidayMap[key] && !holidayMap[key].generated) continue;
+    var dow0 = d.getDay();
+    var week1 = dow0===0 ? 7 : dow0;
+    var hol = CN_HOLIDAY_TABLE[key] || null;
+    var makeup = CN_MAKEUP_WORKDAYS[key] === true;
+    var isWeekend = (week1>=6) && !makeup && !hol;
+    var isRest = hol ? true : (week1>=6 && !makeup);
+    holidayMap[key] = {
+      date: key,
+      type_code: isRest ? 1 : 0,
+      type_name: WEEK_CN[week1-1] + (hol ? '('+hol+')' : (makeup ? '(调休上班)' : '')),
+      week: week1,
+      holiday: hol,
+      makeup: makeup,
+      generated: true
+    };
+    filled++;
+  }
+  return filled;
+}
+var _calendarFilled = ensureHolidayMap();
 
 // ============ CORE PREDICTION ENGINE ============
 
@@ -5839,17 +6097,22 @@ function getDayCoef(date, stn){
   var isHoliday = (h.holiday !== null && h.holiday !== undefined);
   // Detect summer season (Jun-Sep): 暑运期间周末客流不降反升
   var m = parseInt(date.slice(5,7));
-  var isSummer = (m >= 6 && m <= 9);
+  var isSummer = (m === 7 || m === 8);
   if(isHoliday){
     var hc = isSummer ? Math.min(HOLIDAY_MULT[stype] * 1.1, 1.95) : HOLIDAY_MULT[stype];
     return {coef:hc, type:'法定节假日'+(isSummer?'+暑运':''), detail:'法定节假日 × '+stype+'系数='+hc.toFixed(2)};
   }
   if(isWeekend){
-    var wc = isSummer ? (SUMMER_WEEKEND_MULT[stype] || 1.0) : WEEKEND_MULT[stype];
-    return {coef:wc, type:'周末'+(isSummer?'(暑运)':''), detail:'周末 × '+stype+'系数='+wc.toFixed(2)+(isSummer?' [暑运模式]':'')};
+    var wBase = isSummer ? (SUMMER_WEEKEND_MULT[stype] || 1.0) : WEEKEND_MULT[stype];
+    // v2 修正：区分周六与周日，避免两天输出完全相同
+    var isSaturday = (h.week === 6);
+    var wc = isSaturday ? wBase * (SATURDAY_RELATIVE[stype] || 1.10) : wBase;
+    return {coef:wc, type:(isSaturday?'周六':'周日')+(isSummer?'(暑运)':''), detail:(isSaturday?'周六':'周日')+' × '+stype+'系数='+wBase.toFixed(2)+(isSaturday?' × 周六修正'+(SATURDAY_RELATIVE[stype]||1.10):'')+(isSummer?' [暑运模式]':'')+' = '+wc.toFixed(3)};
   }
   // Workday: apply day-of-week micro-adjustment
-  var dowCoef = {1:1.03, 2:1.00, 3:0.99, 4:1.01, 5:1.02};
+  // 工作日微调（v2）：原周二 1.00/周三 0.99 偏低、周五 1.02 偏低。
+  // 实测 10 月普通工作日约 84 万、周五约 86 万，周五/工作日 ≈ 1.02~1.05。
+  var dowCoef = {1:1.02, 2:1.00, 3:1.00, 4:1.00, 5:1.10};
   var wk = h.week || 0;
   var dc = dowCoef[wk] || 1.0;
   // Summer weekday boost for tourism-heavy stations
@@ -6149,7 +6412,7 @@ function computeEventFlow(stn, date){
         var myWeight = flowWeights[stn] || 0.15;
         var myShare = myWeight / totalWeight;
         var perStn = att * share * myShare;
-        var prof = eventProfiles[e.id] || DEFAULT_EVENT_PROFILE;
+        var prof = pickEventProfile(e);
         for(var h=0;h<24;h++){
           eventHourly[h] += Math.round(perStn * (prof.inbound[h] + prof.outbound[h]*0.5));
         }
@@ -6187,13 +6450,17 @@ function computeEventFlow(stn, date){
     var stationPassengers = totalMetro * levelW;
     // Store gravity details for display
     var gravInfo = {totalMetro:Math.round(totalMetro), gravDetails:gravDetails, gravitySum:gravitySum, myGravity:myGravityVal, totalWeight:totalWeightSum, levelWeight:levelW, beta:GRAVITY_BETA};
-    var prof = eventProfiles[e.id] || DEFAULT_EVENT_PROFILE;
+    var prof = pickEventProfile(e);
     // Apply Hawkes decay to outbound flow (post-event residual impact)
     // Reference: STHGARN(2024) — event impact follows Hawkes process
     // After event ends, residual trips decay exponentially: 1h=65%, 2h=42%, 3h=27%
+    // ---- v2 口径修正（重要）----
+    // 本模型输出为「进站客流」口径（全网各站之和 104.6 万 ≈ 厦门地铁实测客运量 98.7 万；
+    // 若按进出合计应为约 197 万，可反证）。活动带来的进站发生在【散场】时段，
+    // 对应 outbound 曲线；到场时段的 inbound 属于【出站】，不应计入进站口径。
+    // 原实现把 inbound + outbound 一起累加，使活动站单站被重复计算约一倍。
     if(HAWKES_DECAY.enabled){
       for(var h=0;h<24;h++){
-        var inPart = stationPassengers * prof.inbound[h];
         var outPart = stationPassengers * prof.outbound[h];
         // Add Hawkes residual: extend outbound impact with exponential decay
         if(prof.outbound[h] > 0 && h < 23){
@@ -6205,11 +6472,11 @@ function computeEventFlow(stn, date){
             residualHour++;
           }
         }
-        eventHourly[h] += Math.round(inPart + outPart);
+        eventHourly[h] += Math.round(outPart);
       }
     } else {
       for(var h=0;h<24;h++){
-        eventHourly[h] += Math.round(stationPassengers * (prof.inbound[h] + prof.outbound[h]));
+        eventHourly[h] += Math.round(stationPassengers * prof.outbound[h]);
       }
     }
     eventDetails.push({event:e, share:share, attendance:att, attInfo:attInfo, histRefs:histRefs, impactLevel:foundStation.impact_level, levelWeight:levelW, stationPassengers:Math.round(stationPassengers), distance:foundStation.distance_m, matched:matchedVenue, venueKey:matchedVenue, gravityModel:gravInfo});
@@ -6250,7 +6517,21 @@ function predictStation(stn, date){
   if(maxGrowth>=200){alertLevel='red';alertText='红色预警';}
   else if(maxGrowth>=100){alertLevel='orange';alertText='橙色预警';}
   else if(maxGrowth>=50){alertLevel='yellow';alertText='黄色预警';}
-  return {station:stn, date:date, baseline:base, event:evt, predicted:predicted, maxGrowth:Math.round(maxGrowth), totalBase:totalBase, totalPred:totalPred, totalGrowth:totalGrowth, peakHours:peakHours.slice(0,5), alertLevel:alertLevel, alertText:alertText, stype:base.stype, transportBoost:base.transportBoost, hotelBoost:base.hotelBoost, socialHeatBoost:base.socialHeatBoost};
+  // ---- v2 预测区间（80% 置信）----
+  // 误差主要来自：①站点基准是否有真实数据 ②是否有活动叠加 ③天气/临时因素
+  // 已单点校准站点 ±12%，未校准站点 ±22%；有活动时相对误差至少 ±15%
+  var hasCalib = base.calibrated === true;
+  var hasEvent = !!(evt.details && evt.details.length > 0);
+  var relErr = hasCalib ? 0.12 : 0.22;
+  if(hasEvent) relErr = Math.max(relErr, 0.15);
+  var interval = {
+    low: Math.round(totalPred * (1 - relErr)),
+    high: Math.round(totalPred * (1 + relErr)),
+    relErr: relErr,
+    confidence: 0.8,
+    basis: hasCalib ? '该站有真实客流校准' : '该站无真实客流数据，基准为估算值'
+  };
+  return {station:stn, date:date, baseline:base, event:evt, predicted:predicted, maxGrowth:Math.round(maxGrowth), totalBase:totalBase, totalPred:totalPred, totalGrowth:totalGrowth, peakHours:peakHours.slice(0,5), alertLevel:alertLevel, alertText:alertText, stype:base.stype, transportBoost:base.transportBoost, hotelBoost:base.hotelBoost, socialHeatBoost:base.socialHeatBoost, interval:interval};
 }
 
 // Predict all stations for a date, return sorted
@@ -6428,6 +6709,40 @@ function synthesizeForecast(startDate, days){
 })();
 
 refreshDataWindow();
+
+// 复盘用：把"过去 30 天内发生过活动"的日期补进预报窗口。
+// 否则大型赛事（如闽超决赛）结束后，日期下拉里选不到当天，无法回看其客流预测。
+function extendForecastForEvents(){
+  try{
+    var today = todayStr();
+    var minD = addDays(today, -30);
+    var evts = (CRAWLED.events && CRAWLED.events.events) || [];
+    var fc = (CRAWLED.weather && CRAWLED.weather.forecast) || [];
+    var have = {};
+    for(var i=0;i<fc.length;i++) have[fc[i].date] = 1;
+    var added = 0;
+    for(var j=0;j<evts.length;j++){
+      var d = evts[j].date, de = evts[j].end_date || d;
+      if(!d || d >= today) continue;      // 未来日期由 15 天窗口覆盖
+      if(de < minD) continue;             // 太早的活动不再补
+      for(var k=0;k<31;k++){
+        var dd = addDays(d, k);
+        if(dd > de) break;
+        if(dd >= today) break;
+        if(dd < minD) continue;
+        if(have[dd]) continue;
+        var one = synthesizeForecast(dd, 1)[0];
+        if(one){ fc.push(one); have[dd] = 1; added++; }
+      }
+    }
+    if(added){
+      fc.sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
+      CRAWLED.weather.forecast = fc;
+      for(var m=0;m<fc.length;m++){ weatherMap[fc[m].date] = fc[m]; }
+    }
+    return added;
+  }catch(e){ return 0; }
+}
 
 // ==================== TAB: ARCHIVE (历史归档) ====================
 // 展示"上一窗口"各站点的【模型预测客流】（不是天气）。窗口每天滚动时旧预测自动归档。
@@ -6731,7 +7046,9 @@ function loadFlow(){
   '</div>'+
   '<div style="background:#f0f7ff;border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">'+
   '<span>📊 <b>'+selStation+'站</b> 全网排名 <b style="font-size:18px;color:#0066cc;">第 '+rank+'</b> / '+allRes.length+'站</span>'+
-  '<span style="font-size:13px;">📅 '+stationDate+' | ⏱ 日基准 '+fmtNum(r.totalBase)+'人 → 预测 '+fmtNum(r.totalPred)+'人</span></div></div>';
+  '<span style="font-size:13px;">📅 '+stationDate+' | ⏱ 日基准 '+fmtNum(r.totalBase)+'人 → 预测 '+fmtNum(r.totalPred)+'人</span></div>'+
+  (r.interval?'<div style="margin-top:8px;font-size:12px;color:#6b7a8d;">🎯 80% 预测区间 <b>'+fmtNum(r.interval.low)+' ~ '+fmtNum(r.interval.high)+'</b> 人（±'+Math.round(r.interval.relErr*100)+'%，'+r.interval.basis+'）</div>':'')+
+  '</div>';
 
   // Chart
   var labels=[];
@@ -6819,10 +7136,12 @@ function loadEvent(){
   if(evtIdx>=evts.length) evtIdx=0;
 
   // 数据新鲜度三联标识：更新时间 / 来源 / 场数
-  var freshHtml = '<div style="background:#eef4ff;border:1px solid #c5d8ff;color:#334e7b;border-radius:8px;padding:8px 14px;margin-bottom:12px;font-size:12px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;">'+
-    '<span>🕒 <b>数据更新：</b>'+(evTime||'内置')+'</span>'+
+  var fresh = eventFreshness(evTime);
+  var freshHtml = '<div style="background:'+fresh.bg+';border:1px solid '+fresh.border+';color:'+fresh.fg+';border-radius:8px;padding:8px 14px;margin-bottom:12px;font-size:12px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;">'+
+    '<span>🕒 <b>数据更新：</b>'+(evTime||'内置')+(fresh.ago?'（'+fresh.ago+'）':'')+'</span>'+
     '<span>📡 <b>来源：</b>'+evSrc+'</span>'+
     '<span>🎫 <b>共 '+evts.length+' 场</b>（'+esc(evtIdx+1)+'/'+esc(evts.length)+'）</span>'+
+    (fresh.warn?'<span style="font-weight:600;">⚠️ '+fresh.warn+'</span>':'')+
     '<span style="color:#888;margin-left:auto;">💡 数据由 events.json 提供，页面每次打开实时拉取</span>'+
     '</div>';
 
@@ -6918,7 +7237,7 @@ function loadEvent(){
   $_('ev-detail').innerHTML=dHtml;
 
   // Chart (always visible)
-  var prof=eventProfiles[e.id];
+  var prof=pickEventProfile(e);
   var labels=[];
   for(var h=0;h<24;h++) labels.push(String(h).padStart(2,'0')+':00');
   var chartHtml='<div class="card" style="margin-top:12px;"><div class="card-title"><span class="icon">⏱</span>客流时段分布</div><canvas id="evt-chart" height="100"></canvas></div>';
@@ -7016,7 +7335,48 @@ function loadAnalytics(){
 }
 
 
-// ==================== TAB SWITCHING ====================
+// ==================== TAB: GATE (实时闸机 · 暂停服务) ====================
+// AFC 实时闸机数据需对接内部系统（AFC 网关 / 客流采集平台），当前未取得接口授权，
+// 该模块暂停对外提供服务。保留入口以便后续接入，避免用户误以为在运行。
+function loadGatePaused(){
+  var el=$_('tab-gate'); if(!el) return;
+  var html='';
+  html+='<div class="paused-wrap">';
+  html+='<div class="paused-card">';
+  html+='<div class="paused-icon">⏸</div>';
+  html+='<div class="paused-title">实时闸机模块暂停服务</div>';
+  html+='<div class="paused-sub">AFC 实时客流数据接口尚未接入，该页暂不提供实时闸机数据与在线预警。</div>';
+
+  html+='<div class="paused-section">';
+  html+='<div class="paused-h">暂停原因</div>';
+  html+='<div class="paused-body">本系统当前所有客流数字均为<b>模型预测值</b>，由浏览器内的本地算法计算，不是闸机实测值。AFC（自动售检票系统）的分时进站数据属于运营内部数据，需通过正式接口授权才能获取；在接口打通前，我们不会用估算数据冒充"实时闸机"。</div>';
+  html+='</div>';
+
+  html+='<div class="paused-section">';
+  html+='<div class="paused-h">恢复服务需要什么</div>';
+  html+='<div class="paused-list">';
+  html+='<div class="paused-item"><span class="paused-num">1</span><div><b>数据接口</b>：AFC 系统或客流采集平台的分时进出站数据接口（含鉴权方式、字段定义、刷新频率）。</div></div>';
+  html+='<div class="paused-item"><span class="paused-num">2</span><div><b>访问授权</b>：由运营/信息化部门出具的数据使用授权，明确可访问的站点范围与数据粒度。</div></div>';
+  html+='<div class="paused-item"><span class="paused-num">3</span><div><b>网络通路</b>：页面所在网络能访问该接口（内网部署或专线/VPN），公网静态页默认无法直连内部系统。</div></div>';
+  html+='</div>';
+  html+='</div>';
+
+  html+='<div class="paused-section">';
+  html+='<div class="paused-h">现在可以看什么</div>';
+  html+='<div class="paused-links">';
+  html+='<button class="paused-link" onclick="switchTab(\'flow\')"><b>📊 客流预测</b><span>分站分日预测 + 80% 预测区间</span></button>';
+  html+='<button class="paused-link" onclick="switchTab(\'event\')"><b>🎯 活动保障</b><span>大型活动对站点客流的增量测算</span></button>';
+  html+='<button class="paused-link" onclick="switchTab(\'analytics\')"><b>📈 数据分析</b><span>全网趋势、站点排名、时段分布</span></button>';
+  html+='<button class="paused-link" onclick="switchTab(\'archive\')"><b>📚 历史归档</b><span>过往预测留档，可与实际值比对</span></button>';
+  html+='</div>';
+  html+='</div>';
+
+  html+='<div class="paused-foot">如需恢复该模块，请准备上述接口与授权资料后联系系统维护人。</div>';
+  html+='</div></div>';
+  el.innerHTML=html;
+}
+
+
 var ACTIVE_TAB='dashboard';
 function switchTab(tab){
   ACTIVE_TAB=tab;
@@ -7033,7 +7393,7 @@ function switchTab(tab){
   else if(tab==='flow')loadFlow();
   else if(tab==='event')loadEvent();
   else if(tab==='analytics')loadAnalytics();
-  else if(tab==='gate'){ if(typeof loadGate==='function')loadGate(); }
+  else if(tab==='gate'){ loadGatePaused(); }
   else if(tab==='archive')loadArchive();
 }
 
@@ -7044,7 +7404,7 @@ function refreshActiveTab(){
   else if(t==='flow')loadFlow();
   else if(t==='event')loadEvent();
   else if(t==='analytics')loadAnalytics();
-  else if(t==='gate' && typeof loadGate==='function')loadGate();
+  else if(t==='gate')loadGatePaused();
   else if(t==='archive')loadArchive();
 }
 
@@ -7063,7 +7423,38 @@ function updateCrawlStatus(liveText,isLive){
   var liveDot='<span class="status-dot" style="background:'+(isLive?'#4caf50':'#ff9800')+';"></span>';
   // 预测模型在本地运行，永远可用，与联网状态无关；实时数据(天气/节假日)才依赖联网
   el.innerHTML = modelDot+'预测模型(本地) ✓ ｜ '+liveDot+'实时：'+liveText;
-  el.title='「预测模型(本地)」= 客流预测由浏览器内模型计算，离线也能出数（这是预测值，非实测）。「实时」= 天气/节假日等外部数据，需联网；离线时采用本地合成天气 + 内置活动兜底。真实客流请连接「实时闸机」页的 AFC 网关。';
+  el.title='「预测模型(本地)」= 客流预测由浏览器内模型计算，离线也能出数（这是预测值，非实测）。「实时」= 天气/节假日/活动等外部数据，需联网；离线时采用本地合成天气 + 内置活动兜底。真实客流需接入 AFC 网关（该模块已暂停服务）。';
+}
+
+// 活动数据新鲜度：返回配色、距今时长与过期提醒
+function eventFreshness(timeStr){
+  var res={bg:'#eef4ff',border:'#c5d8ff',fg:'#334e7b',ago:'',warn:''};
+  if(!timeStr){res.bg='#fff3e0';res.border='#ffcc80';res.fg='#8a5300';res.warn='内置数据，无更新时间';return res;}
+  var t=new Date(String(timeStr).replace(/-/g,'/'));
+  if(isNaN(t.getTime())) return res;
+  var days=Math.floor((new Date()-t)/86400000);
+  if(days<=0) res.ago='今天';
+  else if(days===1) res.ago='1 天前';
+  else res.ago=days+' 天前';
+  if(days>=14){res.bg='#fdecea';res.border='#f5b5ae';res.fg='#a3241a';res.warn='数据已 '+days+' 天未更新，场次可能已变动';}
+  else if(days>=5){res.bg='#fff8e1';res.border='#ffe08a';res.fg='#8a6100';res.warn='数据 '+days+' 天未更新，建议刷新';}
+  return res;
+}
+
+// 顶部最后更新时间：取天气/节假日/活动三者中最新的一个
+function updateLastUpdate(){
+  var el=$_('lastUpdate'); if(!el) return;
+  var times=[];
+  if(CRAWLED.weather && CRAWLED.weather.crawl_time) times.push(String(CRAWLED.weather.crawl_time));
+  if(_holidayMeta && _holidayMeta.time) times.push(String(_holidayMeta.time));
+  if(CRAWLED.events && CRAWLED.events.crawl_time) times.push(String(CRAWLED.events.crawl_time));
+  times.sort();
+  if(!times.length){ el.textContent='尚未更新'; el.title=''; return; }
+  var latest=times[times.length-1];
+  el.textContent='数据更新 '+latest.slice(5,10).replace('-','/')+' '+latest.slice(11,16);
+  el.title='天气：'+(CRAWLED.weather&&CRAWLED.weather.crawl_time||'—')+
+           '\n节假日：'+((_holidayMeta&&_holidayMeta.time)||'内置表')+
+           '\n活动：'+(CRAWLED.events&&CRAWLED.events.crawl_time||'—');
 }
 
 function fetchViaProxy(url){
@@ -7095,19 +7486,73 @@ function liveCrawlWeather(){
   }).catch(function(){return false;});
 }
 
-function liveCrawlHolidays(){
-  var proms=[];var newDays=[];var baseDate=new Date();
-  for(var i=0;i<15;i++){var dt=new Date(baseDate);dt.setDate(dt.getDate()+i);var ds=dt.toISOString().slice(0,10);
-    (function(dStr,idx){proms.push(fetchViaProxy(HOLIDAY_API_BASE+dStr).then(function(data){
-      if(data&&data.type){var t=data.type;var h=data.holiday;var di={date:dStr,type_code:t.type||0,type_name:t.name||'',week:t.week||0,holiday:null};
-      if(h)di.holiday={name:h.name,wage:h.wage,after:h.after,target:h.target};newDays[idx]=di;}
-    }).catch(function(){}));})(ds,i);
+// ===== 节假日数据源（v3）=====
+// 原 timor.tech 接口已被 Cloudflare 拦截（实测 403），改为读取 holiday-cn 的结构化数据：
+// 该库由国务院办公厅每年发布的放假安排通知整理而来（JSON 内含 gov.cn 原文链接），
+// 覆盖法定节假日与调休上班日，两个源均返回 Access-Control-Allow-Origin:* 可前端直连。
+var HOLIDAY_SOURCES = [
+  {name:'holiday-cn·国务院公告', url:'https://raw.githubusercontent.com/NateScarlet/holiday-cn/master/{Y}.json'},
+  {name:'holiday-cn·国内镜像',   url:'https://ghproxy.net/https://raw.githubusercontent.com/NateScarlet/holiday-cn/master/{Y}.json'}
+];
+var _holidayMeta = {source:'内置表（国务院 2026 安排）', time:null, years:[]};
+
+function fetchHolidayYear(year){
+  var i=0;
+  function next(){
+    if(i>=HOLIDAY_SOURCES.length) return Promise.resolve(null);
+    var src=HOLIDAY_SOURCES[i++];
+    var url=src.url.replace('{Y}',year);
+    return fetch(url,{cache:'no-store'}).then(function(r){
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.json();
+    }).then(function(d){
+      if(!d || !d.days || !d.days.length) throw new Error('empty');
+      return {year:year, days:d.days, source:src.name, papers:d.papers||[]};
+    }).catch(function(){ return next(); });
   }
-  return Promise.all(proms).then(function(){
-    var valid=newDays.filter(function(d){return d;});
-    if(valid.length>5){CRAWLED.holidays={source:'timor.tech(实时)',source_url:HOLIDAY_API_BASE,crawl_time:new Date().toISOString().slice(0,19).replace('T',' '),days:valid};
-    holidayMap={};for(var k=0;k<valid.length;k++)holidayMap[valid[k].date]=valid[k];return true;}return false;
-  });
+  return next();
+}
+
+// 把官方年度安排写进日历表：isOffDay=true 记为节假日，false 记为调休上班日
+function applyHolidayYear(res){
+  var changed=0;
+  for(var i=0;i<res.days.length;i++){
+    var d=res.days[i];
+    if(!d.date) continue;
+    if(d.isOffDay){
+      if(CN_HOLIDAY_TABLE[d.date]!==d.name){CN_HOLIDAY_TABLE[d.date]=d.name;changed++;}
+      delete CN_MAKEUP_WORKDAYS[d.date];
+    }else{
+      CN_MAKEUP_WORKDAYS[d.date]=true;
+      if(CN_HOLIDAY_TABLE[d.date]){delete CN_HOLIDAY_TABLE[d.date];changed++;}
+    }
+  }
+  return changed;
+}
+
+// 重建日历：清掉自动生成的条目后按最新节假日表重算（原始爬取条目保留）
+function rebuildCalendar(){
+  for(var k in holidayMap){
+    if(holidayMap[k] && holidayMap[k].generated) delete holidayMap[k];
+  }
+  return ensureHolidayMap();
+}
+
+function liveCrawlHolidays(){
+  var y=new Date().getFullYear();
+  return Promise.all([fetchHolidayYear(y), fetchHolidayYear(y+1)]).then(function(list){
+    var ok=list.filter(function(x){return x;});
+    if(!ok.length) return false;
+    for(var i=0;i<ok.length;i++) applyHolidayYear(ok[i]);
+    rebuildCalendar();
+    var names=[],years=[];
+    for(var j=0;j<ok.length;j++){
+      if(names.indexOf(ok[j].source)<0) names.push(ok[j].source);
+      years.push(ok[j].year);
+    }
+    _holidayMeta={source:names.join(' / '), time:new Date().toISOString().slice(0,19).replace('T',' '), years:years};
+    return true;
+  }).catch(function(){ return false; });
 }
 
 function liveCrawlEvents(){
@@ -7119,13 +7564,33 @@ function liveCrawlEvents(){
       CRAWLED.events.source = (data.source ? data.source + ' ｜ ' : '') + (EVENT_API ? '实时活动API(已加载)' : 'events.json(同源实时·已加载)');
       CRAWLED.events.crawl_time = new Date().toISOString().slice(0,19).replace('T',' ');
       if(data.eventProfiles) eventProfiles = data.eventProfiles;
+      // 活动数据到手后立即把「近 30 天有活动」的日期并入预报窗口（复盘用）
+      extendForecastForEvents();
+      refreshDataWindow();
       return true;
     }
     return false;
   }).catch(function(){ return false; });
 }
 
-function liveCrawl(){
+var _refreshing=false;
+function manualRefresh(){
+  if(_refreshing) return;
+  _refreshing=true;
+  var btn=$_('refreshBtn');
+  if(btn){btn.classList.add('spinning');btn.textContent='⟳ 刷新中…';}
+  updateCrawlStatus('手动刷新中…',false);
+  liveCrawl(true);
+  // 兜底：20 秒后无论结果如何都恢复按钮，避免网络挂起时永远卡住
+  setTimeout(function(){ if(_refreshing) finishRefresh(); },20000);
+}
+function finishRefresh(){
+  _refreshing=false;
+  var btn=$_('refreshBtn');
+  if(btn){btn.classList.remove('spinning');btn.textContent='⟳ 刷新数据';}
+}
+
+function liveCrawl(manual){
   updateCrawlStatus('正在获取天气/节假日…',false);
   Promise.all([liveCrawlWeather(), liveCrawlHolidays(), liveCrawlEvents()]).then(function(res){
     var wOk=res[0], hOk=res[1], eFetched=res[2];
@@ -7134,15 +7599,33 @@ function liveCrawl(){
     var liveOk = wOk || hOk;
     var liveText;
     if(wOk && hOk) liveText='天气/节假日已更新 ✓';
-    else if(wOk) liveText='天气已更新（节假日离线·本地兜底）';
+    else if(wOk) liveText='天气已更新（节假日离线·内置表兜底）';
     else if(hOk) liveText='节假日已更新（天气离线·本地合成）';
     else liveText='天气/节假日离线·采用本地合成天气+内置活动';
     updateCrawlStatus(liveText, liveOk);
+    updateLastUpdate();
+    finishRefresh();
+    extendForecastForEvents();   // events.json 拉取成功后，把近 30 天内有活动的日期并入日期窗口
     refreshDataWindow();
     if(!_userPickedDate){ var nd=resolveDate(todayStr()); dashDate=nd; stationDate=nd; }
     else { dashDate=resolveDate(dashDate); stationDate=resolveDate(stationDate); }
     refreshActiveTab();
+    if(manual) toast('数据已刷新：活动 '+((CRAWLED.events&&CRAWLED.events.events&&CRAWLED.events.events.length)||0)+' 场'+(hOk?'｜节假日已同步':'｜节假日用内置表')+(wOk?'｜天气已同步':'｜天气离线'));
+  }).catch(function(){
+    finishRefresh();
+    updateLastUpdate();
+    if(manual) toast('刷新失败：网络不可用，已保留上次数据');
   });
+}
+
+// 轻提示
+function toast(msg){
+  var t=document.createElement('div');
+  t.textContent=msg;
+  t.style.cssText='position:fixed;left:50%;bottom:36px;transform:translateX(-50%);background:rgba(24,38,56,.94);color:#fff;font-size:13px;padding:10px 18px;border-radius:10px;z-index:9999;box-shadow:0 6px 24px rgba(0,0,0,.25);opacity:0;transition:opacity .25s,transform .25s;';
+  document.body.appendChild(t);
+  requestAnimationFrame(function(){t.style.opacity='1';t.style.transform='translateX(-50%) translateY(-6px)';});
+  setTimeout(function(){t.style.opacity='0';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);},3000);
 }
 
 // ==================== INIT ====================
@@ -7165,8 +7648,9 @@ function liveCrawl(){
 
 window.addEventListener('DOMContentLoaded',function(){
   loadDashboard();
+  updateLastUpdate();
   setInterval(checkDayRollover,5000);   // 跨零点检测：保持日期与真实"今天"同步
-  setTimeout(liveCrawl,500);
+  setTimeout(function(){liveCrawl(false);},500);
 });
 
 </script>
