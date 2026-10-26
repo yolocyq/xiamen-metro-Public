@@ -9,6 +9,11 @@
  *   D = 本平台推算（基于上述数据的外推，误差不可控，页面必须显式标注）
  * =================================================================== */
 
+/* ---------- 0. 试乘期声明（全站显著展示） ---------- */
+/* 用户原话，不做改写。放在每个页面的显著位置，防止把样板量当成预测结论使用。 */
+var TRIAL_NOTICE = "新线现在还是在试乘阶段，客流量有一个很大的特征，就是很大一部分人都是体验性乘坐不适合拿来做客流预测的基准和参考，会有很大的偏差，现在只做一个样板，后续客流日常化之后导入真实数据再进行预测。";
+var TRIAL_NOTICE_SHORT = "试乘期客流含大量体验性乘坐，不可作为预测基准。当前仅为样板。";
+
 /* ---------- 1. 线路元信息 ---------- */
 var LINES = {
   "4": {
@@ -41,7 +46,7 @@ var LINES = {
     color: "#7B2CBF",           /* 缤纷紫 C50 M90 Y0 K0 —— 厦门地铁官方标志色 */
     lengthKm: 28.3,             /* A: 厦门日报 2026-07-31 */
     stationCountTotal: 20,      /* A: 同上 */
-    stationCountOpen: 18,       /* A: 本地宝时刻表，石美、龙江明珠暂无首末班时刻 */
+    stationCountOpen: 17,       /* B: 本地宝时刻表 + 用户核实，陈井、石美、龙江明珠 3 站暂缓 */
     designSpeed: 80,            /* A: 福建日报 2026-09-16 */
     goa: "GoA4 全自动运行",
     openDate: "2026-09-16",
@@ -53,7 +58,7 @@ var LINES = {
       "华侨大学站实现地铁与 BRT 免安检直接换乘"
     ],
     notes: [
-      "石美、龙江明珠两站在本地宝时刻表中无首末班时刻，判定为暂缓开通",
+      "陈井、石美、龙江明珠 3 站暂缓开通，全程不参与预测——未开通站点不臆测客流，预测值不做估算",
       "试乘期间开行「华侨大学—角江路」交路，角江路为当前实际运营终点"
     ]
   }
@@ -99,7 +104,7 @@ var STATIONS = [
   { line:"6", name:"杏滨",         seq:6,  district:"集美区",   type:"商圈", catchment:3, transfers:[],            brt:false, terminal:false, status:"open" },
   { line:"6", name:"碑头",         seq:7,  district:"集美区",   type:"居住", catchment:2, transfers:[],            brt:false, terminal:false, status:"open" },
   { line:"6", name:"西滨",         seq:8,  district:"集美区",   type:"居住", catchment:2, transfers:[],            brt:false, terminal:false, status:"open" },
-  { line:"6", name:"陈井",         seq:9,  district:"集美区",   type:"居住", catchment:2, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"6", name:"陈井",         seq:9,  district:"集美区",   type:"居住", catchment:2, transfers:[],            brt:false, terminal:false, status:"pending" },
   { line:"6", name:"马銮中心",     seq:10, district:"海沧区",   type:"换乘", catchment:4, transfers:["2号线"],     brt:false, terminal:false, status:"open" },
   { line:"6", name:"鼎美",         seq:11, district:"海沧区",   type:"换乘", catchment:2, transfers:["2号线"],     brt:false, terminal:false, status:"open" },
   { line:"6", name:"林埭",         seq:12, district:"海沧区",   type:"商圈", catchment:3, transfers:[],            brt:false, terminal:false, status:"open" },
@@ -176,8 +181,14 @@ var ANCHORS = [
 /* ---------- 6. 显式假设清单 ---------- */
 /* 凡属 D 级推算，都必须在这里登记，页面上直接对用户展示 */
 var ASSUMPTIONS = [
+  { id:"trial_period", name:"试乘期客流不作为预测基准", level:"A",
+    basis:"新线开通初期，体验性、观光性乘坐占比很高，这部分需求在客流日常化后会大幅消失。用它标定基准，会把一次性的新鲜感固化成常态。",
+    note:"因此本平台当前只做功能样板，不把任何数值当作预测结论；待客流日常化后再导入实际数据重标定" },
+  { id:"pending_zero", name:"暂缓开通站点不产生预测值", level:"A",
+    basis:"未开通 = 没有客流。任何为其填写数值的做法都属于臆测。",
+    note:"陈井、石美、龙江明珠 3 站已从权重分配中整体排除，页面上只标注状态，不出数" },
   { id:"newline_baseline_6", name:"6 号线稳定期日均基准 48,000 人次", level:"D",
-    basis:"试乘首日观测 70,000 ÷ 首日放大系数 1.45", note:"见下方 novelty 模型" },
+    basis:"试乘首日观测 70,000 ÷ 首日放大系数 1.45", note:"见下方 novelty 模型；该基准为免费试乘口径，再乘 0.86 折算为收费口径" },
   { id:"newline_baseline_4", name:"4 号线稳定期日均基准 32,000 人次", level:"D",
     basis:"无首日总量观测。按站点权重法分配后，以厦门北站↔官任的进站量比值跨线推算", note:"本平台置信度最低的一项，强烈建议用真实数据导入替换" },
   { id:"novelty", name:"新线「尝鲜系数」1 + 0.45·e^(−t/35)", level:"C",
@@ -192,9 +203,11 @@ var ASSUMPTIONS = [
     basis:"无官方换乘量数据。按 7 座换乘站在各自线路 45 个 BRT 站中的权重占比推算", note:"真实值需 AFC 或 BRT 闸机配对数据才能确立" }
 ];
 
-/* ---------- 7. 运行参数（可在页面上调整） ---------- */
+/* ---------- 7. 运行参数 ---------- */
+/* 注意：票制开关已从界面移除。原因——试乘期客流本身不可作为基准，
+ * 所以模型统一输出「正式收费运营后的常态客流」，票制系数固定取 0.86。 */
 var RUNTIME = {
-  fareMode: "free",       /* free = 免费试乘 | paid = 正式收费运营 */
+  fareMode: "paid",       /* 固定为正式收费口径；界面不再提供切换 */
   applyNovelty: true,     /* 是否启用新线尝鲜衰减 */
   applyWeather: true
 };
