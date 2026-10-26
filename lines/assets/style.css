@@ -333,6 +333,10 @@ details.tr .tr-body td:last-child { color: var(--c-text-3); font-size: 12px; }
   font-size: 12px; color: var(--c-text-3); text-align: center; line-height: 1.9;
 }
 
+/* ---------- 背景水印（全局平铺，不拦截操作） ---------- */
+.wm{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden;}
+.wm span{position:absolute;font-size:28px;color:rgba(0,0,0,0.03);transform:rotate(-25deg);white-space:nowrap;user-select:none;font-weight:700;}
+
 /* ---------- 响应式 ---------- */
 @media (max-width: 980px) {
   .g4 { grid-template-columns: repeat(2, 1fr); }
