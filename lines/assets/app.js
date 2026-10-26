@@ -10,7 +10,6 @@ var App = (function () {
     weather: "晴",
     lineId: "4",
     station: "",
-    brtIdx: 0,
     records: [],        /* 导入的记录 */
     fields: {},         /* 字段映射 */
     fileName: "",       /* 本次导入的文件名，写入学习履历 */
@@ -25,11 +24,11 @@ var App = (function () {
       .replace(/"/g, "&quot;");
   }
 
-  /* 所有客流量一律四舍五入到千位。
-   * 这样做的现实理由：预测本身的误差远大于百位/十位，保留到个位会给出虚假的精确感。
-   * 千位以下不足 500 的，取整后为 0。 */
-  function roundK(n) { return Math.round((Number(n) || 0) / 1000) * 1000; }
-  function fmt(n) { return roundK(n).toLocaleString("zh-CN"); }
+  /* 所有客流量一律四舍五入到百位。
+   * 模型的误差远大于十位，保留到个位只会给出虚假的精确感；但千位太粗，
+   * 分时曲线与中小站点的日客流会被抹成 0，因此统一取百位。 */
+  function round100(n) { return Math.round((Number(n) || 0) / 100) * 100; }
+  function fmt(n) { return round100(n).toLocaleString("zh-CN"); }
   /* 非客流数值（记录条数、站数、样本天数等）不参与取整 */
   function fmtInt(n) { return Math.round(Number(n) || 0).toLocaleString("zh-CN"); }
   function pct(n, d) { return n == null ? "—" : (n * 100).toFixed(d == null ? 1 : d) + "%"; }
@@ -112,14 +111,14 @@ var App = (function () {
       data: {
         labels: HOURS,
         datasets: [
-          { label: "4 号线", data: l4.hourly.map(roundK), borderColor: "#E60012", backgroundColor: "rgba(230,0,18,.14)", fill: true, tension: .35, pointRadius: 2, borderWidth: 2 },
-          { label: "6 号线", data: l6.hourly.map(roundK), borderColor: "#7B2CBF", backgroundColor: "rgba(123,44,191,.14)", fill: true, tension: .35, pointRadius: 2, borderWidth: 2 }
+          { label: "4 号线", data: l4.hourly.map(round100), borderColor: "#E60012", backgroundColor: "rgba(230,0,18,.14)", fill: true, tension: .35, pointRadius: 2, borderWidth: 2 },
+          { label: "6 号线", data: l6.hourly.map(round100), borderColor: "#7B2CBF", backgroundColor: "rgba(123,44,191,.14)", fill: true, tension: .35, pointRadius: 2, borderWidth: 2 }
         ]
       },
       options: baseOpts()
     });
 
-    /* 构成（只含两条轨道线，不掺 BRT） */
+    /* 构成（只含两条轨道线） */
     var sum2 = l4.total + l6.total;
     chart("ovLine", "cOvLine", {
       type: "doughnut",
@@ -171,9 +170,7 @@ var App = (function () {
         + '<td><span class="tag t-gray">暂缓开通</span></td>'
         + '<td style="font-size:12.5px;color:#5a6b7d">不纳入权重分配，不产生预测值</td></tr>';
     });
-    h += '</tbody></table></div>'
-      + '<div class="note note-info" style="margin-top:10px">未开通站点没有客流可言，任何数值都只能是臆测，因此本平台一律不出数。'
-      + '待这些站点开通并有稳定客流后，把 <code>data.js</code> 中对应的 <code>status</code> 改为 <code>"open"</code> 即可自动纳入。</div>';
+    h += '</tbody></table></div>';
     $("ovPending").innerHTML = h;
   }
 
@@ -308,7 +305,7 @@ var App = (function () {
       type: "bar",
       data: {
         labels: HOURS,
-        datasets: [{ label: r.lineName + " 分时客流", data: r.hourly.map(roundK), backgroundColor: colors, borderRadius: 3, borderSkipped: false }]
+        datasets: [{ label: r.lineName + " 分时客流", data: r.hourly.map(round100), backgroundColor: colors, borderRadius: 3, borderSkipped: false }]
       },
       options: baseOpts({ plugins: { legend: { display: false }, tooltip: baseOpts().plugins.tooltip } })
     });
@@ -317,7 +314,7 @@ var App = (function () {
       type: "bar",
       data: {
         labels: r.rows.map(function (s) { return s.name; }),
-        datasets: [{ label: "日客流", data: r.rows.map(function (s) { return roundK(s.daily); }), backgroundColor: LINES[S.lineId].color, borderRadius: 3 }]
+        datasets: [{ label: "日客流", data: r.rows.map(function (s) { return round100(s.daily); }), backgroundColor: LINES[S.lineId].color, borderRadius: 3 }]
       },
       options: baseOpts({
         indexAxis: "y",
@@ -355,7 +352,6 @@ var App = (function () {
       + '<div class="hint">' + esc(st.district) + '　|　'
       + '<span class="tag t-gray">' + esc(st.type) + '</span>　|　' + p.dayLabel
       + (st.transfers.length ? '　|　换乘 ' + st.transfers.join("、") : '')
-      + (st.brt ? '　|　<span class="tag t-brt">BRT 换乘</span>' : '')
       + (st.terminal ? '　|　<span class="tag t-blue">端点站</span>' : '')
       + '</div>'
       + '<div class="chart-box tall"><canvas id="cStHour"></canvas></div></div>';
@@ -396,7 +392,7 @@ var App = (function () {
     });
     chart("stHour", "cStHour", {
       type: "bar",
-      data: { labels: HOURS, datasets: [{ label: st.name + " 分时客流", data: p.hourly.map(roundK), backgroundColor: colors, borderRadius: 3, borderSkipped: false }] },
+      data: { labels: HOURS, datasets: [{ label: st.name + " 分时客流", data: p.hourly.map(round100), backgroundColor: colors, borderRadius: 3, borderSkipped: false }] },
       options: baseOpts({ plugins: { legend: { display: false }, tooltip: baseOpts().plugins.tooltip } })
     });
 
@@ -409,135 +405,7 @@ var App = (function () {
     if (el2) el2.textContent = "同线路内排序";
   }
 
-  /* ================= 3. BRT 换乘页 ================= */
-  function initBrtPage() {
-    var sel = $("brtSel");
-    sel.innerHTML = BRT_TRANSFER.map(function (b, i) {
-      return '<option value="' + i + '"' + (i === S.brtIdx ? " selected" : "") + '>'
-        + esc(b.station) + '　（' + b.metroLine + '号线 × ' + esc(b.brtLine) + '）</option>';
-    }).join("");
-    sel.onchange = function () { S.brtIdx = +this.value; renderBrtPage(); };
-  }
-
-  function renderBrtPage() {
-    var bt = BRT_TRANSFER[S.brtIdx];
-    var r = Model.predictBRT(bt, S.date, S.weather);
-
-    /* 先把「是否经过验证」这件事说清楚，避免数值被误当成实测结论 */
-    $("brtVerified").innerHTML =
-      '<b>这些换乘客流经过验证了吗？——没有。</b><br>'
-      + '目前能拿到的公开数据只有两类：一是 BRT 全网日均 <b>' + fmtInt(BRT_BASE.dailyInbound) + '</b> 人次'
-      + '（2025 年全年 7861 万人次，厦门市财政局答复函）；二是试乘首日与第 3 日的 BRT 单日 23.08 万、24.32 万人次（媒体报道）。'
-      + '这两类都是 <b>BRT 全网总客运量</b>，不是「BRT 与地铁之间的换乘客流」，口径不同，<b>不能用来校验本页结果</b>。<br>'
-      + '本页所用的换乘系数 0.34（新线接入站）/ 0.28（既有站）没有任何官方换乘量数据支撑，属推算值。'
-      + '要真正确立这个系数，需要 AFC 与 BRT 闸机在同一时段、同一批乘客上的配对数据，目前拿不到。'
-      + '因此本模块只提供「量级与时间形态」的参考，不能作为运营依据。';
-
-    var h = '<div class="note note-info">'
-      + '<b>' + esc(bt.station) + '</b>　' + esc(bt.note)
-      + '<br>通勤形态：<span class="tag t-blue">' + esc(r.peakBiasText) + '</span>'
-      + '　接驳线路：<span class="tag t-brt">' + esc(bt.brtLine) + '</span>'
-      + '</div>';
-    $("brtMeta").innerHTML = h;
-
-    var morningShare = r.daily ? r.morningPeak / r.daily : 0;
-    var eveningShare = r.daily ? r.eveningPeak / r.daily : 0;
-
-    var box = $('brtResult');
-    box.innerHTML = '<div class="grid g4">'
-      + kpi("换乘客流预测", fmt(r.daily), "人次/日", "区间 " + fmt(r.interval.low) + " ~ " + fmt(r.interval.high), "", "kb")
-      + kpi("早高峰 7-9 时", fmt(r.morningPeak), "人次", "占全天 " + pct(morningShare), "", "kb")
-      + kpi("晚高峰 17-19 时", fmt(r.eveningPeak), "人次", "占全天 " + pct(eveningShare), "", "kb")
-      + kpi("换乘系数", r.transferRatio.toFixed(3), "", r.isNew ? "新线接入站，取 0.34" : "既有换乘站，取 0.28", "", "kb")
-      + '</div>'
-      + '<div class="card"><h2>' + esc(bt.station) + ' · 换乘客流 24 小时分布</h2>'
-      + '<div class="hint">进站 / 出站分离显示。注意 ' + esc(r.peakBiasText) + ' 的特征：早晚高峰的进出站主导地位是相反的。</div>'
-      + '<div class="chart-box tall"><canvas id="cBrtHour"></canvas></div>'
-      + '<div class="note note-info" style="margin-top:10px">'
-      + '早高峰 7:30—9:00 峰值约 8:00（σ=0.62，窄而尖，上班时间刚性）；'
-      + '晚高峰 17:30—19:00 峰值约 18:10（σ=0.95，宽而缓，下班时间分散）。'
-      + '地铁侧客流量级依据：<b>' + esc(r.metroSrc) + '</b>。'
-      + '</div>'
-      + '<details class="tr"><summary>查看逐时明细（进站 / 出站 / 合计）</summary><div class="tr-body">'
-      + '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>时段</th><th class="num">进站</th><th class="num">出站</th><th class="num">合计</th></tr></thead><tbody>'
-      + r.hourlyTotal.map(function (v, i) {
-        return '<tr><td>' + i + ':00—' + (i + 1) + ':00</td><td class="num">' + fmt(r.hourlyIn[i]) + '</td>'
-          + '<td class="num">' + fmt(r.hourlyOut[i]) + '</td><td class="num"><b>' + fmt(v) + '</b></td></tr>';
-      }).join("")
-      + '</tbody></table></div></div></details></div>';
-
-    chart("brtHour", "cBrtHour", {
-      type: "line",
-      data: {
-        labels: HOURS,
-        datasets: [
-          { label: "进站", data: r.hourlyIn.map(roundK), borderColor: "#008752", backgroundColor: "rgba(0,135,82,.12)", fill: true, tension: .32, pointRadius: 2, borderWidth: 2 },
-          { label: "出站", data: r.hourlyOut.map(roundK), borderColor: "#0f4c81", backgroundColor: "rgba(15,76,129,.12)", fill: true, tension: .32, pointRadius: 2, borderWidth: 2, borderDash: [5, 3] },
-          { label: "合计", data: r.hourlyTotal.map(roundK), borderColor: "#b91c1c", backgroundColor: "rgba(185,28,28,0)", tension: .32, pointRadius: 0, borderWidth: 1.5 }
-        ]
-      },
-      options: baseOpts()
-    });
-
-    renderBrtTable();
-    renderBrtWhy();
-  }
-
-  function renderBrtTable() {
-    var rows = BRT_TRANSFER.map(function (b) { return Model.predictBRT(b, S.date, S.weather); });
-    var h = '<thead><tr><th>换乘站</th><th>BRT 线路</th><th>通勤形态</th><th class="num">地铁侧基准（输入）</th>'
-      + '<th class="num">换乘系数</th><th class="num">换乘客流</th><th class="num">早高峰占比</th></tr></thead><tbody>';
-    rows.forEach(function (r) {
-      h += '<tr><td><b>' + esc(r.station) + '</b>' + (r.isNew ? ' <span class="tag t-amber">新线</span>' : '') + '</td>'
-        + '<td style="font-size:12.5px">' + esc(r.brtLine) + '</td>'
-        + '<td style="font-size:12.5px">' + esc(r.peakBiasText) + '</td>'
-        + '<td class="num">' + fmt(r.metroDaily) + '</td>'
-        + '<td class="num">' + r.transferRatio.toFixed(3) + '</td>'
-        + '<td class="num"><b>' + fmt(r.daily) + '</b></td>'
-        + '<td class="num">' + pct(r.daily ? r.morningPeak / r.daily : 0) + '</td></tr>';
-    });
-    var tot = rows.reduce(function (a, b) { return a + b.daily; }, 0);
-    h += '</tbody><tfoot><tr><td colspan="5">7 座换乘站合计</td><td class="num">' + fmt(tot) + '</td>'
-      + '<td class="num">' + pct(rows.reduce(function (a, b) { return a + b.morningPeak; }, 0) / tot) + '</td></tr></tfoot>';
-    $("brtTable").innerHTML = h;
-  }
-
-  function renderBrtWhy() {
-    var b = BRT_METHOD;
-    var h = '<div class="note note-info">';
-    b.reason.forEach(function (r) { h += '· ' + esc(r) + '<br>'; });
-    h += '</div>';
-
-    h += '<h3>时间分布模型</h3><div class="formula-box">';
-    b.formula.forEach(function (f) { h += esc(f) + '\n'; });
-    h += '</div>';
-
-    h += '<h3>通勤形态与进出站主导方向</h3><div class="tbl-wrap"><table class="tbl">'
-      + '<thead><tr><th>形态</th><th>含义</th><th class="num">早峰 A_m</th><th class="num">晚峰 A_e</th><th>说明</th></tr></thead><tbody>';
-    b.biasTable.forEach(function (r) {
-      h += '<tr><td><span class="tag t-blue">' + esc(r.name) + '</span></td><td>' + esc(r.bias) + '</td>'
-        + '<td class="num">' + r.Am.toFixed(2) + '</td><td class="num">' + r.Ae.toFixed(2) + '</td>'
-        + '<td style="font-size:12.5px">' + esc(r.mean) + '</td></tr>';
-    });
-    h += '</tbody></table></div>';
-
-    h += '<h3>换乘系数的取值逻辑 ' + relTag(b.transferRatio.level) + '</h3>'
-      + '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>情形</th><th class="num">系数</th><th>理由</th></tr></thead><tbody>';
-    b.transferRatio.val.forEach(function (r) {
-      h += '<tr><td>' + esc(r.case) + '</td><td class="num"><b>' + esc(r.coef) + '</b></td>'
-        + '<td style="font-size:12.5px">' + esc(r.why) + '</td></tr>';
-    });
-    h += '</tbody></table></div>';
-    h += '<div class="note note-danger"><b>必须说明：</b>' + esc(b.transferRatio.warn) + '</div>';
-
-    h += '<div class="note note-info"><b>BRT 全网参照：</b>2025 年 BRT 全年客运 7861 万人次，日均 '
-      + fmt(BRT_BASE.dailyInbound) + ' 人次；同期地铁日均 ' + fmt(BRT_BASE.metroDaily)
-      + ' 人次，地铁分担率 35.8%。来源：' + esc(BRT_BASE.source) + ' ' + relTag(BRT_BASE.reliability) + '</div>';
-
-    $("brtWhy").innerHTML = h;
-  }
-
-  /* ================= 4. 实际数据导入 ================= */
+  /* ================= 3. 实际数据导入 ================= */
   function initCalibPage() {
     var dz = $("dropZone"), fi = $("fileInput");
     dz.onclick = function () { fi.click(); };
@@ -1047,75 +915,11 @@ var App = (function () {
     $("btnApply").disabled = false;
   }
 
-  /* ================= 5. 方法页 ================= */
-  function renderMethodPage() {
-    /* steps */
-    var h = "";
-    METHOD_STEPS.forEach(function (s) {
-      h += '<div class="step"><div class="step-h"><span class="step-n">' + s.n + '</span>'
-        + '<span class="step-t">' + esc(s.title) + '</span>' + relTag(s.level) + '</div>'
-        + '<div class="step-f">' + esc(s.formula) + '</div>'
-        + '<div class="step-w"><b>取这个值 / 这么做的理由：</b>' + esc(s.why) + '</div>'
-        + '<div class="step-w" style="color:#8a99a8;font-size:12.5px">当前取值：' + esc(s.param) + '</div></div>';
-    });
-    $("stepsBox").innerHTML = h;
-
-    /* papers */
-    var hp = "", curGroup = "";
-    PAPERS.forEach(function (p) {
-      if (p.group !== curGroup) {
-        curGroup = p.group;
-        hp += '<h3 style="margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid #e2e8f0">' + esc(curGroup) + '</h3>';
-      }
-      hp += '<div class="paper ' + (p.level === "核心" ? "core" : "") + '">'
-        + '<div class="paper-t">' + esc(p.title) + '</div>'
-        + '<div class="paper-m">' + esc(p.author) + '　·　' + esc(p.source)
-        + '　<span class="tag t-blue">' + esc(p.level) + '</span></div>'
-        + '<div class="paper-row"><span class="k">核心结论</span><span class="v">' + esc(p.finding) + '</span></div>'
-        + '<div class="paper-row why"><span class="k">为什么选</span><span class="v">' + esc(p.why) + '</span></div>'
-        + '<div class="paper-row"><span class="k">用在哪</span><span class="v">' + esc(p.use) + '</span></div>'
-        + '<div class="paper-row"><span class="k">落地情况</span><span class="v">'
-        + '<span class="tag ' + (p.status.indexOf("已落地") >= 0 ? "t-green" : (p.status.indexOf("架构") >= 0 || p.status.indexOf("战略") >= 0 ? "t-purple" : "t-gray")) + '">'
-        + esc(p.status) + '</span></span></div>'
-        + '</div>';
-    });
-    $("papersBox").innerHTML = hp;
-
-    /* sources */
-    var hs = '<thead><tr><th style="width:60px">可靠度</th><th>来源</th><th>用途</th><th>备注</th></tr></thead><tbody>';
-    SOURCES.forEach(function (s) {
-      hs += '<tr><td>' + relTag(s.rel) + '</td><td><b>' + esc(s.name) + '</b></td>'
-        + '<td style="font-size:12.5px">' + esc(s.use) + '</td>'
-        + '<td style="font-size:12px;color:#5a6b7d">' + esc(s.note) + '</td></tr>';
-    });
-    hs += '</tbody>';
-    $("srcTable").innerHTML = hs;
-
-    /* limitations */
-    var hl = "";
-    LIMITATIONS.forEach(function (l) {
-      var cls = l.level === "严重" ? "note-danger" : (l.level === "较重" ? "note-warn" : "note-info");
-      hl += '<div class="note ' + cls + '"><b>【' + l.level + '】</b>' + esc(l.text) + '</div>';
-    });
-    $("limitBox").innerHTML = hl;
-
-    /* assumptions */
-    var ha = '<thead><tr><th style="width:60px">等级</th><th>假设项</th><th>依据</th><th>说明</th></tr></thead><tbody>';
-    ASSUMPTIONS.forEach(function (a) {
-      ha += '<tr><td>' + relTag(a.level) + '</td><td><b>' + esc(a.name) + '</b></td>'
-        + '<td style="font-size:12.5px">' + esc(a.basis) + '</td>'
-        + '<td style="font-size:12px;color:#5a6b7d">' + esc(a.note) + '</td></tr>';
-    });
-    ha += '</tbody>';
-    $("assumpTable").innerHTML = ha;
-  }
-
   /* ================= 渲染调度 ================= */
   function renderAll() {
     S.dayLabel = { holiday: "法定节假日", makeup: "调休补班", saturday: "周六", sunday: "周日", weekday: "工作日" }[Model.dayClass(S.date)];
     renderOverview();
     renderLinePage();
-    renderBrtPage();
     updateChips();
   }
 
@@ -1172,9 +976,7 @@ var App = (function () {
     });
 
     initLinePage();
-    initBrtPage();
     initCalibPage();
-    renderMethodPage();
     renderAll();
 
     $("footDate").textContent = todayStr();
