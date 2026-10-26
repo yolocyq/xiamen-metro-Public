@@ -11,6 +11,9 @@
 
 var Model = (function () {
 
+  /* 统一取整：所有对外客流数值四舍五入到千位 */
+  function roundK(n) { return Math.round((Number(n) || 0) / 1000) * 1000; }
+
   /* ---------- 工具 ---------- */
   function parseDate(s) {
     if (s instanceof Date) return new Date(s.getFullYear(), s.getMonth(), s.getDate());
@@ -40,7 +43,11 @@ var Model = (function () {
   /* ---------- 站点权重 ---------- */
   /* 权重法的核心假设：在无真实客流数据的情况下，
    * 站点客流吸引力可由「类型 + 换乘接入数 + 是否端点 + 腹地等级」线性加总近似。
-   * 该假设的验证：用它算出的 6 号线前 5 名，与媒体报道的进站 Top5 顺序完全一致。 */
+   *
+   * 与试乘首日媒体统计的对照：模型算出的第 1 名是官任，与该日唯一破万的站一致；
+   * 但媒体 Top5 中的角江路、角美中心、角海路并未进入模型前 5 名。
+   * 原因是首日的免费跨市尝鲜把漳州角美段短期推高，而本模型估计的是常态。
+   * 这个差异是结构性的，不应表述为「完全吻合」。 */
   function stationWeight(st) {
     var base = TYPE_WEIGHT[st.type] || 0.6;
     var tr = (st.transfers ? st.transfers.length : 0) * W_TRANSFER;
@@ -277,7 +284,7 @@ var Model = (function () {
         { k: "天气系数", v: wx.coef.toFixed(3), src: wx.detail },
         { k: "新线尝鲜系数", v: base.novelty.value.toFixed(3), src: base.novelty.note },
         { k: "票制系数", v: base.fare.value.toFixed(3), src: base.fare.note },
-        { k: "最终日客流", v: Math.round(daily).toLocaleString() + " 人次", src: "以上各项连乘" }
+        { k: "最终日客流", v: (Math.round(daily/1000)*1000).toLocaleString() + " 人次", src: "以上各项连乘，四舍五入至千位" }
       ] : [
         { k: "线路稳定期日基准", v: Math.round(base.stableBase), src: base.usedCal ? "已用导入数据校准" : "推算值 " + LINES[lineId].baselineReliability + " 级" },
         { k: "本站权重占比", v: (self.share * 100).toFixed(2) + "%", src: "权重 " + self.w.toFixed(3) + " / 线路合计" },
@@ -285,7 +292,7 @@ var Model = (function () {
         { k: "天气系数", v: wx.coef.toFixed(3), src: wx.detail },
         { k: "新线尝鲜系数", v: base.novelty.value.toFixed(3), src: base.novelty.note },
         { k: "票制系数", v: base.fare.value.toFixed(3), src: base.fare.note },
-        { k: "最终日客流", v: Math.round(daily).toLocaleString() + " 人次", src: "以上各项连乘" }
+        { k: "最终日客流", v: (Math.round(daily/1000)*1000).toLocaleString() + " 人次", src: "以上各项连乘，四舍五入至千位" }
       ]
     };
   }
