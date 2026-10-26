@@ -13,6 +13,7 @@ var App = (function () {
     brtIdx: 0,
     records: [],        /* 导入的记录 */
     fields: {},         /* 字段映射 */
+    fileName: "",       /* 本次导入的文件名，写入学习履历 */
     charts: {}          /* Chart 实例池 */
   };
 
@@ -23,7 +24,14 @@ var App = (function () {
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
   }
-  function fmt(n) { return Math.round(n).toLocaleString("zh-CN"); }
+
+  /* 所有客流量一律四舍五入到千位。
+   * 这样做的现实理由：预测本身的误差远大于百位/十位，保留到个位会给出虚假的精确感。
+   * 千位以下不足 500 的，取整后为 0。 */
+  function roundK(n) { return Math.round((Number(n) || 0) / 1000) * 1000; }
+  function fmt(n) { return roundK(n).toLocaleString("zh-CN"); }
+  /* 非客流数值（记录条数、站数、样本天数等）不参与取整 */
+  function fmtInt(n) { return Math.round(Number(n) || 0).toLocaleString("zh-CN"); }
   function pct(n, d) { return n == null ? "—" : (n * 100).toFixed(d == null ? 1 : d) + "%"; }
 
   function relTag(r) {
@@ -81,33 +89,21 @@ var App = (function () {
   var HOURS = [];
   for (var i = 0; i < 24; i++) HOURS.push(i + "时");
 
-  /* ================= 1. 总览 ================= */
+  /* ================= 1. 总览（只保留主要信息） ================= */
   function renderOverview() {
     var all = Model.predictAll(S.date, S.weather);
     var l4 = all.l4, l6 = all.l6;
-
-    var legacy = estimateLegacy();
-    var total = all.total;
     var u = Math.sqrt(Math.pow(0.30, 2) + Math.pow(0.15, 2) + Math.pow(0.06, 2));
+    var mPeak = Model.sumRange(all.hourly, 7, 9);
+    var ePeak = Model.sumRange(all.hourly, 17, 19);
 
     $("ovKpi").innerHTML = [
-      kpi("双线预测总客流", fmt(total), "人次/日",
-        "区间 " + fmt(total * (1 - u)) + " ~ " + fmt(total * (1 + u)),
-        "4 号线 + 6 号线合计 · " + S.dayLabel, ""),
-      kpi("4 号线", fmt(l4.total), "人次/日",
-        l4.openCount + " 座运营站 · 峰值 " + l4.peakHour + " 时", "", "k4"),
-      kpi("6 号线", fmt(l6.total), "人次/日",
-        l6.openCount + " 座运营站 · 峰值 " + l6.peakHour + " 时", "", "k6"),
-      kpi("BRT 换乘客流", fmt(all.brtTotal), "人次/日",
-        "7 座换乘站合计 · 其中新线贡献 " + fmt(all.transferTotal), "", "kb"),
-      kpi("全网参考量级", fmt(total + legacy), "人次/日",
-        "含老三线估算 " + fmt(legacy) + "（" + S.dayLabel + "口径）", "", ""),
-      kpi("早高峰小时量", fmt(Model.sumRange(all.hourly, 7, 9)), "人次",
-        "7:00—9:59 三小时累计", "", ""),
-      kpi("晚高峰小时量", fmt(Model.sumRange(all.hourly, 17, 19)), "人次",
-        "17:00—19:59 三小时累计", "", ""),
-      kpi("不确定度", "±" + Math.round(u * 100) + "%", "",
-        "未校准：线路基准±30% · 站权重±15% · 日历天气±6%", "", "")
+      kpi("4 号线日客流", fmt(l4.total), "人次", l4.openCount + " 座运营站 · 峰值 " + l4.peakHour + " 时", "", "k4"),
+      kpi("6 号线日客流", fmt(l6.total), "人次", l6.openCount + " 座运营站 · 峰值 " + l6.peakHour + " 时", "", "k6"),
+      kpi("双线合计", fmt(all.total), "人次/日", "口径：两条线进站总量相加", "", ""),
+      kpi("早高峰 7—9 时", fmt(mPeak), "人次", "三小时累计 · 占全天 " + pct(all.total ? mPeak / all.total : 0), "", ""),
+      kpi("晚高峰 17—19 时", fmt(ePeak), "人次", "三小时累计 · 占全天 " + pct(all.total ? ePeak / all.total : 0), "", ""),
+      kpi("全天峰值小时", all.peakHour + " 时", "", fmt(all.hourly[all.peakHour]) + " 人次", "", "")
     ].join("");
 
     /* 双线 24h 曲线 */
@@ -116,19 +112,20 @@ var App = (function () {
       data: {
         labels: HOURS,
         datasets: [
-          { label: "4 号线", data: l4.hourly, borderColor: "#E60012", backgroundColor: "rgba(230,0,18,.14)", fill: true, tension: .35, pointRadius: 2, borderWidth: 2 },
-          { label: "6 号线", data: l6.hourly, borderColor: "#7B2CBF", backgroundColor: "rgba(123,44,191,.14)", fill: true, tension: .35, pointRadius: 2, borderWidth: 2 }
+          { label: "4 号线", data: l4.hourly.map(roundK), borderColor: "#E60012", backgroundColor: "rgba(230,0,18,.14)", fill: true, tension: .35, pointRadius: 2, borderWidth: 2 },
+          { label: "6 号线", data: l6.hourly.map(roundK), borderColor: "#7B2CBF", backgroundColor: "rgba(123,44,191,.14)", fill: true, tension: .35, pointRadius: 2, borderWidth: 2 }
         ]
       },
       options: baseOpts()
     });
 
-    /* 构成 */
+    /* 构成（只含两条轨道线，不掺 BRT） */
+    var sum2 = l4.total + l6.total;
     chart("ovLine", "cOvLine", {
       type: "doughnut",
       data: {
-        labels: ["4 号线", "6 号线", "BRT 换乘"],
-        datasets: [{ data: [l4.total, l6.total, all.brtTotal], backgroundColor: ["#E60012", "#7B2CBF", "#008752"], borderWidth: 2, borderColor: "#fff" }]
+        labels: ["4 号线", "6 号线"],
+        datasets: [{ data: [l4.total, l6.total], backgroundColor: ["#E60012", "#7B2CBF"], borderWidth: 2, borderColor: "#fff" }]
       },
       options: {
         responsive: true, maintainAspectRatio: false, cutout: "58%",
@@ -136,15 +133,15 @@ var App = (function () {
           legend: { position: "bottom", labels: { color: "#5a6b7d", font: { size: 12 }, boxWidth: 12, usePointStyle: true } },
           tooltip: {
             backgroundColor: "rgba(15,34,51,.94)", padding: 9, cornerRadius: 6,
-            callbacks: { label: function (c) { return c.label + "：" + fmt(c.raw) + " 人次（" + (c.raw / (l4.total + l6.total + all.brtTotal) * 100).toFixed(1) + "%）"; } }
+            callbacks: { label: function (c) { return c.label + "：" + fmt(c.raw) + " 人次（" + (sum2 ? (c.raw / sum2 * 100).toFixed(1) : 0) + "%）"; } }
           }
         }
       }
     });
 
-    /* 站点排行 */
+    /* 站点排行（只含已开通站） */
     var rows = l4.rows.concat(l6.rows).sort(function (a, b) { return b.daily - a.daily; });
-    var h = '<thead><tr><th style="width:44px">#</th><th>站名</th><th>线路</th><th>行政区</th><th>站点类型</th><th class="num">权重</th><th class="num">占比</th><th class="num">预测日客流</th><th class="num">早高峰 7-9时</th></tr></thead><tbody>';
+    var h = '<thead><tr><th style="width:44px">#</th><th>站名</th><th>线路</th><th>行政区</th><th>站点类型</th><th class="num">日客流</th><th class="num">早高峰 7-9时</th></tr></thead><tbody>';
     rows.forEach(function (r, i) {
       var rc = i < 3 ? " r" + (i + 1) : "";
       h += '<tr><td><span class="rank' + rc + '">' + (i + 1) + '</span></td>'
@@ -152,16 +149,32 @@ var App = (function () {
         + '<td><span class="tag t-line' + r.line + '">' + esc(r.lineName) + '</span></td>'
         + '<td>' + esc(r.district) + '</td>'
         + '<td><span class="tag t-gray">' + esc(r.type) + '</span></td>'
-        + '<td class="num">' + r.weight.total.toFixed(3) + '</td>'
-        + '<td class="num">' + pct(r.share, 2) + '</td>'
         + '<td class="num"><b>' + fmt(r.daily) + '</b></td>'
         + '<td class="num">' + fmt(r.morningPeak) + '</td></tr>';
     });
-    h += '</tbody><tfoot><tr><td colspan="7">合计</td><td class="num">' + fmt(total) + '</td><td class="num">' + fmt(Model.sumRange(all.hourly, 7, 9)) + '</td></tr></tfoot>';
+    h += '</tbody><tfoot><tr><td colspan="5">合计</td><td class="num">' + fmt(all.total) + '</td><td class="num">' + fmt(mPeak) + '</td></tr></tfoot>';
     $("ovRank").innerHTML = h;
 
-    /* 锚点 */
+    renderPending();
     renderAnchors();
+  }
+
+  /* 未开通站点：只列事实，不给任何数字 */
+  function renderPending() {
+    var pend = STATIONS.filter(function (s) { return s.status !== "open"; });
+    if (!pend.length) { $("ovPending").innerHTML = '<div class="note note-ok">当前线路库内无暂缓开通站点。</div>'; return; }
+    var h = '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>站名</th><th>线路</th><th>行政区</th><th>状态</th><th>预测处理</th></tr></thead><tbody>';
+    pend.forEach(function (s) {
+      h += '<tr><td><b>' + esc(s.name) + '</b></td>'
+        + '<td><span class="tag t-line' + s.line + '">' + esc(LINES[s.line].name) + '</span></td>'
+        + '<td>' + esc(s.district) + '</td>'
+        + '<td><span class="tag t-gray">暂缓开通</span></td>'
+        + '<td style="font-size:12.5px;color:#5a6b7d">不纳入权重分配，不产生预测值</td></tr>';
+    });
+    h += '</tbody></table></div>'
+      + '<div class="note note-info" style="margin-top:10px">未开通站点没有客流可言，任何数值都只能是臆测，因此本平台一律不出数。'
+      + '待这些站点开通并有稳定客流后，把 <code>data.js</code> 中对应的 <code>status</code> 改为 <code>"open"</code> 即可自动纳入。</div>';
+    $("ovPending").innerHTML = h;
   }
 
   function kpi(lb, vl, unit, ex, rg, cls) {
@@ -173,17 +186,9 @@ var App = (function () {
       + '</div>';
   }
 
-  /* 老三线参考量级：按观测基线 80 万 × 当日周内系数粗略换算 */
-  function estimateLegacy() {
-    var cls = Model.dayClass(S.date);
-    var base = 800000;
-    var c = { holiday: 1.32, saturday: 1.06, sunday: 1.02, makeup: 1.0, weekday: 1.0 }[cls];
-    if (cls === "weekday") {
-      var w = Model.dow(S.date);
-      if (w === 5) c = 1.10;
-    }
-    return Math.round(base * c);
-  }
+  /* 说明：原「全网参考量级」卡片已移除。
+   * 原因是它把老三线估算值拼进 4/6 号线，形成跨口径的加总，
+   * 容易让人误以为两条新线已计入官方全网客流——实际上并没有。 */
 
   function renderAnchors() {
     var h = "";
@@ -194,7 +199,7 @@ var App = (function () {
       a.metrics.forEach(function (m) {
         h += '<tr><td>' + relTag(m.rel) + '</td>'
           + '<td>' + esc(m.text) + '</td>'
-          + '<td class="num">' + (m.value == null ? "—" : fmt(m.value) + " " + m.unit) + '</td>'
+          + '<td class="num">' + (m.value == null ? "—" : fmtInt(m.value) + " " + m.unit) + '</td>'
           + '<td style="color:#5a6b7d;font-size:12.5px">' + esc(m.detail) + '</td></tr>';
       });
       h += '</tbody></table></div></details>';
@@ -275,11 +280,10 @@ var App = (function () {
     h += '<div class="grid g-line">';
     h += '<div class="card"><h2>分站日客流</h2><div class="chart-box tall"><canvas id="cLnRank"></canvas></div></div>';
     h += '<div class="card"><h2>明细表</h2><div class="tbl-wrap"><table class="tbl">'
-      + '<thead><tr><th>#</th><th>站名</th><th>类型</th><th class="num">权重</th><th class="num">日客流</th><th class="num">峰值时</th></tr></thead><tbody>';
+      + '<thead><tr><th>#</th><th>站名</th><th>类型</th><th class="num">日客流</th><th class="num">峰值时</th></tr></thead><tbody>';
     r.rows.forEach(function (s, i) {
       h += '<tr><td><span class="rank' + (i < 3 ? " r" + (i + 1) : "") + '">' + (i + 1) + '</span></td>'
         + '<td><b>' + esc(s.name) + '</b></td><td><span class="tag t-gray">' + esc(s.type) + '</span></td>'
-        + '<td class="num">' + s.weight.total.toFixed(3) + '</td>'
         + '<td class="num"><b>' + fmt(s.daily) + '</b></td><td class="num">' + s.peakHour + ' 时</td></tr>';
     });
     h += '</tbody></table></div></div></div>';
@@ -287,13 +291,15 @@ var App = (function () {
     /* 暂缓站提示 */
     var pend = STATIONS.filter(function (s) { return s.line === S.lineId && s.status === "pending"; });
     if (pend.length) {
-      h += '<div class="card"><h2>暂缓开通站点</h2><div class="hint">下列站点不参与客流预测</div>';
+      h += '<div class="card"><h2>暂缓开通站点（不出数）</h2>'
+        + '<div class="hint">下列站点尚未投入运营，不纳入权重分配，也不提供任何预测值</div>'
+        + '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>站名</th><th>行政区</th><th>站点类型</th><th>处理方式</th></tr></thead><tbody>';
       pend.forEach(function (s) {
-        h += '<div class="note note-warn"><b>' + esc(s.name) + '</b>（' + esc(s.district) + '）　'
-          + '在本地宝首末班时刻表中无运营时刻，判定为暂缓开通。'
-          + '若实际情况不同，可直接修改 data.js 中的 status 字段。</div>';
+        h += '<tr><td><b>' + esc(s.name) + '</b></td><td>' + esc(s.district) + '</td>'
+          + '<td><span class="tag t-gray">' + esc(s.type) + '</span></td>'
+          + '<td style="font-size:12.5px;color:#5a6b7d">排除在预测之外 · 不臆测客流</td></tr>';
       });
-      h += '</div>';
+      h += '</tbody></table></div></div>';
     }
 
     box.innerHTML = h;
@@ -302,7 +308,7 @@ var App = (function () {
       type: "bar",
       data: {
         labels: HOURS,
-        datasets: [{ label: r.lineName + " 分时客流", data: r.hourly, backgroundColor: colors, borderRadius: 3, borderSkipped: false }]
+        datasets: [{ label: r.lineName + " 分时客流", data: r.hourly.map(roundK), backgroundColor: colors, borderRadius: 3, borderSkipped: false }]
       },
       options: baseOpts({ plugins: { legend: { display: false }, tooltip: baseOpts().plugins.tooltip } })
     });
@@ -311,7 +317,7 @@ var App = (function () {
       type: "bar",
       data: {
         labels: r.rows.map(function (s) { return s.name; }),
-        datasets: [{ label: "日客流", data: r.rows.map(function (s) { return s.daily; }), backgroundColor: LINES[S.lineId].color, borderRadius: 3 }]
+        datasets: [{ label: "日客流", data: r.rows.map(function (s) { return roundK(s.daily); }), backgroundColor: LINES[S.lineId].color, borderRadius: 3 }]
       },
       options: baseOpts({
         indexAxis: "y",
@@ -364,7 +370,7 @@ var App = (function () {
     h += '</tbody><tfoot><tr><td>权重合计 w<sub>i</sub></td><td class="num">' + p.weight.total.toFixed(3) + '</td></tr></tfoot></table></div>'
       + '<div class="note note-info" style="margin-top:10px">线路内权重归一化后，本站占比 <b>' + pct(p.share, 2)
       + '</b>。' + (stCal
-        ? '本站已导入真实数据，预测直接使用校准后的基准，权重表仅作为结构参考。'
+        ? '本站已导入实际数据，预测直接使用学到的基准，权重表仅作为结构参考。'
         : '这个值乘以线路日基准，就得到本站的客流。')
       + '</div></div>';
 
@@ -377,9 +383,9 @@ var App = (function () {
     });
     h += '</tbody></table></div>'
       + '<div class="note note-warn" style="margin-top:10px">不确定度 <b>±' + Math.round(p.interval.rel * 100) + '%</b>。'
-      + (stCal ? '本站基准已用导入的真实数据校准。'
-        : (lc ? '本站未单独导入数据，仍使用「线路基准 × 权重占比」推算；线路整体基准已校准。'
-          : '本站与所在线路的基准均为推算值（D 级），建议导入真实客流数据后再据此下结论。'))
+      + (stCal ? '本站基准已用导入的实际数据学到。'
+        : (lc ? '本站未单独导入数据，仍使用「线路基准 × 权重占比」推算；线路整体基准已学到。'
+          : '本站与所在线路的基准均为推算值（D 级），建议导入实际客流数据后再据此下结论。'))
       + '</div></div>';
     h += '</div>';
 
@@ -390,7 +396,7 @@ var App = (function () {
     });
     chart("stHour", "cStHour", {
       type: "bar",
-      data: { labels: HOURS, datasets: [{ label: st.name + " 分时客流", data: p.hourly, backgroundColor: colors, borderRadius: 3, borderSkipped: false }] },
+      data: { labels: HOURS, datasets: [{ label: st.name + " 分时客流", data: p.hourly.map(roundK), backgroundColor: colors, borderRadius: 3, borderSkipped: false }] },
       options: baseOpts({ plugins: { legend: { display: false }, tooltip: baseOpts().plugins.tooltip } })
     });
 
@@ -416,6 +422,16 @@ var App = (function () {
   function renderBrtPage() {
     var bt = BRT_TRANSFER[S.brtIdx];
     var r = Model.predictBRT(bt, S.date, S.weather);
+
+    /* 先把「是否经过验证」这件事说清楚，避免数值被误当成实测结论 */
+    $("brtVerified").innerHTML =
+      '<b>这些换乘客流经过验证了吗？——没有。</b><br>'
+      + '目前能拿到的公开数据只有两类：一是 BRT 全网日均 <b>' + fmtInt(BRT_BASE.dailyInbound) + '</b> 人次'
+      + '（2025 年全年 7861 万人次，厦门市财政局答复函）；二是试乘首日与第 3 日的 BRT 单日 23.08 万、24.32 万人次（媒体报道）。'
+      + '这两类都是 <b>BRT 全网总客运量</b>，不是「BRT 与地铁之间的换乘客流」，口径不同，<b>不能用来校验本页结果</b>。<br>'
+      + '本页所用的换乘系数 0.34（新线接入站）/ 0.28（既有站）没有任何官方换乘量数据支撑，属推算值。'
+      + '要真正确立这个系数，需要 AFC 与 BRT 闸机在同一时段、同一批乘客上的配对数据，目前拿不到。'
+      + '因此本模块只提供「量级与时间形态」的参考，不能作为运营依据。';
 
     var h = '<div class="note note-info">'
       + '<b>' + esc(bt.station) + '</b>　' + esc(bt.note)
@@ -455,9 +471,9 @@ var App = (function () {
       data: {
         labels: HOURS,
         datasets: [
-          { label: "进站", data: r.hourlyIn, borderColor: "#008752", backgroundColor: "rgba(0,135,82,.12)", fill: true, tension: .32, pointRadius: 2, borderWidth: 2 },
-          { label: "出站", data: r.hourlyOut, borderColor: "#0f4c81", backgroundColor: "rgba(15,76,129,.12)", fill: true, tension: .32, pointRadius: 2, borderWidth: 2, borderDash: [5, 3] },
-          { label: "合计", data: r.hourlyTotal, borderColor: "#b91c1c", backgroundColor: "rgba(185,28,28,0)", tension: .32, pointRadius: 0, borderWidth: 1.5 }
+          { label: "进站", data: r.hourlyIn.map(roundK), borderColor: "#008752", backgroundColor: "rgba(0,135,82,.12)", fill: true, tension: .32, pointRadius: 2, borderWidth: 2 },
+          { label: "出站", data: r.hourlyOut.map(roundK), borderColor: "#0f4c81", backgroundColor: "rgba(15,76,129,.12)", fill: true, tension: .32, pointRadius: 2, borderWidth: 2, borderDash: [5, 3] },
+          { label: "合计", data: r.hourlyTotal.map(roundK), borderColor: "#b91c1c", backgroundColor: "rgba(185,28,28,0)", tension: .32, pointRadius: 0, borderWidth: 1.5 }
         ]
       },
       options: baseOpts()
@@ -469,11 +485,10 @@ var App = (function () {
 
   function renderBrtTable() {
     var rows = BRT_TRANSFER.map(function (b) { return Model.predictBRT(b, S.date, S.weather); });
-    var h = '<thead><tr><th>换乘站</th><th>地铁线路</th><th>BRT 线路</th><th>通勤形态</th><th class="num">地铁侧客流</th>'
+    var h = '<thead><tr><th>换乘站</th><th>BRT 线路</th><th>通勤形态</th><th class="num">地铁侧基准（输入）</th>'
       + '<th class="num">换乘系数</th><th class="num">换乘客流</th><th class="num">早高峰占比</th></tr></thead><tbody>';
     rows.forEach(function (r) {
       h += '<tr><td><b>' + esc(r.station) + '</b>' + (r.isNew ? ' <span class="tag t-amber">新线</span>' : '') + '</td>'
-        + '<td><span class="tag t-line' + r.metroLine + '">' + r.metroLine + ' 号线</span></td>'
         + '<td style="font-size:12.5px">' + esc(r.brtLine) + '</td>'
         + '<td style="font-size:12.5px">' + esc(r.peakBiasText) + '</td>'
         + '<td class="num">' + fmt(r.metroDaily) + '</td>'
@@ -482,7 +497,7 @@ var App = (function () {
         + '<td class="num">' + pct(r.daily ? r.morningPeak / r.daily : 0) + '</td></tr>';
     });
     var tot = rows.reduce(function (a, b) { return a + b.daily; }, 0);
-    h += '</tbody><tfoot><tr><td colspan="6">7 座换乘站合计</td><td class="num">' + fmt(tot) + '</td>'
+    h += '</tbody><tfoot><tr><td colspan="5">7 座换乘站合计</td><td class="num">' + fmt(tot) + '</td>'
       + '<td class="num">' + pct(rows.reduce(function (a, b) { return a + b.morningPeak; }, 0) / tot) + '</td></tr></tfoot>';
     $("brtTable").innerHTML = h;
   }
@@ -522,7 +537,7 @@ var App = (function () {
     $("brtWhy").innerHTML = h;
   }
 
-  /* ================= 4. 校准页 ================= */
+  /* ================= 4. 实际数据导入 ================= */
   function initCalibPage() {
     var dz = $("dropZone"), fi = $("fileInput");
     dz.onclick = function () { fi.click(); };
@@ -537,18 +552,42 @@ var App = (function () {
     $("btnSample").onclick = function () { loadSample(); };
     $("btnExport").onclick = function () {
       var blob = new Blob([Calib.exportJSON()], { type: "application/json" });
-      dl(blob, "calibration.json");
+      dl(blob, "metro-learning-archive.json");
     };
+
+    var ji = $("jsonInput");
+    $("btnImport").onclick = function () { ji.click(); };
+    ji.onchange = function () {
+      var f = this.files && this.files[0];
+      if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function (e) {
+        try {
+          if (Calib.importJSON(e.target.result)) {
+            $("impSummary").innerHTML = '<div class="res-bar ok">✓ 学习档案已并入当前记忆，模型参数已更新。</div>';
+            renderCalibState(); renderAll();
+          } else {
+            $("impSummary").innerHTML = '<div class="res-bar bad">档案格式不正确，缺少 stations 字段。</div>';
+          }
+        } catch (err) {
+          $("impSummary").innerHTML = '<div class="res-bar bad">读取失败：' + esc(err.message) + '</div>';
+        }
+      };
+      rd.readAsText(f);
+      this.value = "";
+    };
+
     $("btnClear").onclick = function () {
-      if (!confirm("确定清除所有校准参数？模型将回到纯推算状态。")) return;
+      if (!confirm("确定清空全部学习档案？模型会回到纯推算状态，累积的数据将无法恢复。建议先点「导出学习档案 JSON」备份。")) return;
       Calib.clearAll();
       S.records = []; S.fields = {};
-      $("impSummary").innerHTML = '<div class="res-bar ok">已清除校准参数，模型回到推算态。</div>';
+      $("impSummary").innerHTML = '<div class="res-bar ok">学习档案已清空，模型回到推算态。</div>';
+      $("btResult").innerHTML = "";
       $("btnBacktest").disabled = true; $("btnApply").disabled = true;
       renderCalibState(); renderAll();
     };
     $("btnBacktest").onclick = function () { doBacktest(); };
-    $("btnApply").onclick = function () { doApply(); };
+    $("btnApply").onclick = function () { doLearn(); };
 
     renderCalibState();
     renderNeedTable();
@@ -657,19 +696,20 @@ var App = (function () {
 
     S.records = recs;
     S.fields = usedCols;
+    S.fileName = fname;
 
     var names = Array.from(new Set(recs.map(function (r) { return r.station; })));
     var dates = Array.from(new Set(recs.map(function (r) { return r.date; }))).sort();
     var known = names.filter(function (n) { return STATIONS.some(function (s) { return s.name === n; }); });
 
-    var h = '<div class="res-bar ok">✓ 已从 <b>' + esc(fname) + '</b> 解析出 <b>' + fmt(recs.length)
+    var h = '<div class="res-bar ok">✓ 已从 <b>' + esc(fname) + '</b> 解析出 <b>' + fmtInt(recs.length)
       + '</b> 条记录 · ' + names.length + ' 个站 · ' + dates.length + ' 天（'
       + dates[0] + ' ~ ' + dates[dates.length - 1] + '）</div>';
     if (known.length < names.length) {
       var un = names.filter(function (n) { return known.indexOf(n) < 0; });
       h += '<div class="note note-warn">有 ' + un.length + ' 个站名未能匹配到站点清单：'
         + un.slice(0, 12).map(esc).join("、") + (un.length > 12 ? " 等" : "")
-        + '。这些站的数据将不参与校准。请核对是否与 data.js 中的站名完全一致（如「杏林湾」写作「杏林湾站」会匹配失败）。</div>';
+        + '。这些站的数据将不参与学习。请核对是否与 data.js 中的站名完全一致（如「杏林湾」写作「杏林湾站」会匹配失败）。</div>';
     }
     $("impSummary").innerHTML = h;
 
@@ -731,7 +771,7 @@ var App = (function () {
     var f = S.fields;
     var out = [];
     S.records.forEach(function (r) { out.push(r); });
-    $("fieldPreview").innerHTML = '<div class="note note-info">字段映射已记录，点击「② 应用校准」时生效。</div>';
+    $("fieldPreview").innerHTML = '<div class="note note-info">字段映射已记录，点击「② 学习并复测」时生效。</div>';
   }
 
   function renderPreview() {
@@ -754,20 +794,40 @@ var App = (function () {
   function doBacktest() {
     var bt = Calib.backtest(S.records, S.weather);
     S.lastBt = bt;
-    $("btResult").innerHTML = btReport("校准前（当前模型）", bt, false);
+    $("btResult").innerHTML = btReport("学习前（当前模型）", bt, false);
   }
 
-  function doApply() {
-    var res = Calib.apply(S.records, S.weather);
-    var h = btReport("校准前", res.before, false) + btReport("校准后（已应用）", res.after, true);
+  function doLearn() {
+    var res = Calib.learn(S.records, S.weather, S.fileName || "手动导入");
+    var h = btReport("学习前（上一次的记忆）", res.before, false)
+      + btReport("学习后（并入本次数据）", res.after, true);
 
-    h += '<div class="note note-info" style="margin-top:12px"><b>已写入的参数：</b><br>';
+    /* 收敛判断 */
+    if (res.before.mape != null && res.after.mape != null && res.after.n > 0) {
+      var delta = res.after.mape - res.before.mape;
+      if (delta < -0.002) {
+        h += '<div class="note note-ok" style="margin-top:10px"><b>本次学习有效：</b>MAPE 由 '
+          + pct(res.before.mape) + ' 降到 ' + pct(res.after.mape)
+          + '，改善 ' + pct(Math.abs(delta)) + '。新参数已写入长期记忆，下一次预测会自动沿用。</div>';
+      } else if (delta > 0.002) {
+        h += '<div class="note note-warn" style="margin-top:10px"><b>本次学习反而变差：</b>MAPE 由 '
+          + pct(res.before.mape) + ' 升到 ' + pct(res.after.mape) + '。'
+          + '常见原因：这批数据的时段与之前差异过大（例如跨了节假日），或含未开通站/异常值。'
+          + '参数仍然写入了记忆，但建议核对数据质量，必要时清空后重新导入。</div>';
+      } else {
+        h += '<div class="note note-info" style="margin-top:10px">本次 MAPE 基本持平（'
+          + pct(res.before.mape) + ' → ' + pct(res.after.mape) + '）。'
+          + '这说明这批数据与之前学到的规律一致，参数被小幅微调。</div>';
+      }
+    }
+
+    h += '<div class="note note-info" style="margin-top:12px"><b>本次写入长期记忆的内容：</b><br>';
     Object.keys(res.lineResults).forEach(function (lid) {
       var lr = res.lineResults[lid];
       h += '· ' + esc(LINES[lid].name) + ' 日基准 → <b>' + fmt(lr.daily) + '</b> 人次'
         + '（依据 ' + lr.knownStations + '/' + lr.totalStations + ' 个站，覆盖权重 ' + lr.coverage + '%）<br>';
     });
-    h += '· 站点基准 → ' + res.stationCount + ' 个站<br>';
+    h += '· 站点基准 → 本次更新 ' + res.stationCount + ' 个站，新增 ' + fmtInt(res.added) + ' 条日记录<br>';
     if (res.globalDow) {
       var nm = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
       h += '· 周内系数 → ' + Object.keys(res.globalDow).map(function (k) {
@@ -776,14 +836,17 @@ var App = (function () {
     }
     h += '</div>';
 
-    h += '<div class="note note-ok"><b>生效范围：</b>校准结果已写入本机 localStorage，'
-      + '刷新页面后仍然生效；清除按钮可随时回到推算态。注意——未导入数据的站点，'
-      + '其基准仍按原有权重从线路总量外扩，属于推算值。</div>';
+    h += '<div class="note note-ok"><b>长期记忆：</b>台账已写入本机 localStorage，'
+      + '同一天的记录以最新导入为准，不会重复计数。多次导入会叠加，样本越多，基准越稳。'
+      + '关闭浏览器、重启电脑后依然生效；换设备时用「导出学习档案」迁移。</div>';
 
     $("btResult").innerHTML = h;
     renderCalibState();
     renderAll();
   }
+
+  /* 兼容旧入口名 */
+  function doApply() { doLearn(); }
 
   function btReport(title, bt, isAfter) {
     if (!bt || !bt.n) {
@@ -792,10 +855,10 @@ var App = (function () {
     var m = bt.mape;
     var color = m == null ? "" : (m < 0.10 ? "note-ok" : (m < 0.20 ? "note-warn" : "note-danger"));
     var h = '<div class="' + color + ' note" style="margin-top:10px"><b>' + title + '</b>'
-      + '　样本数 ' + bt.n
+      + '　样本数 ' + fmtInt(bt.n)
       + '　|　MAPE <b>' + pct(m) + '</b>'
-      + '　|　MAE ' + fmt(bt.mae)
-      + '　|　RMSE ' + fmt(bt.rmse)
+      + '　|　MAE ' + fmtInt(bt.mae)
+      + '　|　RMSE ' + fmtInt(bt.rmse)
       + '　|　平均偏差 ' + (bt.bias == null ? "—" : (bt.bias > 0 ? "+" : "") + pct(bt.bias))
       + '　|　R² ' + (bt.r2 == null ? "—" : bt.r2.toFixed(3))
       + '</div>';
@@ -803,25 +866,55 @@ var App = (function () {
       h += '<div class="note note-warn">未匹配站名 ' + bt.unmatched.length + ' 个：'
         + bt.unmatched.slice(0, 10).map(esc).join("、") + '</div>';
     }
+    if (bt.pendingNamed && bt.pendingNamed.length) {
+      h += '<div class="note note-warn">下列站点<b>尚未开通</b>，其数据不参与学习与回测：'
+        + bt.pendingNamed.map(esc).join("、") + '。若这些站已经开通，请更新 <code>data.js</code> 中的状态。</div>';
+    }
     return h;
   }
 
   function renderCalibState() {
     var m = Calib.meta();
     var box = $("calibState");
+
     if (Calib.isEmpty()) {
-      box.innerHTML = '<div class="note note-warn">当前未有任何校准，全部站点基准均为<b>推算值（D 级）</b>，'
-        + '不确定度约 ±34%。导入站级真实客流后可降至 ±11% 左右。</div>';
+      box.innerHTML = '<div class="note note-warn"><b>学习档案为空。</b>当前所有站点基准均为<b>推算值（D 级）</b>，'
+        + '不确定度约 ±34%。导入站级实际客流后，会降至 ±11% 左右。<br>'
+        + '档案存放在本机浏览器，关掉浏览器不会丢。</div>';
       return;
     }
-    var h = '<div class="grid g3">';
-    h += card2("已校准站点", Object.keys(Calib.raw.stations).length + " 个", "直接覆盖预测基准");
-    h += card2("数据记录", fmt(m.recordCount) + " 条", "日期范围 " + esc(m.dateRange));
-    h += card2("更新时间", (Calib.updatedAt || "").slice(0, 16).replace("T", " "), "存储在浏览器 localStorage");
+
+    var hist = Calib.history();
+    var h = '<div class="grid g4">';
+    h += card2("累计学习次数", fmtInt(hist.length) + " 次", "每次导入记一次");
+    h += card2("累计日记录", fmtInt(Calib.totalRecords()) + " 条", "同日期自动去重");
+    h += card2("覆盖站点", fmtInt(Calib.stationCount()) + " 个", "已写入基准");
+    h += card2("数据跨度", esc(m.dateRange || "—"), "首末日期");
     h += '</div>';
 
-    h += '<div class="tbl-wrap" style="margin-top:12px"><table class="tbl"><thead><tr><th>线路</th>'
-      + '<th class="num">已校准站</th><th class="num">权重覆盖</th><th class="num">新基准</th></tr></thead><tbody>';
+    /* 最近一次学习的收敛情况 */
+    if (hist.length) {
+      var last = hist[hist.length - 1];
+      var ok = last.beforeMape != null && last.afterMape != null && last.afterMape < last.beforeMape;
+      h += '<div class="note ' + (ok ? "note-ok" : "note-info") + '" style="margin-top:12px">'
+        + '<b>最近一次学习</b>（' + esc((last.at || "").slice(0, 16).replace("T", " ")) + '，' + esc(last.file) + '）：'
+        + 'MAPE ' + pct(last.beforeMape) + ' → <b>' + pct(last.afterMape) + '</b>'
+        + '，样本 ' + fmtInt(last.n) + ' 条，新增 ' + fmtInt(last.added) + ' 条日记录。</div>';
+    } else {
+      h += '<div class="note note-info" style="margin-top:12px">当前参数由旧版档案迁移而来，尚无新的学习记录。</div>';
+    }
+
+    /* 学习曲线 */
+    var plotted = hist.filter(function (x) { return x.afterMape != null; });
+    if (plotted.length >= 2) {
+      h += '<div class="card" style="margin-top:14px"><h2>误差随学习次数的变化</h2>'
+        + '<div class="hint">横轴是第几次导入，纵轴是同一批数据学习前后的 MAPE。曲线走低说明模型在累积经验。</div>'
+        + '<div class="chart-box"><canvas id="cLearn"></canvas></div></div>';
+    }
+
+    /* 线路状态 */
+    h += '<div class="tbl-wrap" style="margin-top:14px"><table class="tbl"><thead><tr><th>线路</th>'
+      + '<th class="num">已学站</th><th class="num">权重覆盖</th><th class="num">线路日基准</th></tr></thead><tbody>';
     ["4", "6"].forEach(function (lid) {
       var lc = Calib.getLineCalibration(lid);
       h += '<tr><td><span class="tag t-line' + lid + '">' + esc(LINES[lid].name) + '</span></td>';
@@ -829,23 +922,84 @@ var App = (function () {
         h += '<td class="num">' + lc.knownStations + ' / ' + lc.totalStations + '</td>'
           + '<td class="num">' + lc.coverage + '%</td><td class="num"><b>' + fmt(lc.daily) + '</b></td>';
       } else {
-        h += '<td class="num">0</td><td class="num">0%</td><td class="num">未校准</td>';
+        h += '<td class="num">0</td><td class="num">0%</td><td class="num">未学习</td>';
       }
       h += '</tr>';
     });
     h += '</tbody></table></div>';
 
+    /* 周内系数 */
+    if (Calib.raw.globalDow) {
+      var nm = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+      h += '<div class="note note-info" style="margin-top:12px"><b>已学到的周内系数：</b>'
+        + Object.keys(Calib.raw.globalDow).map(function (k) {
+          return nm[k] + " <b>" + Calib.raw.globalDow[k] + "</b>";
+        }).join("　") + '</div>';
+    }
+
+    /* 站点台账 */
     var st = Calib.raw.stations;
-    var keys = Object.keys(st);
+    var keys = Object.keys(st).sort();
     if (keys.length) {
-      h += '<details class="tr"><summary>查看已导入的站点基准（' + keys.length + ' 个）</summary><div class="tr-body">'
-        + '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>站名</th><th class="num">日均</th><th class="num">样本天数</th></tr></thead><tbody>'
+      h += '<details class="tr"><summary>查看已学到的站点基准（' + keys.length + ' 个）</summary><div class="tr-body">'
+        + '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>站名</th><th class="num">稳定期基准</th>'
+        + '<th class="num">样本天数</th><th>数据区间</th></tr></thead><tbody>'
         + keys.map(function (k) {
-          return '<tr><td>' + esc(k) + '</td><td class="num">' + fmt(st[k].daily) + '</td><td class="num">' + st[k].days + '</td></tr>';
+          var r = st[k];
+          return '<tr><td>' + esc(k) + '</td><td class="num"><b>' + fmt(r.daily) + '</b></td>'
+            + '<td class="num">' + fmtInt(r.days) + '</td>'
+            + '<td style="font-size:12px;color:#8a99a8">' + esc((r.firstAt || "—") + " ~ " + (r.lastAt || "—")) + '</td></tr>';
         }).join("")
         + '</tbody></table></div></div></details>';
     }
+
+    /* 学习履历 */
+    if (hist.length) {
+      h += '<details class="tr"' + (hist.length ? " open" : "") + '><summary>学习履历（' + hist.length + ' 次）</summary><div class="tr-body">'
+        + '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>#</th><th>时间</th><th>来源</th>'
+        + '<th class="num">记录数</th><th class="num">新增</th><th>数据区间</th>'
+        + '<th class="num">学习前 MAPE</th><th class="num">学习后 MAPE</th></tr></thead><tbody>';
+      hist.forEach(function (x, i) {
+        h += '<tr><td>' + (i + 1) + '</td>'
+          + '<td style="font-size:12.5px">' + esc((x.at || "").slice(0, 16).replace("T", " ")) + '</td>'
+          + '<td style="font-size:12.5px">' + esc(x.file || "—") + '</td>'
+          + '<td class="num">' + fmtInt(x.records) + '</td>'
+          + '<td class="num">' + fmtInt(x.added) + '</td>'
+          + '<td style="font-size:12px;color:#8a99a8">' + esc((x.dateFrom || "—") + " ~ " + (x.dateTo || "—")) + '</td>'
+          + '<td class="num">' + pct(x.beforeMape) + '</td>'
+          + '<td class="num"><b>' + pct(x.afterMape) + '</b></td></tr>';
+      });
+      h += '</tbody></table></div></div></details>';
+    }
+
     box.innerHTML = h;
+
+    if (plotted.length >= 2) {
+      chart("learn", "cLearn", {
+        type: "line",
+        data: {
+          labels: plotted.map(function (_, i) { return "第 " + (i + 1) + " 次"; }),
+          datasets: [
+            {
+              label: "学习前 MAPE", data: plotted.map(function (x) { return +(x.beforeMape * 100).toFixed(2); }),
+              borderColor: "#94a3b8", backgroundColor: "rgba(148,163,184,.12)", borderDash: [5, 4],
+              tension: .3, pointRadius: 3, borderWidth: 1.8
+            },
+            {
+              label: "学习后 MAPE", data: plotted.map(function (x) { return +(x.afterMape * 100).toFixed(2); }),
+              borderColor: "#008752", backgroundColor: "rgba(0,135,82,.12)", fill: true,
+              tension: .3, pointRadius: 3, borderWidth: 2.2
+            }
+          ]
+        },
+        options: baseOpts({
+          scales: {
+            x: { grid: GRID, ticks: TICK },
+            y: { grid: GRID, ticks: Object.assign({}, TICK, { callback: function (v) { return v + "%"; } }), beginAtZero: true }
+          }
+        })
+      });
+    }
   }
 
   function renderNeedTable() {
@@ -870,21 +1024,22 @@ var App = (function () {
         var p = Model.predictStation(s, ds, "晴");
         if (p.closed) continue;
         /* 人为加 22% 系统性高估 + ±8% 随机噪声。
-         * 加系统性偏移是有意的：这样才能演示「校准前系统性偏差 → 校准后收敛」的完整闭环。
-         * 若只加无偏噪声，MAPE 无论校准与否都等于噪声本身，看不出校准的价值。 */
+         * 加系统性偏移是有意的：这样才能演示「学习前系统性偏差 → 学习后收敛」的完整闭环。
+         * 若只加无偏噪声，MAPE 无论学习与否都等于噪声本身，看不出学习的价值。 */
         var noise = 1 + (Math.random() - 0.5) * 0.16;
         rows.push({ station: s.name, date: ds, inbound: Math.round(p.daily * 1.22 * noise), outbound: null });
       }
     });
     S.records = rows;
     S.fields = { mode: "long", station: 0, date: 1, hour: -1, inbound: 2, outbound: -1 };
+    S.fileName = "示例数据（自动生成）";
     var names = Array.from(new Set(rows.map(function (r) { return r.station; })));
     var dates = Array.from(new Set(rows.map(function (r) { return r.date; }))).sort();
-    $("impSummary").innerHTML = '<div class="res-bar ok">已生成示例数据 <b>' + fmt(rows.length) + '</b> 条 · '
+    $("impSummary").innerHTML = '<div class="res-bar ok">已生成示例数据 <b>' + fmtInt(rows.length) + '</b> 条 · '
       + names.length + ' 个站 · ' + dates.length + ' 天</div>'
       + '<div class="note note-warn">这是<b>以当前模型为底、人为加了 22% 系统性高估 + ±8% 随机噪声</b>生成的演示数据，'
-      + '用来验证「导入 → 回测 → 校准 → 复测」这条链路能否跑通，以及展示校准前后的误差收敛效果。'
-      + '它不能证明模型本身的准确性——请尽快替换为真实客流报表。</div>';
+      + '只用来验证「导入 → 回测 → 学习 → 复测」这条链路能否跑通，以及展示误差收敛的效果。'
+      + '它<b>不能</b>证明模型准确——真实数据请用正式报表替换。</div>';
     $("fieldMap").innerHTML = '<div style="flex:1"><label class="fl">识别结果</label>'
       + '<div class="note note-ok" style="margin:0">示例数据（长表）：站名 | 日期 | 进站量</div></div>';
     renderPreview();
@@ -969,33 +1124,41 @@ var App = (function () {
     var d = Model.daysBetween("2026-09-16", S.date);
     $("chipOpenDays").textContent = "开通第 " + d + " 天";
     var c4 = Calib.getLineCalibration("4"), c6 = Calib.getLineCalibration("6");
-    $("chipCalib").textContent = (c4 || c6) ? "基准：已校准" : "基准：推算值";
+    var n = Calib.history().length;
+    $("chipCalib").textContent = (c4 || c6)
+      ? "基准：已学习" + (n ? "（" + n + " 次）" : "")
+      : "基准：推算值";
   }
 
   /* ================= 初始化 ================= */
   function init() {
+    /* 试乘期声明（用户原话，不做改写） */
+    if ($("trialText")) $("trialText").textContent = TRIAL_NOTICE;
+
     var g = $("gDate");
     g.value = S.date;
     g.onchange = function () { S.date = this.value || todayStr(); renderAll(); };
     $("gWeather").onchange = function () { S.weather = this.value; renderAll(); };
     $("gToday").onclick = function () { S.date = todayStr(); g.value = S.date; renderAll(); };
 
-    Array.prototype.forEach.call(document.querySelectorAll("#gFare button"), function (b) {
-      b.onclick = function () {
-        Array.prototype.forEach.call(this.parentNode.children, function (x) { x.classList.remove("on"); });
-        this.classList.add("on");
-        RUNTIME.fareMode = this.dataset.fare;
-        renderAll();
-      };
-    });
+    /* 尝鲜衰减开关 + 说明 */
+    var NOV_NOTE = {
+      on: "启用：预测的是「正式运营后的常态水平」。开通初期的尝鲜客流按 1+0.45·e^(−t/35) 逐日剥离，第 35 天约为 1.17 倍，半年后趋于 1.00。",
+      off: "关闭：不做剥离，保留开通初期的放大量，用于查看「刚开通那几天可能有多挤」。日常预测请保持启用。"
+    };
+    function paintNovNote() {
+      if ($("novNote")) $("novNote").textContent = RUNTIME.applyNovelty ? NOV_NOTE.on : NOV_NOTE.off;
+    }
     Array.prototype.forEach.call(document.querySelectorAll("#gNovelty button"), function (b) {
       b.onclick = function () {
         Array.prototype.forEach.call(this.parentNode.children, function (x) { x.classList.remove("on"); });
         this.classList.add("on");
         RUNTIME.applyNovelty = this.dataset.nov === "1";
+        paintNovNote();
         renderAll();
       };
     });
+    paintNovNote();
 
     Array.prototype.forEach.call(document.querySelectorAll(".nav-btn"), function (b) {
       b.onclick = function () {
