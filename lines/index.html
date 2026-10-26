@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>厦门地铁新线客流预测平台 · 4号线 / 6号线 / BRT换乘</title>
+<meta name="description" content="厦门地铁 4 号线、6 号线客流预测与 BRT 换乘站通勤客流分析平台，支持真实客流数据导入与模型回测校准。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- ===== 页头（无 logo） ===== -->
+<header class="site-head">
+  <div class="line-strip">
+    <i style="background:#E60012"></i><i style="background:#7B2CBF"></i><i style="background:#008752"></i>
+  </div>
+  <div class="wrap">
+    <div class="site-title">
+      <h1>厦门地铁新线客流预测平台</h1>
+      <div class="sub">4 号线 · 6 号线 · BRT 换乘站　|　可导入真实客流数据并完成回测校准</div>
+    </div>
+    <div class="head-meta">
+      <span class="head-chip" id="chipOpenDays">开通 — 天</span>
+      <span class="head-chip" id="chipCalib">基准：推算值</span>
+      <span class="head-chip solid" id="chipDate">2026-10-26</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== 导航 ===== -->
+<nav class="nav">
+  <div class="wrap">
+    <button class="nav-btn on" data-page="overview">总览</button>
+    <button class="nav-btn" data-page="lines">线路客流预测</button>
+    <button class="nav-btn" data-page="brt">BRT 换乘站</button>
+    <button class="nav-btn" data-page="calib">真实数据校准</button>
+    <button class="nav-btn" data-page="method">算法原理与文献</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ===== 全局参数条 ===== -->
+  <div class="ctrl-bar">
+    <div class="ctrl-row">
+      <div style="min-width:150px">
+        <label class="fl">预测日期</label>
+        <input type="date" id="gDate" class="inp">
+      </div>
+      <div style="min-width:120px">
+        <label class="fl">天气</label>
+        <select id="gWeather" class="sel">
+          <option value="">不考虑天气</option>
+          <option value="晴" selected>晴</option>
+          <option value="多云">多云</option>
+          <option value="阴">阴</option>
+          <option value="小雨">小雨</option>
+          <option value="中雨">中雨</option>
+          <option value="大雨">大雨</option>
+          <option value="暴雨">暴雨</option>
+          <option value="雷阵雨">雷阵雨</option>
+          <option value="雾">雾</option>
+        </select>
+      </div>
+      <div style="min-width:170px">
+        <label class="fl">票制状态</label>
+        <div class="seg" id="gFare">
+          <button data-fare="free" class="on">免费试乘</button>
+          <button data-fare="paid">正式收费</button>
+        </div>
+      </div>
+      <div style="min-width:150px">
+        <label class="fl">新线尝鲜衰减</label>
+        <div class="seg" id="gNovelty">
+          <button data-nov="1" class="on">启用</button>
+          <button data-nov="0">关闭</button>
+        </div>
+      </div>
+      <div style="flex:0 0 auto;display:flex;align-items:flex-end">
+        <button class="btn pri" id="gToday">回到今天</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 1. 总览 ============ -->
+  <section class="page on" id="p-overview">
+    <div class="grid g4" id="ovKpi"></div>
+
+    <div class="grid g-line" style="margin-top:14px">
+      <div class="card">
+        <h2>双线 24 小时客流分布</h2>
+        <div class="hint">4 号线 + 6 号线合计，进出站合计口径</div>
+        <div class="chart-box"><canvas id="cOvHour"></canvas></div>
+      </div>
+      <div class="card">
+        <h2>双线客运构成</h2>
+        <div class="hint">按线路拆分的日客流与占全网新线比例</div>
+        <div class="chart-box"><canvas id="cOvLine"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>站点日客流排行</h2>
+      <div class="hint">按权重法分解到站，排序可与试乘首日媒体报道的进站 Top5 交叉核对</div>
+      <div class="tbl-wrap"><table class="tbl" id="ovRank"></table></div>
+    </div>
+
+    <div class="card">
+      <h2>公开数据锚点与校验</h2>
+      <div class="hint">下列为唯一可得的真实观测值，用于判断模型输出是否落在合理量级</div>
+      <div id="ovAnchor"></div>
+    </div>
+  </section>
+
+  <!-- ============ 2. 线路客流预测 ============ -->
+  <section class="page" id="p-lines">
+    <div class="card">
+      <h2>选择线路与站点</h2>
+      <div class="ctrl-row">
+        <div>
+          <label class="fl">线路</label>
+          <select id="lnSel" class="sel"></select>
+        </div>
+        <div>
+          <label class="fl">站点（留空则显示整条线路）</label>
+          <select id="stSel" class="sel"></select>
+        </div>
+      </div>
+      <div id="lnMeta" style="margin-top:14px"></div>
+    </div>
+
+    <div id="lnResult"></div>
+  </section>
+
+  <!-- ============ 3. BRT 换乘站 ============ -->
+  <section class="page" id="p-brt">
+    <div class="card">
+      <h2>BRT ↔ 地铁换乘站客流预测</h2>
+      <div class="hint">
+        换乘站的客流几乎全部由通勤链驱动，因此采用<b>强双峰模型</b>：早高峰 7:30—9:00（峰值约 8:00，窄而尖），
+        晚高峰 17:30—19:00（峰值约 18:10，宽而缓）。官方口径 5 座 + 本次新线新增 2 座。
+      </div>
+      <div class="ctrl-row">
+        <div style="min-width:200px">
+          <label class="fl">换乘站</label>
+          <select id="brtSel" class="sel"></select>
+        </div>
+      </div>
+      <div id="brtMeta" style="margin-top:12px"></div>
+    </div>
+
+    <div id="brtResult"></div>
+
+    <div class="card">
+      <h2>全部换乘站对比</h2>
+      <div class="tbl-wrap"><table class="tbl" id="brtTable"></table></div>
+    </div>
+
+    <div class="card">
+      <h2>BRT 模型的特殊之处</h2>
+      <div id="brtWhy"></div>
+    </div>
+  </section>
+
+  <!-- ============ 4. 真实数据校准 ============ -->
+  <section class="page" id="p-calib">
+    <div class="card">
+      <h2>导入真实客流数据</h2>
+      <div class="hint">
+        支持 <b>.xlsx / .xls / .csv</b>。表头需包含：站名、日期、进站量（出站量与小时为可选）。
+        系统会自动识别列名，完成后立即回测精度并把〈站点基准〉与〈周内系数〉写回模型。
+      </div>
+
+      <div class="drop" id="dropZone">
+        <div class="ico">⬆</div>
+        <div class="t1">点击选择文件，或把文件拖到这里</div>
+        <div class="t2">数据仅在本机浏览器内处理，不上传任何服务器</div>
+      </div>
+      <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display:none">
+
+      <div style="margin-top:14px">
+        <button class="btn" id="btnSample">载入示例数据</button>
+        <button class="btn" id="btnExport">导出校准参数 JSON</button>
+        <button class="btn danger" id="btnClear">清除校准，回到推算态</button>
+      </div>
+
+      <div id="impSummary"></div>
+    </div>
+
+    <div class="card">
+      <h2>字段自动识别结果</h2>
+      <div class="hint">若自动识别有误，可在下拉框中手动更正</div>
+      <div class="ctrl-row" id="fieldMap"></div>
+      <div style="margin-top:12px" id="fieldPreview"></div>
+    </div>
+
+    <div class="card">
+      <h2>回测与校准</h2>
+      <div class="hint">先用当前模型回测这批真实数据，得到校准前的误差，再应用校准.</div>
+      <div style="margin-top:8px">
+        <button class="btn pri" id="btnBacktest" disabled>① 回测当前模型</button>
+        <button class="btn pri" id="btnApply" disabled>② 应用校准并复测</button>
+      </div>
+      <div id="btResult"></div>
+    </div>
+
+    <div class="card">
+      <h2>当前校准状态</h2>
+      <div id="calibState"></div>
+    </div>
+
+    <div class="card">
+      <h2>还缺哪些数据</h2>
+      <div class="tbl-wrap"><table class="tbl" id="needTable"></table></div>
+    </div>
+  </section>
+
+  <!-- ============ 5. 算法原理与文献 ============ -->
+  <section class="page" id="p-method">
+    <div class="card">
+      <h2>预测是怎么算出来的</h2>
+      <div class="hint">每一步都列出公式、参数取值和数据可靠度。A=官方　B=媒体　C=文献　D=推算</div>
+      <div id="stepsBox"></div>
+      <h3>总公式</h3>
+      <div class="formula-box">
+P<sub>i</sub>(d) = B<sub>line</sub> · (w<sub>i</sub> / Σw) · g<sub>cal</sub>(d, type<sub>i</sub>) · g<sub>weather</sub>(d) · novelty(d) · fare
+
+hourly<sub>i</sub>(h) = P<sub>i</sub>(d) · φ(h ; type<sub>i</sub>, dayclass) / Σ<sub>h</sub> φ
+
+w<sub>i</sub> = T(type<sub>i</sub>) + 0.34·n<sub>transfer</sub> + 0.16·isTerminal + 0.11·catchment<sub>i</sub>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>参考论文与选取理由</h2>
+      <div class="hint">共 14 篇，按在模型中的作用分组。「为什么选它」说明的是取舍依据，不是摘要复述。</div>
+      <div id="papersBox"></div>
+    </div>
+
+    <div class="card">
+      <h2>数据来源与可靠度</h2>
+      <div class="tbl-wrap"><table class="tbl" id="srcTable"></table></div>
+    </div>
+
+    <div class="card">
+      <h2>已知局限</h2>
+      <div class="hint">这些是当前模型做不到的事，列出以供判断适用范围</div>
+      <div id="limitBox"></div>
+    </div>
+
+    <div class="card">
+      <h2>模型假设清单</h2>
+      <div class="hint">凡属推算，均在此登记，页面中所有相关数字都会同步标注</div>
+      <div class="tbl-wrap"><table class="tbl" id="assumpTable"></table></div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    厦门地铁新线客流预测平台 · 数据全部来自公开渠道，本站为技术与方法研究用途，非官方发布平台<br>
+    预测结果含 ±34%（未校准）/ ±11%（已校准）不确定度，不可直接作为运营决策的唯一依据 ·
+    最后数据核对：<span id="footDate">2026-10-26</span>
+  </div>
+</footer>
+
+<script src="vendor/chart.umd.min.js"></script>
+<script src="vendor/xlsx.full.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/calib.js"></script>
+<script src="assets/method.js"></script>
+<script src="assets/model.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
