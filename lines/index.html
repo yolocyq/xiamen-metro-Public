@@ -9,6 +9,9 @@
 </head>
 <body>
 
+<!-- ===== 背景水印 ===== -->
+<div class="wm" id="watermarkBox"></div>
+
 <!-- ===== 页头（无 logo） ===== -->
 <header class="site-head">
   <div class="line-strip">
@@ -216,5 +219,23 @@
 <script src="assets/calib.js"></script>
 <script src="assets/model.js"></script>
 <script src="assets/app.js"></script>
+<script>
+/* 背景水印：程有权（全站平铺，不拦截任何操作） */
+(function(){
+  var box = document.getElementById('watermarkBox');
+  if (!box) return;
+  var cols = 6, rows = 4, frag = document.createDocumentFragment();
+  for (var r = 0; r < rows; r++) {
+    for (var c = 0; c < cols; c++) {
+      var s = document.createElement('span');
+      s.textContent = '程有权';
+      s.style.left = (c / cols * 100 + 5) + '%';
+      s.style.top  = (r / rows * 100 + 3) + '%';
+      frag.appendChild(s);
+    }
+  }
+  box.appendChild(frag);
+})();
+</script>
 </body>
 </html>
