@@ -11,8 +11,8 @@
 
 var Model = (function () {
 
-  /* 统一取整：所有对外客流数值四舍五入到千位 */
-  function roundK(n) { return Math.round((Number(n) || 0) / 1000) * 1000; }
+  /* 统一取整：所有对外客流数值四舍五入到百位 */
+  function round100(n) { return Math.round((Number(n) || 0) / 100) * 100; }
 
   /* ---------- 工具 ---------- */
   function parseDate(s) {
@@ -284,7 +284,7 @@ var Model = (function () {
         { k: "天气系数", v: wx.coef.toFixed(3), src: wx.detail },
         { k: "新线尝鲜系数", v: base.novelty.value.toFixed(3), src: base.novelty.note },
         { k: "票制系数", v: base.fare.value.toFixed(3), src: base.fare.note },
-        { k: "最终日客流", v: (Math.round(daily/1000)*1000).toLocaleString() + " 人次", src: "以上各项连乘，四舍五入至千位" }
+        { k: "最终日客流", v: round100(daily).toLocaleString() + " 人次", src: "以上各项连乘，四舍五入至百位" }
       ] : [
         { k: "线路稳定期日基准", v: Math.round(base.stableBase), src: base.usedCal ? "已用导入数据校准" : "推算值 " + LINES[lineId].baselineReliability + " 级" },
         { k: "本站权重占比", v: (self.share * 100).toFixed(2) + "%", src: "权重 " + self.w.toFixed(3) + " / 线路合计" },
@@ -292,7 +292,7 @@ var Model = (function () {
         { k: "天气系数", v: wx.coef.toFixed(3), src: wx.detail },
         { k: "新线尝鲜系数", v: base.novelty.value.toFixed(3), src: base.novelty.note },
         { k: "票制系数", v: base.fare.value.toFixed(3), src: base.fare.note },
-        { k: "最终日客流", v: (Math.round(daily/1000)*1000).toLocaleString() + " 人次", src: "以上各项连乘，四舍五入至千位" }
+        { k: "最终日客流", v: round100(daily).toLocaleString() + " 人次", src: "以上各项连乘，四舍五入至百位" }
       ]
     };
   }
@@ -337,129 +337,6 @@ var Model = (function () {
     };
   }
 
-  /* ---------- BRT 换乘站专用模型 ---------- */
-  /* 与地铁站最大的不同：换乘站的客流几乎全部由「通勤供应链」驱动，
-   * 因此采用强双峰模型，而非地铁站的「双峰 + 平峰」结构。
-   * 早高峰 7:30—9:00（峰值约 8:00），晚高峰 17:30—19:00（峰值约 18:10），
-   * 早峰更尖（上班时间刚性），晚峰更宽（下班时间分散）。 */
-  function brtShape(bias, leg) {
-    /* leg: "inbound"=进站, "outbound"=出站 */
-    function g(x, mu, sg) { return Math.exp(-Math.pow(x - mu, 2) / (2 * sg * sg)); }
-    var Am, Ae;
-    if (bias === "residential") {          /* 居住导向：早进站为主 */
-      Am = 1.00; Ae = 0.52;
-    } else if (bias === "employment") {    /* 岗位导向：早出站为主 → 早进站少 */
-      Am = 0.50; Ae = 1.00;
-    } else {                               /* 双向均衡 */
-      Am = 0.85; Ae = 0.85;
-    }
-    if (leg === "outbound") { var t = Am; Am = Ae; Ae = t; }  /* 出站与进站早晚峰互换 */
-
-    var MU_M = 7.95, SIG_M = 0.62;   /* 早峰：窄而高 */
-    var MU_E = 18.15, SIG_E = 0.95;  /* 晚峰：宽而缓 */
-    var FLAT = 0.025, MID = 0.10;
-
-    var arr = [];
-    for (var T = 0; T < 24; T++) {
-      if (T < 6 || T > 23) { arr.push(0); continue; }
-      var v = FLAT + Am * g(T, MU_M, SIG_M) + Ae * g(T, MU_E, SIG_E) + MID * g(T, 12.6, 1.3);
-      arr.push(Math.max(v, 0.006));
-    }
-    return arr;
-  }
-
-  /* 单座 BRT 换乘站的换乘客流预测 */
-  function predictBRT(bt, dateStr, weather) {
-    /* 找到对应的地铁线路与该站 Metro 侧的日客流 */
-    var lineId = bt.metroLine;
-    var metroSt = STATIONS.filter(function (s) {
-      return s.brt === true && s.line === lineId && s.name === bt.station;
-    })[0];
-
-    /* 地铁侧总客流 = 本平台库内的新线侧 + metroAlso 指定的老三线侧。
-     * 不这么加的话，厦门北站就只会算到 4 号线侧那点量，
-     * 而它实际是 1 号线 + 4 号线 + BRT + 高铁的复合枢纽。 */
-    var metroDaily = 0, metroParts = [];
-    if (metroSt) {
-      var pr = Model.predictStation(metroSt, dateStr, weather);
-      metroDaily += pr.daily;
-      metroParts.push(LINES[lineId].name + "侧 " + Math.round(pr.daily).toLocaleString());
-    }
-    var legacyLines = (bt.metroAlso || []).length;
-    var legacyOnly = !metroSt;
-    if (legacyOnly || legacyLines > 0) {
-      var lv = estimateLegacyBRTStation(bt, dateStr);
-      metroDaily += lv * (legacyOnly ? 1 : legacyLines);
-      metroParts.push((bt.metroAlso || []).join("、") + "侧 " + Math.round(lv * (legacyOnly ? 1 : legacyLines)).toLocaleString());
-    }
-    var metroSrc = metroParts.length ? metroParts.join(" + ") : "未匹配到站点资料";
-
-    /* 换乘系数：换乘站在总客流中的换乘客流占比 */
-    /* 取值逻辑：4/6 号线新接入站因"网络效应"（见 ASSUMPTIONS.network_effect）取值更高 */
-    var isNew = (bt.metroLine === "4" || bt.metroLine === "6");
-    var cls = dayClass(dateStr);
-    var transferRatio = isNew ? 0.34 : 0.28;
-    if (cls === "holiday") transferRatio *= 0.82;
-    else if (cls === "saturday" || cls === "sunday") transferRatio *= 0.90;
-
-    var daily = metroDaily * transferRatio;
-
-    var shapeIn = brtShape(bt.peakBias, "inbound");
-    var shapeOut = brtShape(bt.peakBias, "outbound");
-    var sIn = shapeIn.reduce(function (a, b) { return a + b; }, 0);
-    var sOut = shapeOut.reduce(function (a, b) { return a + b; }, 0);
-
-    var hIn = shapeIn.map(function (v) { return Math.round(daily * v / sIn); });
-    var hOut = shapeOut.map(function (v) { return Math.round(daily * v / sOut); });
-    var hTotal = hIn.map(function (v, i) { return v + hOut[i]; });
-
-    var peakH = 0;
-    hTotal.forEach(function (v, i) { if (v > hTotal[peakH]) peakH = i; });
-
-    var u = isNew ? 0.38 : 0.34;
-
-    return {
-      station: bt.station,
-      metroLine: bt.metroLine,
-      brtLine: bt.brtLine,
-      peakBias: bt.peakBias,
-      peakBiasText: { residential: "居住导向（早高峰进站占优）", employment: "岗位导向（早高峰出站占优）", balanced: "双向均衡" }[bt.peakBias],
-      date: dateStr,
-      dayLabel: require_calendarLabel(dateStr),
-      metroDaily: Math.round(metroDaily),
-      metroSrc: metroSrc,
-      transferRatio: transferRatio,
-      daily: Math.round(daily),
-      hourlyIn: hIn,
-      hourlyOut: hOut,
-      hourlyTotal: hTotal,
-      peakHour: peakH,
-      peakValue: hTotal[peakH],
-      morningPeak: sumRange(hTotal, 7, 9),
-      eveningPeak: sumRange(hTotal, 17, 19),
-      morningShare: 0,
-      eveningShare: 0,
-      interval: { low: Math.round(daily * (1 - u)), high: Math.round(daily * (1 + u)), rel: u },
-      isNew: isNew
-    };
-  }
-
-  function require_calendarLabel(dateStr) {
-    var c = dayClass(dateStr);
-    return { holiday: "法定节假日", makeup: "调休补班", saturday: "周六", sunday: "周日", weekday: "工作日" }[c];
-  }
-
-  /* 老三线 BRT 换乘站的规模类比估算 */
-  function estimateLegacyBRTStation(bt, dateStr) {
-    /* 基准：2025 年地铁日均 75.34 万 / 全网约 90 站 ≈ 站均 8,400；
-     * 换乘大站取站均的 1.6~2.4 倍（厦门北站为高铁枢纽，取最高）。该乘子为推算值。 */
-    var base = 8400;
-    var mult = { "厦门北站": 2.6, "文灶": 2.0, "蔡塘": 1.8, "火车站": 2.2, "双十中学": 1.6, "华侨大学": 1.9, "官浔": 1.4 }[bt.station] || 1.8;
-    var cls = dayClass(dateStr);
-    var clsCoef = { holiday: 1.35, saturday: 1.10, sunday: 1.05, makeup: 1.0, weekday: 1.0 }[cls];
-    return base * mult * clsCoef;
-  }
-
   /* ---------- 不确定度 ---------- */
   /* 未校准：线路基准 D 级 ±30%，站权重 ±15%，日历/天气 ±6% → 合成约 34%
    * 已校准（用户导入真实数据）：基准 ±10%，权重 ±3%，日历 ±4% → 合成约 11% */
@@ -472,8 +349,6 @@ var Model = (function () {
   function predictAll(dateStr, weather) {
     var l4 = predictLine("4", dateStr, weather);
     var l6 = predictLine("6", dateStr, weather);
-    var brtList = BRT_TRANSFER.map(function (b) { return predictBRT(b, dateStr, weather); });
-    var brtTotal = brtList.reduce(function (a, b) { return a + b.daily; }, 0);
 
     var hourly = new Array(24).fill(0);
     l4.hourly.forEach(function (v, i) { hourly[i] += v; });
@@ -484,10 +359,7 @@ var Model = (function () {
       l4: l4, l6: l6,
       total: l4.total + l6.total,
       hourly: hourly,
-      brtList: brtList,
-      brtTotal: brtTotal,
-      peakHour: (function () { var p = 0; hourly.forEach(function (v, i) { if (v > hourly[p]) p = i; }); return p; })(),
-      transferTotal: brtList.filter(function (b) { return b.isNew; }).reduce(function (a, b) { return a + b.daily; }, 0)
+      peakHour: (function () { var p = 0; hourly.forEach(function (v, i) { if (v > hourly[p]) p = i; }); return p; })()
     };
   }
 
@@ -498,9 +370,9 @@ var Model = (function () {
     stationWeight: stationWeight, lineWeights: lineWeights,
     noveltyFactor: noveltyFactor, fareFactor: fareFactor,
     calendarFactor: calendarFactor, weatherFactor: weatherFactor,
-    hourlyShape: hourlyShape, brtShape: brtShape,
+    hourlyShape: hourlyShape,
     predictStation: predictStation, predictLine: predictLine,
-    predictBRT: predictBRT, predictAll: predictAll,
+    predictAll: predictAll,
     uncertaintyOf: uncertaintyOf, sumRange: sumRange
   };
 })();
