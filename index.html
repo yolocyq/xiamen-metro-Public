@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>厦门地铁客流预测分析系统</title>
 <script src="chart.umd.min.js?v=4.4.0" onerror="var _s=document.createElement('script');_s.src='https://registry.npmmirror.com/chart.js/4.4.0/files/dist/chart.umd.min.js';document.head.appendChild(_s);"></script>
+<script src="xlsx.full.min.js?v=0.18.5" onerror="var _x=document.createElement('script');_x.src='https://registry.npmmirror.com/xlsx/0.18.5/files/dist/xlsx.full.min.js';document.head.appendChild(_x);"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--pri:#003d7a;--pri-light:#0066cc;--bg:#f0f4f8;--card:#fff;--border:#e0e6ed;--text:#222;--text2:#666;--text3:#999;--red:#d32f2f;--orange:#e65100;--yellow:#f57f17;--green:#2e7d32;--blue:#1565c0;}
@@ -319,6 +320,7 @@ table.striped tr:nth-child(even){background:#fafbfd;}
     <button class="tab-btn" onclick="switchTab('event')">🎯 活动保障</button>
     <button class="tab-btn" onclick="switchTab('analytics')">📈 数据分析</button>
     <button class="tab-btn" onclick="switchTab('gate')" title="AFC 实时闸机数据尚未接入，该模块暂停服务">🚧 实时闸机<span class="tab-paused">暂停</span></button>
+    <button class="tab-btn" onclick="switchTab('import')" title="导入站级实际客流，回测并累积校准模型">📥 数据导入</button>
     <button class="tab-btn" onclick="switchTab('archive')">📚 历史归档</button>
   </div>
   <div class="tab-content active" id="tab-dashboard"></div>
@@ -326,6 +328,7 @@ table.striped tr:nth-child(even){background:#fafbfd;}
   <div class="tab-content" id="tab-event"></div>
   <div class="tab-content" id="tab-analytics"></div>
   <div class="tab-content" id="tab-gate"></div>
+  <div class="tab-content" id="tab-import"></div>
   <div class="tab-content" id="tab-archive"></div>
 </div>
 <div class="footer-note">数据不全仅供参考，未涉及任何侵权行为</div>
@@ -6339,6 +6342,10 @@ function computeBaseline(stn, date){
   var profile = BASELINE_PROFILES[stype] || BASELINE_PROFILES['通勤'];
   var dayCoef = getDayCoef(date, stn);
   var wCoef = getWeatherCoef(date);
+  // 导入模块学到的星期系数（无学习记录时为 1，不影响原模型）
+  var _dp = String(date).split('-');
+  var _wd = (_dp.length === 3) ? new Date(+_dp[0], +_dp[1] - 1, +_dp[2]).getDay() : new Date(date).getDay();
+  var learnDow = (typeof LEARNED_DOW !== 'undefined' && LEARNED_DOW) ? (LEARNED_DOW[_wd] || 1) : 1;
   var tBoost = computeTransportBoost(stn, date);
   var hBoost = computeHotelBoost(stn, date);
   var sBoost = computeSocialHeatBoost(stn, date);
@@ -6370,7 +6377,7 @@ function computeBaseline(stn, date){
     // Then apply day-type / weather / transport / hotel / heat coefficients
     var effectiveScale = calibratedDailyNormal / profileSum;
     for(var h=0;h<24;h++){
-      var base = profile[h] * effectiveScale * dayCoef.coef * wCoef.coef * totalBoost;
+      var base = profile[h] * effectiveScale * dayCoef.coef * wCoef.coef * totalBoost * learnDow;
       hourly.push(Math.round(base));
       trace.push({hour:h, profileBase:profile[h], scale:effectiveScale.toFixed(2), dayCoef:dayCoef.coef.toFixed(3), weatherCoef:wCoef.coef.toFixed(3), transportBoost:tBoost.boost.toFixed(3), hotelBoost:hBoost.boost.toFixed(3), heatBoost:sBoost.boost.toFixed(3), result:Math.round(base), calibrated:true, dailyNormal:calibratedDailyNormal});
     }
@@ -6379,7 +6386,7 @@ function computeBaseline(stn, date){
 
   // Fallback: generic profile * scale * GLOBAL_BASELINE_SCALE (for stations without calibration data)
   for(var h=0;h<24;h++){
-    var base = profile[h] * scale * GLOBAL_BASELINE_SCALE * dayCoef.coef * wCoef.coef * totalBoost;
+    var base = profile[h] * scale * GLOBAL_BASELINE_SCALE * dayCoef.coef * wCoef.coef * totalBoost * learnDow;
     hourly.push(Math.round(base));
     trace.push({hour:h, profileBase:profile[h], scale:scale, globalScale:GLOBAL_BASELINE_SCALE, dayCoef:dayCoef.coef.toFixed(3), weatherCoef:wCoef.coef.toFixed(3), transportBoost:tBoost.boost.toFixed(3), hotelBoost:hBoost.boost.toFixed(3), heatBoost:sBoost.boost.toFixed(3), result:Math.round(base)});
   }
@@ -7382,7 +7389,7 @@ function loadGatePaused(){
 var ACTIVE_TAB='dashboard';
 function switchTab(tab){
   ACTIVE_TAB=tab;
-  var tabs=['dashboard','flow','event','analytics','gate','archive'];
+  var tabs=['dashboard','flow','event','analytics','gate','import','archive'];
   var btns=document.querySelectorAll('.tab-btn');
   for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
   var idx=tabs.indexOf(tab);
@@ -7396,6 +7403,7 @@ function switchTab(tab){
   else if(tab==='event')loadEvent();
   else if(tab==='analytics')loadAnalytics();
   else if(tab==='gate'){ loadGatePaused(); }
+  else if(tab==='import')loadImport();
   else if(tab==='archive')loadArchive();
 }
 
@@ -7647,6 +7655,753 @@ function toast(msg){
   }
   box.appendChild(frag);
 })();
+
+/* ==================== 实际数据导入模块 ====================
+ * 与 4/6 号线新线站的「实际数据导入」同构：
+ *   导入站级实际客流 → 回测当前模型 → 累积学习 → 写入长期记忆
+ * 本页差异：模型的站级锚点是
+ *   CRAWLED.historicalData.station_calibration[站名+'站'].daily_normal
+ * 学到的基准直接写回该处，全站预测（含运营总览、活动保障）立即生效。
+ * 数据只在本机浏览器处理，不上传任何服务器。
+ * ========================================================= */
+var LEARNED_DOW = null;   // 学到的星期系数，computeBaseline() 已引用；无学习时为 null
+
+var ImportMod = (function(){
+  var KEY = 'xmMetroImport_v1';
+  var state = blank();
+
+  function blank(){
+    return { version:1, stations:{}, globalDow:null, history:[], meta:{}, updatedAt:null };
+  }
+  function mean(a){ return a.length ? a.reduce(function(x,y){return x+y;},0)/a.length : 0; }
+  function uniq(a){ var o={},r=[]; a.forEach(function(x){ if(!o[x]){o[x]=1;r.push(x);} }); return r; }
+
+  /* ---- 存取 ---- */
+  function load(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(raw){
+        var o = JSON.parse(raw);
+        state = Object.assign(blank(), o || {});
+        if(!state.stations) state.stations = {};
+        if(!Array.isArray(state.history)) state.history = [];
+      }
+    }catch(e){ /* 隐私模式下降级为内存态 */ }
+    applyToModel();
+  }
+  function save(){
+    state.updatedAt = new Date().toISOString();
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  }
+  function calMap(){
+    if(!CRAWLED.historicalData) CRAWLED.historicalData = {};
+    if(!CRAWLED.historicalData.station_calibration) CRAWLED.historicalData.station_calibration = {};
+    return CRAWLED.historicalData.station_calibration;
+  }
+  /* 学到的基准写回模型，使全站预测立即生效 */
+  function applyToModel(){
+    var sc = calMap();
+    Object.keys(state.stations).forEach(function(name){
+      var r = state.stations[name];
+      if(!r || !(r.daily > 0)) return;
+      var k = name + '站';
+      if(!sc[k]) sc[k] = {};
+      if(sc[k]._origNormal === undefined) sc[k]._origNormal = sc[k].daily_normal;
+      sc[k].daily_normal = Math.round(r.daily);
+      sc[k].learned = true;
+      sc[k].learned_days = r.days;
+      sc[k].learned_from = r.firstAt || null;
+      sc[k].learned_to = r.lastAt || null;
+    });
+    if(state.globalDow) LEARNED_DOW = state.globalDow;
+  }
+
+  /* ---- 统计 ---- */
+  function stationCount(){ return Object.keys(state.stations).length; }
+  function totalRecords(){
+    var t = 0;
+    Object.keys(state.stations).forEach(function(n){ t += Object.keys(state.stations[n].byDate||{}).length; });
+    return t;
+  }
+  function isEmpty(){ return Object.keys(state.stations).length === 0; }
+  function meta(){ return state.meta || {}; }
+  function history(){ return state.history || []; }
+
+  /* ---- 站名匹配：允许「镇海路」与「镇海路站」两种写法 ---- */
+  function matchStation(name){
+    if(!name) return null;
+    var n = String(name).trim();
+    if(allStations.indexOf(n) >= 0) return n;
+    if(n.length > 1 && n.slice(-1) === '站' && allStations.indexOf(n.slice(0,-1)) >= 0) return n.slice(0,-1);
+    return null;
+  }
+
+  /* ---- 剥离当日系数，反算「常态日基准」 ---- */
+  function dayFactor(stn, date){
+    var dc = getDayCoef(date, stn).coef;
+    var wc = getWeatherCoef(date).coef;
+    var tb = computeTransportBoost(stn, date).boost;
+    var hb = computeHotelBoost(stn, date).boost;
+    var sb = computeSocialHeatBoost(stn, date).boost;
+    var dp = String(date).split('-');
+    var wd = new Date(+dp[0], +dp[1]-1, +dp[2]).getDay();
+    var ld = (LEARNED_DOW && LEARNED_DOW[wd]) || 1;
+    return dc * wc * tb * hb * sb * ld;
+  }
+  function eventSum(stn, date){
+    try{
+      var e = computeEventFlow(stn, date);
+      return (e.hourly || []).reduce(function(a,b){ return a+b; }, 0);
+    }catch(err){ return 0; }
+  }
+  function stripped(stn, date, v){
+    var g = dayFactor(stn, date);
+    if(!(g > 0.01)) return null;
+    var base = (v - eventSum(stn, date)) / g;   // 先减掉活动增量，再除掉日历/天气/区位系数
+    return base > 0 ? base : null;
+  }
+
+  /* ---- 误差指标 ---- */
+  function mape(p){ var v=p.filter(function(x){return x.actual>0;}); if(!v.length) return null;
+    return v.reduce(function(a,x){return a+Math.abs(x.pred-x.actual)/x.actual;},0)/v.length; }
+  function mae(p){ if(!p.length) return null; return p.reduce(function(a,x){return a+Math.abs(x.pred-x.actual);},0)/p.length; }
+  function rmse(p){ if(!p.length) return null; return Math.sqrt(p.reduce(function(a,x){return a+Math.pow(x.pred-x.actual,2);},0)/p.length); }
+  function bias(p){ if(!p.length) return null;
+    var num=p.reduce(function(a,x){return a+(x.pred-x.actual);},0), den=p.reduce(function(a,x){return a+x.actual;},0);
+    return den ? num/den : null; }
+  function r2(p){ if(p.length<2) return null;
+    var as=p.map(function(x){return x.actual;}), m=mean(as);
+    var ss=as.reduce(function(a,v){return a+Math.pow(v-m,2);},0); if(!ss) return null;
+    return 1 - p.reduce(function(a,x){return a+Math.pow(x.actual-x.pred,2);},0)/ss; }
+
+  /* ---- 回测 ---- */
+  function backtest(records){
+    var pairs=[], miss=[];
+    records.forEach(function(r){
+      var stn = matchStation(r.station);
+      if(!stn){ miss.push(r.station); return; }
+      var p;
+      try{ p = predictStation(stn, r.date); }catch(e){ return; }
+      pairs.push({ station:stn, date:r.date, pred:p.totalPred, actual:r.inbound });
+    });
+    return { pairs:pairs, unmatched:uniq(miss), n:pairs.length,
+             mape:mape(pairs), mae:mae(pairs), rmse:rmse(pairs), bias:bias(pairs), r2:r2(pairs) };
+  }
+
+  /* ---- 星期系数（跨站、跨批次累积） ---- */
+  function dowFromAll(){
+    var acc={0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
+    Object.keys(state.stations).forEach(function(stn){
+      var r = state.stations[stn];
+      var ds = Object.keys(r.byDate||{});
+      /* 门槛：单站至少两周样本。样本太少时，星期系数会把日间随机波动
+       * 误当成星期规律，反而拉低精度，不如不学。 */
+      if(ds.length < 14) return;
+      var vals = ds.map(function(d){ return r.byDate[d]; });
+      var m = mean(vals); if(!m) return;
+      ds.forEach(function(d){
+        var dp = d.split('-');
+        acc[new Date(+dp[0], +dp[1]-1, +dp[2]).getDay()].push(r.byDate[d]/m);
+      });
+    });
+    var out={}, any=false;
+    for(var k in acc){
+      if(acc[k].length >= 5){
+        /* 向 1 收缩一半并限幅：模型本身已有工作日/周末/节假日系数，
+         * 这里只做小幅修正，避免两套系数相互放大。 */
+        var v = mean(acc[k]);
+        v = 1 + (v - 1) * 0.5;
+        out[k] = +Math.max(0.85, Math.min(1.15, v)).toFixed(3);
+        any = true;
+      }
+    }
+    return any ? out : null;
+  }
+
+  /* ---- 主流程 ---- */
+  function learn(records, fileName){
+    var before = backtest(records);
+    var added = 0, touched = {};
+    records.forEach(function(r){
+      var stn = matchStation(r.station);
+      if(!stn) return;
+      var v = Number(r.inbound) || 0;
+      if(v <= 0) return;
+      var rec = state.stations[stn];
+      if(!rec) rec = state.stations[stn] = { byDate:{}, days:0, daily:0, rawMean:0, firstAt:null, lastAt:null };
+      if(rec.byDate[r.date] === undefined) added++;
+      rec.byDate[r.date] = v;                          // 同日期以最新值为准，天然去重
+      touched[stn] = true;
+    });
+
+    var gdow = dowFromAll();
+    if(gdow) state.globalDow = gdow;
+
+    Object.keys(touched).forEach(function(stn){
+      var rec = state.stations[stn];
+      var ds = Object.keys(rec.byDate).sort();
+      rec.days = ds.length;
+      rec.rawMean = mean(ds.map(function(d){ return rec.byDate[d]; }));
+      var sb = [];
+      ds.forEach(function(d){ var x = stripped(stn, d, rec.byDate[d]); if(x != null) sb.push(x); });
+      rec.daily = Math.round(sb.length ? mean(sb) : rec.rawMean);
+      rec.stripped = sb.length > 0;
+      if(ds.length){ rec.firstAt = ds[0]; rec.lastAt = ds[ds.length-1]; }
+    });
+
+    applyToModel();
+    save();
+    var after = backtest(records);
+
+    var ds2 = records.map(function(r){ return r.date; }).sort();
+    state.history.push({
+      at:new Date().toISOString(), file:fileName || '手动导入',
+      records:records.length, stationCount:Object.keys(touched).length, added:added,
+      dateFrom:ds2.length?ds2[0]:null, dateTo:ds2.length?ds2[ds2.length-1]:null,
+      beforeMape:before.mape, afterMape:after.mape, n:after.n
+    });
+    if(state.history.length > 100) state.history = state.history.slice(-100);
+    state.meta = {
+      lastLearnAt:new Date().toISOString(), lastFile:fileName || null,
+      learnCount:state.history.length, totalRecords:totalRecords(),
+      totalStations:stationCount(),
+      dateRange:(function(){
+        var all=[];
+        Object.keys(state.stations).forEach(function(n){ all = all.concat(Object.keys(state.stations[n].byDate||{})); });
+        all.sort();
+        return all.length ? all[0] + ' ~ ' + all[all.length-1] : '—';
+      })()
+    };
+    save();
+    return { before:before, after:after, added:added, stationCount:Object.keys(touched).length, globalDow:gdow };
+  }
+
+  /* ---- 清空：还原模型到导入前 ---- */
+  function clearAll(){
+    var sc = calMap();
+    Object.keys(state.stations).forEach(function(name){
+      var k = name + '站', e = sc[k];
+      if(!e) return;
+      if(e._origNormal !== undefined){ e.daily_normal = e._origNormal; delete e._origNormal; }
+      else delete e.daily_normal;
+      delete e.learned; delete e.learned_days; delete e.learned_from; delete e.learned_to;
+    });
+    state = blank();
+    LEARNED_DOW = null;
+    try{ localStorage.removeItem(KEY); }catch(e){}
+  }
+
+  function exportJSON(){
+    return JSON.stringify({ exportedAt:new Date().toISOString(), app:'xiamen-metro-main', schema:1, state:state }, null, 2);
+  }
+  function importJSON(txt){
+    var o = JSON.parse(txt);
+    var inc = (o && o.state) ? o.state : o;
+    if(!inc || !inc.stations) return false;
+    Object.keys(inc.stations).forEach(function(name){
+      var src = inc.stations[name];
+      var dst = state.stations[name];
+      if(!dst) dst = state.stations[name] = { byDate:{}, days:0, daily:src.daily||0, rawMean:src.rawMean||0, firstAt:null, lastAt:null };
+      var sb = src.byDate || {};
+      Object.keys(sb).forEach(function(d){ dst.byDate[d] = sb[d]; });
+      var ds = Object.keys(dst.byDate).sort();
+      dst.days = ds.length || dst.days || 0;
+      if(ds.length){ dst.firstAt = ds[0]; dst.lastAt = ds[ds.length-1]; dst.daily = Math.round(mean(ds.map(function(d){ return dst.byDate[d]; }))); }
+    });
+    if(inc.history && inc.history.length) state.history = state.history.concat(inc.history).slice(-100);
+    var gdow = dowFromAll();
+    if(gdow) state.globalDow = gdow;
+    applyToModel();
+    save();
+    return true;
+  }
+
+  return {
+    load:load, save:save, backtest:backtest, learn:learn,
+    clearAll:clearAll, exportJSON:exportJSON, importJSON:importJSON,
+    matchStation:matchStation, isEmpty:isEmpty, meta:meta, history:history,
+    stationCount:stationCount, totalRecords:totalRecords,
+    get raw(){ return state; }
+  };
+})();
+
+/* ==================== 导入页 UI ==================== */
+var IMP = { rows:null, headers:[], records:[], fields:{}, fileName:'', wide:false, lastBt:null };
+
+function imNum(v){
+  if(v == null || v === '') return null;
+  var n = Number(String(v).replace(/[,，\s人次]/g, ''));
+  return isNaN(n) ? null : n;
+}
+function imPad(n){ n = String(n); return n.length < 2 ? '0' + n : n; }
+function imNormDate(v){
+  if(v instanceof Date && !isNaN(v.getTime())) return v.getFullYear()+'-'+imPad(v.getMonth()+1)+'-'+imPad(v.getDate());
+  var s = String(v == null ? '' : v).trim();
+  var m = s.match(/(\d{4})[-\/年](\d{1,2})[-\/月](\d{1,2})/);
+  if(m) return m[1] + '-' + imPad(m[2]) + '-' + imPad(m[3]);
+  var m2 = s.match(/^(\d{1,2})[-\/](\d{1,2})$/);
+  if(m2) return new Date().getFullYear() + '-' + imPad(m2[1]) + '-' + imPad(m2[2]);
+  var m3 = s.match(/^(\d{1,2})月(\d{1,2})日$/);
+  if(m3) return new Date().getFullYear() + '-' + imPad(m3[1]) + '-' + imPad(m3[2]);
+  return null;
+}
+function imPct(x){ return x == null ? '—' : (x*100).toFixed(2) + '%'; }
+
+var IMP_FIELD_MATCH = {
+  station:['站名','车站','站点','站点名称','车站名','station','站'],
+  date:['日期','进站日期','统计日期','客流日期','date','时间日期'],
+  hour:['小时','时段','时刻','hour','整点'],
+  inbound:['进站','进站量','进站客流','进站人数','进站客','inbound','进站人次'],
+  outbound:['出站','出站量','出站客流','出站人数','outbound','出站人次']
+};
+function imGuess(headers, kind){
+  var keys = IMP_FIELD_MATCH[kind];
+  for(var i=0;i<headers.length;i++){
+    var hn = String(headers[i]).toLowerCase().replace(/\s/g,'');
+    if(!hn) continue;
+    for(var j=0;j<keys.length;j++){ if(hn.indexOf(keys[j]) >= 0) return i; }
+  }
+  return -1;
+}
+function imIsDateHead(h){ return /^\d{4}[-\/]\d{1,2}[-\/]\d{1,2}$|^\d{1,2}[-\/]\d{1,2}$|^\d{1,2}月\d{1,2}日$/.test(h); }
+
+function imParseRows(rows, fname){
+  var box = $_('impSummary');
+  if(!rows || rows.length < 2){ imMsg('bad','文件为空或不足两行'); return; }
+  var headers = rows[0].map(function(x){ return String(x == null ? '' : x).trim(); });
+  var dateLike = headers.filter(function(h,i){ return i > 0 && imIsDateHead(h); });
+  var wide = dateLike.length >= 3;
+  var recs = [], fields = {};
+
+  if(wide){
+    var dIdx = [];
+    headers.forEach(function(h,i){ if(i > 0 && imIsDateHead(h)) dIdx.push(i); });
+    fields = { mode:'wide', station:0, dates:dIdx };
+    for(var r=1;r<rows.length;r++){
+      var row = rows[r] || [];
+      var sname = String(row[0] == null ? '' : row[0]).trim();
+      if(!sname) continue;
+      dIdx.forEach(function(ci){
+        var v = imNum(row[ci]);
+        if(v == null || v <= 0) return;
+        recs.push({ station:sname, date:imNormDate(headers[ci]), inbound:v, outbound:null });
+      });
+    }
+  } else {
+    var iS = imGuess(headers,'station'), iD = imGuess(headers,'date');
+    var iH = imGuess(headers,'hour'), iI = imGuess(headers,'inbound'), iO = imGuess(headers,'outbound');
+    if(iS < 0 || iD < 0){ imMsg('bad','未识别到「站名」或「日期」列。参考格式：站名 | 日期 | 进站量'); return; }
+    if(iI < 0 && iO < 0){ imMsg('bad','未识别到「进站量」或「出站量」列。'); return; }
+    if(iI < 0) iI = iO;
+    fields = { mode:'long', station:iS, date:iD, hour:iH, inbound:iI, outbound:iO };
+    for(var r2=1;r2<rows.length;r2++){
+      var rw = rows[r2] || [];
+      var sn = String(rw[iS] == null ? '' : rw[iS]).trim();
+      if(!sn) continue;
+      var d = imNormDate(rw[iD]);
+      if(!d) continue;
+      var iv = imNum(rw[iI]);
+      if(iv == null) continue;
+      recs.push({ station:sn, date:d, inbound:iv, outbound:iO >= 0 ? imNum(rw[iO]) : null });
+    }
+  }
+  if(!recs.length){ imMsg('bad','解析完成但没有得到有效数据行'); return; }
+
+  IMP.rows = rows; IMP.headers = headers; IMP.wide = wide;
+  IMP.fields = fields; IMP.records = recs; IMP.fileName = fname || '手动导入';
+
+  var names = [], dates = [];
+  recs.forEach(function(r){ if(names.indexOf(r.station)<0) names.push(r.station); });
+  recs.forEach(function(r){ if(dates.indexOf(r.date)<0) dates.push(r.date); });
+  dates.sort();
+  var un = names.filter(function(n){ return !ImportMod.matchStation(n); });
+
+  var h = '<div style="background:#e8f5e9;border-left:4px solid #2e7d32;padding:10px 14px;border-radius:6px;margin-top:12px">✓ 已从 <b>' + esc(IMP.fileName) + '</b> 解析出 <b>' + fmtNum(recs.length) + '</b> 条记录 · '
+    + names.length + ' 个站 · ' + dates.length + ' 天（' + dates[0] + ' ~ ' + dates[dates.length-1] + '）</div>';
+  if(un.length){
+    h += '<div style="background:#fff3e0;border-left:4px solid #e65100;padding:10px 14px;border-radius:6px;margin-top:8px">有 ' + un.length
+      + ' 个站名未能匹配到站点清单：' + un.slice(0,12).map(esc).join('、') + (un.length>12?' 等':'')
+      + '。这些站不参与学习，请核对是否与系统内站名一致（例如「镇海路」与「镇海路站」均可识别）。</div>';
+  }
+  if(box) box.innerHTML = h;
+
+  imRenderFields();
+  imRenderPreview();
+  var b1 = $_('impBt'), b2 = $_('impApply');
+  if(b1) b1.disabled = false;
+  if(b2) b2.disabled = false;
+}
+function imMsg(kind, txt){
+  var box = $_('impSummary');
+  if(!box) return;
+  var color = kind === 'ok' ? '#2e7d32:#e8f5e9' : '#c62828:#ffebee';
+  var c = color.split(':');
+  box.innerHTML = '<div style="background:' + c[1] + ';border-left:4px solid ' + c[0] + ';padding:10px 14px;border-radius:6px;margin-top:12px">' + txt + '</div>';
+}
+
+/* 按当前字段映射重新抽取（下拉框改选后调用） */
+function imReExtract(){
+  var rows = IMP.rows;
+  if(!rows) return;
+  var recs = [], f = IMP.fields;
+  if(f.mode === 'wide'){
+    for(var i=1;i<rows.length;i++){
+      var row = rows[i] || [];
+      var sn = String(row[0] == null ? '' : row[0]).trim();
+      if(!sn) continue;
+      f.dates.forEach(function(ci){
+        var v = imNum(row[ci]);
+        if(v == null || v <= 0) return;
+        recs.push({ station:sn, date:imNormDate(IMP.headers[ci]), inbound:v, outbound:null });
+      });
+    }
+  } else {
+    for(var r=1;r<rows.length;r++){
+      var rw = rows[r] || [];
+      var s2 = String(rw[f.station] == null ? '' : rw[f.station]).trim();
+      if(!s2) continue;
+      var d = imNormDate(rw[f.date]);
+      if(!d) continue;
+      var iv = imNum(rw[f.inbound]);
+      if(iv == null && f.outbound >= 0) iv = imNum(rw[f.outbound]);
+      if(iv == null) continue;
+      recs.push({ station:s2, date:d, inbound:iv, outbound:f.outbound >= 0 ? imNum(rw[f.outbound]) : null });
+    }
+  }
+  IMP.records = recs;
+  imRenderPreview();
+  imMsg('ok','已按新的字段映射重新抽取 <b>' + fmtNum(recs.length) + '</b> 条记录，点击「② 学习并复测」生效。');
+}
+
+function imRenderFields(){
+  var box = $_('impFields');
+  if(!box) return;
+  if(IMP.wide){
+    box.innerHTML = '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px">宽表格式：第一列为站名，后续 '
+      + IMP.fields.dates.length + ' 列为日期（' + esc(IMP.headers[IMP.fields.dates[0]]) + ' ~ ' + esc(IMP.headers[IMP.fields.dates[IMP.fields.dates.length-1]]) + '）</div>';
+    return;
+  }
+  var items = [
+    {k:'station', lb:'站名列'},
+    {k:'date', lb:'日期列'},
+    {k:'hour', lb:'小时列（可选）'},
+    {k:'inbound', lb:'进站量列'},
+    {k:'outbound', lb:'出站量列（可选）'}
+  ];
+  box.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:12px">' + items.map(function(it){
+    var cur = IMP.fields[it.k];
+    var opts = '<option value="-1">— 未使用 —</option>' + IMP.headers.map(function(h2, idx){
+      return '<option value="' + idx + '"' + (idx === cur ? ' selected' : '') + '>' + esc(h2) + '</option>';
+    }).join('');
+    return '<div><div style="font-size:12px;color:#666;margin-bottom:4px">' + it.lb + '</div>'
+      + '<select data-fk="' + it.k + '" style="padding:6px 10px;border:1px solid #c8d6e5;border-radius:6px;font-size:12px">' + opts + '</select></div>';
+  }).join('') + '</div>';
+  var sels = box.querySelectorAll('select');
+  for(var i=0;i<sels.length;i++){
+    sels[i].onchange = function(){
+      IMP.fields[this.getAttribute('data-fk')] = parseInt(this.value, 10);
+      imReExtract();
+    };
+  }
+}
+
+function imRenderPreview(){
+  var box = $_('impPreview');
+  if(!box) return;
+  if(!IMP.records.length){ box.innerHTML = ''; return; }
+  var top = IMP.records.slice(0, 8);
+  var h = '<table><thead><tr><th>站名</th><th>日期</th><th style="text-align:right">进站量</th><th>站点匹配</th></tr></thead><tbody>';
+  top.forEach(function(r){
+    var stn = ImportMod.matchStation(r.station);
+    h += '<tr><td>' + esc(r.station) + '</td><td>' + esc(r.date) + '</td><td style="text-align:right">' + fmtNum(r.inbound) + '</td>'
+      + '<td>' + (stn ? '<span class="badge green">✓ ' + esc(stn) + '</span>' : '<span class="badge red">未匹配</span>') + '</td></tr>';
+  });
+  h += '</tbody></table><div style="font-size:12px;color:#999;margin-top:6px">仅显示前 8 条</div>';
+  box.innerHTML = h;
+}
+
+function imReport(title, bt){
+  if(!bt || !bt.n) return '<div style="background:#fff3e0;border-left:4px solid #e65100;padding:10px 14px;border-radius:6px;margin-top:10px">' + title + '：没有可参与回测的记录（可能站名全部未匹配）。</div>';
+  var m = bt.mape;
+  var bg = m == null ? '#f5f5f5' : (m < 0.10 ? '#e8f5e9' : (m < 0.20 ? '#fff8e1' : '#ffebee'));
+  var bd = m == null ? '#999' : (m < 0.10 ? '#2e7d32' : (m < 0.20 ? '#f57f17' : '#c62828'));
+  var h = '<div style="background:' + bg + ';border-left:4px solid ' + bd + ';padding:10px 14px;border-radius:6px;margin-top:10px"><b>' + title + '</b>'
+    + '　样本 ' + fmtNum(bt.n) + ' 条　|　MAPE <b>' + imPct(m) + '</b>　|　MAE ' + fmtNum(bt.mae)
+    + '　|　RMSE ' + fmtNum(bt.rmse) + '　|　平均偏差 ' + (bt.bias == null ? '—' : (bt.bias > 0 ? '+' : '') + imPct(bt.bias))
+    + '　|　R² ' + (bt.r2 == null ? '—' : bt.r2.toFixed(3)) + '</div>';
+  if(bt.unmatched && bt.unmatched.length){
+    h += '<div style="background:#fff3e0;border-left:4px solid #e65100;padding:10px 14px;border-radius:6px;margin-top:8px">未匹配站名 ' + bt.unmatched.length + ' 个：' + bt.unmatched.slice(0,10).map(esc).join('、') + '</div>';
+  }
+  return h;
+}
+
+function imDoBacktest(){
+  var bt = ImportMod.backtest(IMP.records);
+  IMP.lastBt = bt;
+  var box = $_('impBtResult');
+  if(box) box.innerHTML = imReport('学习前（当前模型）', bt);
+}
+
+function imDoLearn(){
+  var res = ImportMod.learn(IMP.records, IMP.fileName);
+  var h = imReport('学习前（上一次的记忆）', res.before) + imReport('学习后（并入本次数据）', res.after);
+  if(res.before.mape != null && res.after.mape != null && res.after.n > 0){
+    var delta = res.after.mape - res.before.mape;
+    if(delta < -0.002){
+      h += '<div style="background:#e8f5e9;border-left:4px solid #2e7d32;padding:10px 14px;border-radius:6px;margin-top:10px"><b>本次学习有效：</b>MAPE 由 '
+        + imPct(res.before.mape) + ' 降到 ' + imPct(res.after.mape) + '，改善 ' + imPct(Math.abs(delta)) + '。新基准已写入长期记忆，全站预测立即生效。</div>';
+    } else if(delta > 0.002){
+      h += '<div style="background:#fff3e0;border-left:4px solid #e65100;padding:10px 14px;border-radius:6px;margin-top:10px"><b>本次学习反而变差：</b>MAPE 由 '
+        + imPct(res.before.mape) + ' 升到 ' + imPct(res.after.mape) + '。常见原因：这批数据的时段与既有规律差异过大（如跨节假日），或含异常值。参数仍已写入，建议核对数据质量。</div>';
+    } else {
+      h += '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px;margin-top:10px">本次 MAPE 基本持平（'
+        + imPct(res.before.mape) + ' → ' + imPct(res.after.mape) + '），说明这批数据与已学到的规律一致。</div>';
+    }
+  }
+  h += '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px;margin-top:12px"><b>本次写入长期记忆：</b><br>'
+    + '· 站点基准 → 更新 ' + res.stationCount + ' 个站，新增 ' + fmtNum(res.added) + ' 条日记录<br>';
+  if(res.globalDow){
+    var nm = ['周日','周一','周二','周三','周四','周五','周六'];
+    h += '· 星期系数 → ' + Object.keys(res.globalDow).map(function(k){ return nm[k] + ' ' + res.globalDow[k]; }).join('　') + '<br>';
+  }
+  h += '档案存放在本机浏览器，关闭浏览器、重启电脑后依然生效；换设备用「导出学习档案」迁移。</div>';
+  var box = $_('impBtResult');
+  if(box) box.innerHTML = h;
+  imRenderState();
+  imRenderNeed();
+}
+
+function imRenderState(){
+  var box = $_('impState');
+  if(!box) return;
+  if(ImportMod.isEmpty()){
+    box.innerHTML = '<div style="background:#fff3e0;border-left:4px solid #e65100;padding:10px 14px;border-radius:6px"><b>学习档案为空。</b>'
+      + '当前站点基准为公开数据推算值；导入站级实际客流后，模型会自动改用实测锚点，预测区间由 ±22% 收窄到 ±12%。档案存放在本机浏览器，关掉不会丢。</div>';
+    return;
+  }
+  var hist = ImportMod.history(), m = ImportMod.meta();
+  var h = '<div class="stats-grid">';
+  h += '<div class="stat-card info"><div><div class="stat-value">' + fmtNum(hist.length) + '</div><div class="stat-label">累计学习次数</div></div></div>';
+  h += '<div class="stat-card success"><div><div class="stat-value">' + fmtNum(ImportMod.totalRecords()) + '</div><div class="stat-label">累计日记录（同日期去重）</div></div></div>';
+  h += '<div class="stat-card"><div><div class="stat-value">' + fmtNum(ImportMod.stationCount()) + '</div><div class="stat-label">已学站点 / 共 ' + allStations.length + ' 站</div></div></div>';
+  h += '<div class="stat-card"><div><div class="stat-value" style="font-size:16px">' + esc(m.dateRange || '—') + '</div><div class="stat-label">数据跨度</div></div></div>';
+  h += '</div>';
+
+  if(hist.length){
+    var last = hist[hist.length-1];
+    var ok = last.beforeMape != null && last.afterMape != null && last.afterMape < last.beforeMape;
+    h += '<div style="background:' + (ok ? '#e8f5e9' : '#e3f2fd') + ';border-left:4px solid ' + (ok ? '#2e7d32' : '#1565c0') + ';padding:10px 14px;border-radius:6px;margin-top:10px">'
+      + '<b>最近一次学习</b>（' + esc((last.at || '').slice(0,16).replace('T',' ')) + '，' + esc(last.file) + '）：'
+      + 'MAPE ' + imPct(last.beforeMape) + ' → <b>' + imPct(last.afterMape) + '</b>，样本 ' + fmtNum(last.n) + ' 条，新增 ' + fmtNum(last.added) + ' 条日记录。</div>';
+  }
+  if(ImportMod.raw.globalDow){
+    var nm2 = ['周日','周一','周二','周三','周四','周五','周六'];
+    h += '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px;margin-top:10px"><b>已学到的星期系数：</b>'
+      + Object.keys(ImportMod.raw.globalDow).map(function(k){ return nm2[k] + ' <b>' + ImportMod.raw.globalDow[k] + '</b>'; }).join('　') + '</div>';
+  }
+
+  var stt = ImportMod.raw.stations, keys = Object.keys(stt).sort();
+  if(keys.length){
+    h += '<details style="margin-top:12px"><summary style="cursor:pointer;font-weight:600">查看已学到的站点基准（' + keys.length + ' 个）</summary>'
+      + '<table style="margin-top:10px"><thead><tr><th>站名</th><th style="text-align:right">常态日基准</th><th style="text-align:right">样本天数</th><th>数据区间</th></tr></thead><tbody>'
+      + keys.map(function(k){
+        var r = stt[k];
+        return '<tr><td>' + esc(k) + '</td><td style="text-align:right"><b>' + fmtNum(r.daily) + '</b></td><td style="text-align:right">' + fmtNum(r.days) + '</td>'
+          + '<td style="font-size:12px;color:#999">' + esc((r.firstAt || '—') + ' ~ ' + (r.lastAt || '—')) + '</td></tr>';
+      }).join('') + '</tbody></table></details>';
+  }
+  if(hist.length){
+    h += '<details style="margin-top:12px"><summary style="cursor:pointer;font-weight:600">学习履历（' + hist.length + ' 次）</summary>'
+      + '<table style="margin-top:10px"><thead><tr><th>#</th><th>时间</th><th>来源</th><th style="text-align:right">记录数</th><th style="text-align:right">新增</th>'
+      + '<th style="text-align:right">学习前 MAPE</th><th style="text-align:right">学习后 MAPE</th></tr></thead><tbody>'
+      + hist.map(function(x,i){
+        return '<tr><td>' + (i+1) + '</td><td style="font-size:12px">' + esc((x.at || '').slice(0,16).replace('T',' ')) + '</td>'
+          + '<td style="font-size:12px">' + esc(x.file || '—') + '</td><td style="text-align:right">' + fmtNum(x.records) + '</td>'
+          + '<td style="text-align:right">' + fmtNum(x.added) + '</td><td style="text-align:right">' + imPct(x.beforeMape) + '</td>'
+          + '<td style="text-align:right"><b>' + imPct(x.afterMape) + '</b></td></tr>';
+      }).join('') + '</tbody></table></details>';
+  }
+  box.innerHTML = h;
+}
+
+function imRenderNeed(){
+  var box = $_('impNeed');
+  if(!box) return;
+  var learned = ImportMod.stationCount();
+  var rows = [
+    ['站级日进站量（分站、分日）', learned + ' / ' + allStations.length + ' 站', learned > 0 ? 'green' : 'red'],
+    ['分时段进站量（小时级）', '未接入', 'red'],
+    ['换乘客流（站内换乘量）', '未接入', 'red'],
+    ['出站量（OD 校验用）', '未接入', 'red'],
+    ['实际天气记录', '已有爬取数据', 'green'],
+    ['大型活动实测客流', '已有公开数据', 'green']
+  ];
+  var h = '<table><thead><tr><th>数据项</th><th>当前状态</th><th>说明</th></tr></thead><tbody>';
+  rows.forEach(function(r){
+    h += '<tr><td>' + esc(r[0]) + '</td><td><span class="badge ' + r[2] + '">' + esc(r[1]) + '</span></td>'
+      + '<td style="font-size:12px;color:#666">' + (r[2] === 'green' ? '已可用于模型' : '补齐后可进一步降低误差') + '</td></tr>';
+  });
+  h += '</tbody></table>';
+  box.innerHTML = h;
+}
+
+/* ---- 文件读取 ---- */
+function imReadFile(file){
+  var rd = new FileReader();
+  rd.onload = function(e){
+    var txt = null;
+    try{
+      if(typeof XLSX !== 'undefined' && XLSX.read){
+        var wb = XLSX.read(new Uint8Array(e.target.result), { type:'array', cellDates:true });
+        var ws = wb.Sheets[wb.SheetNames[0]];
+        imParseRows(XLSX.utils.sheet_to_json(ws, { header:1, raw:false, defval:'' }), file.name);
+        return;
+      }
+    }catch(err){ /* 落到纯文本解析 */ }
+    try{
+      txt = new TextDecoder('utf-8').decode(new Uint8Array(e.target.result));
+    }catch(err2){
+      txt = e.target.result;
+    }
+    imParseRows(imParseCsv(txt), file.name);
+  };
+  rd.readAsArrayBuffer(file);
+}
+function imParseCsv(txt){
+  var lines = String(txt).replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+  var out = [];
+  lines.forEach(function(ln){
+    if(!ln.replace(/,/g,'').trim()) return;
+    out.push(ln.split(',').map(function(c){ return String(c).replace(/^"|"$/g,'').trim(); }));
+  });
+  return out;
+}
+
+/* ---- 示例数据：用当前模型生成带噪声的实测值，便于快速体验整条链路 ---- */
+function imLoadSample(){
+  var dates = Object.keys(holidayMap || {}).filter(function(d){ return weatherMap && weatherMap[d]; }).sort();
+  if(dates.length < 8) dates = ['2026-09-16','2026-09-17','2026-09-18','2026-09-19','2026-09-20','2026-09-21','2026-09-22','2026-09-23'];
+  dates = dates.slice(0, 10);
+  var picks = ['镇海路','厦门火车站','乌石浦','岭兜','湖里创新园','集美软件园','吕厝','中山公园','殿前','火炬园']
+    .filter(function(n){ return allStations.indexOf(n) >= 0; });
+  if(!picks.length) picks = allStations.slice(0, 10);
+  var rows = [['站名','日期','进站量']];
+  picks.forEach(function(n, i){
+    dates.forEach(function(d, j){
+      var base;
+      try{ base = predictStation(n, d).totalPred; }catch(e){ base = 8000; }
+      // 站级系统性偏差（模型基准与实测的真实差距，可被学习修正）+ 日间小幅随机波动（不可学）
+      var bias = 0.86 + (i % 7) * 0.04;                 // 0.86 ~ 1.10
+      var wobble = 1 + ((j % 3) - 1) * 0.012;           // ±1.2%
+      rows.push([n, d, Math.round(base * bias * wobble)]);
+    });
+  });
+  imParseRows(rows, '示例数据（系统生成）.csv');
+}
+
+function loadImport(){
+  var c = $_('tab-import');
+  if(!c) return;
+  c.innerHTML =
+    '<div class="card">'
+    + '<h2 style="font-size:16px;margin-bottom:8px">导入实际客流数据</h2>'
+    + '<div style="font-size:13px;color:#666;line-height:1.8">支持 <b>.xlsx / .xls / .csv</b>。表头需包含：站名、日期、进站量（出站量与小时为可选），系统自动识别列名。'
+    + '导入后先回测精度，再把〈站点常态基准〉与〈星期系数〉累积写入模型，全站预测（运营总览、客流预测、活动保障）立即改用实测锚点。</div>'
+    + '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:13px">'
+    + '导入记录永久保存在本机浏览器，多次导入会叠加学习，同日期以最新值为准，不会重复计数。可用「导出学习档案」备份或迁移。</div>'
+    + '<div id="impDrop" style="border:2px dashed #c8d6e5;border-radius:10px;padding:26px;text-align:center;cursor:pointer;background:#fafcff;margin-top:12px">'
+    + '<div style="font-size:28px;color:#0066cc">⬆</div>'
+    + '<div style="font-weight:600;margin-top:4px">点击选择文件，或把文件拖到这里</div>'
+    + '<div style="font-size:12px;color:#999;margin-top:4px">数据仅在本机浏览器内处理，不上传任何服务器</div></div>'
+    + '<input type="file" id="impFile" accept=".xlsx,.xls,.csv" style="display:none">'
+    + '<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px">'
+    + '<button class="btn" id="impSample">载入示例数据</button>'
+    + '<button class="btn" id="impExport">导出学习档案 JSON</button>'
+    + '<button class="btn" id="impImportJson">导入学习档案</button>'
+    + '<button class="btn danger" id="impClear">清空学习档案，回到推算态</button></div>'
+    + '<input type="file" id="impJsonFile" accept=".json" style="display:none">'
+    + '<div id="impSummary"></div></div>'
+
+    + '<div class="card"><h2 style="font-size:16px;margin-bottom:8px">字段自动识别结果</h2>'
+    + '<div style="font-size:12px;color:#999;margin-bottom:8px">若自动识别有误，可在下拉框中手动更正</div>'
+    + '<div id="impFields"></div><div id="impPreview" style="margin-top:12px"></div></div>'
+
+    + '<div class="card"><h2 style="font-size:16px;margin-bottom:8px">回测与学习</h2>'
+    + '<div style="font-size:13px;color:#666">先用当前模型回测这批数据得到误差，再应用学习，用同一批数据复测，检验是否真的收敛。</div>'
+    + '<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">'
+    + '<button class="btn primary" id="impBt" disabled>① 回测当前模型</button>'
+    + '<button class="btn primary" id="impApply" disabled>② 学习并复测</button></div>'
+    + '<div id="impBtResult"></div></div>'
+
+    + '<div class="card"><h2 style="font-size:16px;margin-bottom:8px">学习档案与记忆</h2>'
+    + '<div style="font-size:12px;color:#999;margin-bottom:8px">下表是历次学习的累积结果，页面刷新、关闭浏览器后依然有效。</div>'
+    + '<div id="impState"></div></div>'
+
+    + '<div class="card"><h2 style="font-size:16px;margin-bottom:8px">还缺哪些数据</h2><div id="impNeed"></div></div>';
+
+  var dz = $_('impDrop'), fi = $_('impFile');
+  if(dz && fi){
+    dz.onclick = function(){ fi.click(); };
+    fi.onchange = function(){ if(this.files && this.files[0]) imReadFile(this.files[0]); };
+    dz.ondragover = function(e){ e.preventDefault(); this.style.background = '#eef5ff'; };
+    dz.ondragleave = function(){ this.style.background = '#fafcff'; };
+    dz.ondrop = function(e){
+      e.preventDefault(); this.style.background = '#fafcff';
+      if(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) imReadFile(e.dataTransfer.files[0]);
+    };
+  }
+  var bSample = $_('impSample');
+  if(bSample) bSample.onclick = function(){ imLoadSample(); };
+  var bExp = $_('impExport');
+  if(bExp) bExp.onclick = function(){
+    var blob = new Blob([ImportMod.exportJSON()], { type:'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'metro-main-learning-archive.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  };
+  var ji = $_('impJsonFile'), bImp = $_('impImportJson');
+  if(bImp && ji){
+    bImp.onclick = function(){ ji.click(); };
+    ji.onchange = function(){
+      var f = this.files && this.files[0];
+      if(!f) return;
+      var rd = new FileReader();
+      rd.onload = function(e){
+        try{
+          if(ImportMod.importJSON(e.target.result)){
+            imMsg('ok','✓ 学习档案已并入当前记忆，模型参数已更新。');
+            imRenderState(); imRenderNeed();
+          } else imMsg('bad','档案格式不正确，缺少 stations 字段。');
+        }catch(err){ imMsg('bad','读取失败：' + esc(err.message)); }
+      };
+      rd.readAsText(f);
+      this.value = '';
+    };
+  }
+  var bClear = $_('impClear');
+  if(bClear) bClear.onclick = function(){
+    if(!confirm('确定清空全部学习档案？模型会回到推算状态，累积的数据将无法恢复。建议先点「导出学习档案 JSON」备份。')) return;
+    ImportMod.clearAll();
+    IMP.records = []; IMP.rows = null; IMP.fields = {};
+    var b1 = $_('impBt'), b2 = $_('impApply');
+    if(b1) b1.disabled = true;
+    if(b2) b2.disabled = true;
+    var pr = $_('impPreview'); if(pr) pr.innerHTML = '';
+    var fz = $_('impFields'); if(fz) fz.innerHTML = '';
+    var br = $_('impBtResult'); if(br) br.innerHTML = '';
+    imMsg('ok','学习档案已清空，模型回到推算态。');
+    imRenderState(); imRenderNeed();
+  };
+  var b1 = $_('impBt');
+  if(b1) b1.onclick = function(){ imDoBacktest(); };
+  var b2 = $_('impApply');
+  if(b2) b2.onclick = function(){ imDoLearn(); };
+
+  imRenderState();
+  imRenderNeed();
+}
+
+ImportMod.load();
 
 window.addEventListener('DOMContentLoaded',function(){
   loadDashboard();
