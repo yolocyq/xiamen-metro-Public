@@ -3592,7 +3592,9 @@ var CRAWLED = {
  "厦门日报: 闽超演唱会等大型活动叠加五一假期 (2025-05)",
  "厦门交通局: 五一厦门交通出行数据出炉 (2025-05)",
  "维基百科: 厦门白鹭体育场 (60,592座)",
- "厦门奥体中心官网: 凤凰体育馆(18,000座)"]
+ "厦门奥体中心官网: 凤凰体育馆(18,000座)",
+ "厦门地铁: 2026国庆1-3号线及BRT日均110.05万人次（含BRT，纯地铁91.62万）",
+ "地铁客流研究阿牛: 2026-09-16/10-02/10-14/10-15/10-16/10-17 日客流及主要车站进站量"]
 }
 ,
  "venueCapacity":
@@ -5769,8 +5771,10 @@ var METRO_SHARE = {"演唱会": 0.53, "展览会": 0.25, "漫展": 0.3, "文旅�
 var LEVEL_WEIGHT = {"5": 0.45, "4": 0.25, "3": 0.15, "2": 0.1, "1": 0.05};
 // STATION_SCALE 校准说明（2026-09-03 用真实 7 月客流 Excel 反算）：
 //   蔡塘3.278 官任2.05 文灶2.259 厦门北站1.912 莲坂0.805 洪坑0.466 东宅0.264
-//   其余站仍用默认/原值（缺真实数据）。scale=1 的"通勤"站基准≈8000/日，
-//   与 Excel 全线网 49.8万/70站≈7100 量级一致，故 GLOBAL_BASELINE_SCALE 保持 2.65。
+//   其余站仍用默认/原值（缺真实数据）。scale=1 的"通勤"站基准≈8000/日。
+// GLOBAL_BASELINE_SCALE 标定史：初值 2.65（2025-07 日均 82.5 万）→ 3.44 → 现值 3.26
+//   （2026-10 按三组实测 92.05/90.87/90.91 万收敛：按 3.44 输出 96.4 万，高估约 6%，乘 0.947）。
+//   只作用于无站级锚点的车站，有锚点的站不受影响。
 var STATION_SCALE = {"吕厝": 3.0, "火炬园": 2.5, "体育中心": 2.3, "湖滨东路": 2.2, "镇海路": 1.8, "厦门北站": 1.912, "厦门火车站": 2.0, "高崎": 1.3, "邮轮中心": 1.0, "湖滨中路": 1.5, "五缘湾": 1.5, "莲坂": 0.805, "软件园二期": 1.4, "江头": 1.3, "集美学村": 1.2, "园博苑": 1.0, "诚毅广场": 1.0, "观音山": 1.0, "湿地公园": 0.9, "中山公园": 1.0, "蔡塘": 3.278, "国际博览中心": 1.2, "官任": 2.05, "文灶": 2.259, "洪坑": 0.466, "东宅": 0.264};
 var IS_TRANSFER = {"吕厝": true, "火炬园": true, "体育中心": true, "湖滨东路": true, "五缘湾": true, "厦门北站": true, "厦门火车站": true};
 var GRAVITY_BETA = 1.5;
@@ -6351,7 +6355,7 @@ function computeBaseline(stn, date){
   if(stnCal && stnCal.daily_normal){
     calibratedDailyNormal = stnCal.daily_normal;  // eg: 国际博览中心 = 2786
   } else if(stnCal && stnCal.daily_summer_avg){
-    calibratedDailyNormal = stnCal.daily_summer_avg;  // eg: 镇海路 = 34000
+    calibratedDailyNormal = stnCal.daily_summer_avg;  // eg: 镇海路 = 19210（9/16 实测 22700 按当日系数还原）
   } else if(stnCal && stnCal.daily_2024_07){
     calibratedDailyNormal = stnCal.daily_2024_07;
   } else if(stnCal && stnCal.daily_2024){
@@ -7277,7 +7281,7 @@ function loadAnalytics(){
     '<tr><td>2024.12.31</td><td>跨年夜</td><td><b>104.17万人次</b>（历史最高）</td><td>厦门日报</td></tr>'+
     '<tr><td>2025.7月均</td><td>暑运月均</td><td><b>82.5万人次/日</b></td><td>厦门地铁暑运报告</td></tr>'+
     '<tr><td>国博中心站</td><td>周杰伦演唱会(7/12)</td><td><b>39,000人次</b>↑14倍</td><td>厦门地铁暑运报告</td></tr>'+
-    '<tr><td>镇海路站</td><td>暑运日均</td><td><b>34,000人次</b></td><td>福建日报</td></tr>'+
+    '<tr><td>镇海路站</td><td>日常进站基准</td><td><b>19,210人次</b>（2026.9.16 实测 22,700）</td><td>第三方客流统计</td></tr>'+
     '<tr><td>演唱会</td><td>鹿晗散场接驳</td><td><b>61%</b>（单场最高）</td><td>厦门地铁暑运报告</td></tr>'+
   '</tbody></table></div>';
 
@@ -7286,9 +7290,9 @@ function loadAnalytics(){
   html+='<div style="font-size:13px;line-height:2;">本系统采用<b>多因子客流预测模型（含暑运模式+全局校准）</b>：</div>';
   html+='<div style="background:#f0f6ff;border-radius:8px;padding:14px;margin:10px 0;font-size:13px;line-height:2.2;">';
   html+='<div>预测客流 = <b>基准客流</b> × 全局校准系数 × 日期系数(含暑运) × 天气系数 × 交通枢纽增幅 × 酒店增幅 × 社交热度 + <b>活动客流(Hawkes衰减)</b></div>';
-  html+='<div style="font-size:11px;color:#888;margin-top:6px;">• 全局校准系数2.65：基于厦门地铁2025年7月日均82.5万校准，将profile基准从27万拉升至真实量级</div>';
+  html+='<div style="font-size:11px;color:#888;margin-top:6px;">• 全局校准系数3.26：基于厦门地铁2025年7月日均82.5万校准，2026年10月按三组实测（92.05万/90.87万/90.91万）收敛0.947后取值，只作用于无站级锚点的车站</div>';
   html+='<div style="font-size:11px;color:#888;">• 暑运模式(6-9月)：周末通勤站系数0.88(非暑运0.55)，工作日景区站额外+25%</div>';
-  html+='<div style="font-size:11px;color:#888;">• 基准客流由真实运营数据校准（国博中心2786人/日、镇海路34000人/日、7月日均82.5万）</div>';
+  html+='<div style="font-size:11px;color:#888;">• 基准客流由真实运营数据校准（国博中心2786人/日、镇海路19210人/日（9/16实测22700）、7月日均82.5万）</div>';
   html+='<div style="font-size:11px;color:#888;">• 活动客流使用重力模型分配：Tⱼ = A × (Cⱼ/dⱼ^β) / Σ(Cₖ/dₖ^β)</div>';
   html+='<div style="font-size:11px;color:#888;">• 散场后客流指数衰减(Hawkes过程)：1h=65%, 2h=42%, 3h=27%</div>';
   html+='<div style="font-size:11px;color:#888;">• 演唱会地铁分担率基于真实数据：鹿晗61%/周杰伦55%/平均52%</div></div>';
@@ -7296,7 +7300,7 @@ function loadAnalytics(){
   html+='<div style="display:none;margin-top:10px;">';
   html+='<table class="striped"><thead><tr><th>参数</th><th>说明</th><th>取值</th></tr></thead><tbody>';
   var params=[
-    ['全局校准系数','基于2025年7月日均82.5万校准fallback基准','2.65（profile*scale 27万→72万）'],
+    ['全局校准系数','作用于无站级锚点的车站，按2026年10月三组实测收敛','3.26'],
     ['站型分类','6类车站基准曲线×24h','通勤/商圈/枢纽/换乘/景区/体育会展'],
     ['天气系数','晴/多云/阴/小雨/中雨/大雨/暴雨等','1.00 ~ 0.70（已校准）'],
     ['日期系数','工作日/周末/法定假日（含暑运模式）','通勤0.55→暑运0.88, 景区1.6→暑运1.75'],
@@ -7306,7 +7310,7 @@ function loadAnalytics(){
     ['社交热度增幅','抖音/小红书/微博/携程综合热度','×1.00 ~ ×1.15'],
     ['重力模型β','距离衰减指数，参考MDB-HDNN论文','β=1.5'],
     ['Hawkes衰减率','散场后客流指数衰减','0.35/h'],
-    ['数据来源数','多源爬取整合','10个数据源'],
+    ['数据来源数','离线抓取渠道10类；文献引用来源11项','10类渠道 + 11项来源'],
   ];
   for(var i=0;i<params.length;i++){html+='<tr><td><b>'+params[i][0]+'</b></td><td>'+params[i][1]+'</td><td>'+params[i][2]+'</td></tr>';}
   html+='</tbody></table></div></div>';
