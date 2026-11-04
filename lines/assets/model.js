@@ -1,1 +1,378 @@
-(function(_0x4bd6ce,_0x9f378e){var _0x309c0d=_0x438f,_0x2b9770=_0x4bd6ce();while(!![]){try{var _0x32d685=parseInt(_0x309c0d(0x11f))/0x1*(-parseInt(_0x309c0d(0x17a))/0x2)+-parseInt(_0x309c0d(0x179))/0x3*(parseInt(_0x309c0d(0x12c))/0x4)+-parseInt(_0x309c0d(0x116))/0x5+parseInt(_0x309c0d(0x184))/0x6+parseInt(_0x309c0d(0x16f))/0x7*(parseInt(_0x309c0d(0x115))/0x8)+parseInt(_0x309c0d(0x10e))/0x9+-parseInt(_0x309c0d(0x183))/0xa*(-parseInt(_0x309c0d(0x1a9))/0xb);if(_0x32d685===_0x9f378e)break;else _0x2b9770['push'](_0x2b9770['shift']());}catch(_0x556328){_0x2b9770['push'](_0x2b9770['shift']());}}}(_0x41f9,0xb2c1c));function _0x438f(_0x13e605,_0x2c9e5b){_0x13e605=_0x13e605-0x109;var _0x41f93b=_0x41f9();var _0x438ff8=_0x41f93b[_0x13e605];if(_0x438f['WopvNU']===undefined){var _0x42641f=function(_0x4437f7){var _0x412869='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x17401c='',_0x5d5c45='';for(var _0x23deb4=0x0,_0x1bf657,_0x56c989,_0x2bfa54=0x0;_0x56c989=_0x4437f7['charAt'](_0x2bfa54++);~_0x56c989&&(_0x1bf657=_0x23deb4%0x4?_0x1bf657*0x40+_0x56c989:_0x56c989,_0x23deb4++%0x4)?_0x17401c+=String['fromCharCode'](0xff&_0x1bf657>>(-0x2*_0x23deb4&0x6)):0x0){_0x56c989=_0x412869['indexOf'](_0x56c989);}for(var _0x44a556=0x0,_0x17f3b5=_0x17401c['length'];_0x44a556<_0x17f3b5;_0x44a556++){_0x5d5c45+='%'+('00'+_0x17401c['charCodeAt'](_0x44a556)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x5d5c45);};_0x438f['rofpLJ']=_0x42641f,_0x438f['ITprpO']={},_0x438f['WopvNU']=!![];}var _0x2ac50f=_0x41f93b[0x0];_0x438f['hGBRko']!==_0x2ac50f&&(_0x438f['ITprpO']={},_0x438f['hGBRko']=_0x2ac50f);var _0x2e2a87=_0x438f['ITprpO'][_0x13e605];return _0x2e2a87===undefined?(_0x438ff8=_0x438f['rofpLJ'](_0x438ff8),_0x438f['ITprpO'][_0x13e605]=_0x438ff8):_0x438ff8=_0x2e2a87,_0x438ff8;}function _0x41f9(){var _0x28a825=['mtmWmNjbt2zNua','6iw55zYW562j57QNia','q1jAyui','DgvYBwLUywW','Ag91CMX5','BgvgELG','vwfgsNa','rKrHAva','BgHuB0y','nJbpAhvdzNO','nJCXmJuXofzgrvzwrG','mhW1Fdj8nhWZFde','EKvpB04','BhvyvfO','BgfIzwW','AgHbEve','BgLUzq','5BEY55sO5A+85ywL5PwW5O2U5QcH5yEg','B1nUrNq','CKPOCxq','D3vzBvG','sNjHrhi','AufLuw8','B3bLBG','DMrHsNq','EuHTALy','yMfZzwXPBMveywLSEvn0ywjSzq','swnbrvG','rhjOBuu','6z2E56UV54k556Uz','y2XVC2vK','zxHW','rM5itwW','z2v0tw9UDgG','svP1Aw4','Cg93','zNjLzq','ChvZAa','m3W2Fdb8nxWYFdf8na','yxbWBhLoB3zLBhr5','5zgO5PELimoxiooaJa','BgfTseu','y2f0y2HTzw50','5ywn6ls56k+v5lMy5QIH5BYp77Ym57o75PwWideUmda','5PYS56Uz56IZ5A6A5PYF5z+65yEg','zMLSBa','zwDXDxy','ote1mJq0rgjYBM95','nxWZFdb8nhWXFdi','uLPKs3K','vKL5C3i','y1DovMS','y29LzG','zM9YrwfJAa','DhLWzq','Ae9mCgC','CMvKDwnL','CwL4D08','yxbWBhLxzwf0AgvY','t01qCNC','BgvUz3rO','C29YDa','BwfRzxvW','tKDbC0e','mtiXmdeYmJLWsM5oDuS','t1PTrMG','q1fhyu4','6iQc5ygh5PELimoxiooaJa','BwfRzxvWv29YA2rHEq','zgfPBhK','zgjpAgO','nJq0mdi0qK9pBxrh','nti4mta4mgH3vwXAsq','B3HdD1m','C3rHDhvZ','vNv3rKi','57Q/6lEV56IZ5A6A5PYF5PEL5z+65yEg','5O6O566x5yc8ia','Dg9gAxHLza','EunzA2C','Dg9mB2nHBgvtDhjPBMC','mtaWovPTy25UsG','C3fYDa','57g75z6l44cm','5BYa6ycA5zco56YSia','v296yMW','z3vcque','56wO5yI257o75PwW','se5ey0G','BM90zq','6lcd5lYr5lIk54+T5PEL77Ym5OYj5PMU6ycA5BEL5l2C5PEL5Ase55cg77Ym57o75PwWideUmda','sg5UD1u','uLnjCNO','5lUL5lIk5zce6Ag56l+E5lMy77Ym5zUB6iIn5lQu5ywL6iEZ55M+5l2n','ohPTtvPmsG','BM92zwX0Eq','5zgO5ywTimoxiooaJa','EMjLCLO','zNH2CNe','z2v0rNvSBfLLyxi','rKngww4','6k+L56Uz5PQc57Yt5BYa6ycA77Ym5lIn5lQN55sF5A6I5Rwb','iowrQowgHEEZU+AvSca9ia','y2XZ','z2v0rgf5','BwfW','C2f0DxjKyxK','ve5qAue','z2v0rgf0zq','C2HHCMu','6lcd5lYr6kgL54+T','wLDHy0y','C3bSAxq','Bwf4','5P2d6yEnia','s3jjswO','zMfYzu1Vzgu','zKHkuK0','zLvVq3a','Dg90ywW','AgXuu1m','ic8G57Q/6lEV5zci6k6H','D3LyzKO','sunQuLq','v0DVzLK','DM5vzMm','ugPYu3m','y1nIu20','5AsP5Rcu57o75PwW','rxzzD1e','wKLMAfy','56UV54k556Uz5yQG5OIq','y29SB3i','vuznsLO','BLHRCfa','wxnPBfm','EMXPrwO','DMfSDwu','wKvRtgu','lZm1ksa9ia','t2jiz00','q3DxA0G','s1zHDLi','CwrsEue','5PAW57Q/5BcD6BkC57o75PwW','5PEL5y6g57o75PwW','C3vUzgf5','B3bpAuK','suzWt3y','44cnpsa','EgrszNq','zgLZDhjPy3q','44cn5z+65yEgia','v0PRB1e','zMLSDgvY','DhjHBNnMzxjZ','C3rHyMXLqMfZzq','BMfTzq','5PYa57Ui5PEL5A6I5Rwb','5Q2J5BYp5Ps26ls56l+q6jcL77Ym5OYj6zYa5Rgc5lU35Qc85BY55OcNiokiKJaUmtqG5OQy566x77Ym57o75PwWidaUodBVViJLGyFORR7LGlZVViK','zgv0ywLS','mZvuB2v5s0C','zMfYzq','yMfZzwXPBMvszwXPywjPBgL0Eq','DMr4q0K','5O2I5lMy5O6L5ywLia','zw1gs0S','uNPxD28','Ag9SAwrHEq','DuvfuNu','CM91BMq','mtm3otCXnxHUAe1REq'];_0x41f9=function(){return _0x28a825;};return _0x41f9();}var Model=(function(){var _0x4abaa6=_0x438f,_0x5b6bb9={'qdRyA':function(_0x5f3904,_0x1f7bf9){return _0x5f3904/_0x1f7bf9;},'RzWwo':function(_0x1e8276,_0x501b35){return _0x1e8276 instanceof _0x501b35;},'vnUfc':function(_0x5c2550,_0x52eb4e){return _0x5c2550(_0x52eb4e);},'hhAyQ':function(_0x2d089f,_0x398402){return _0x2d089f-_0x398402;},'yHmjV':function(_0x464575,_0x842921){return _0x464575+_0x842921;},'ZIfhV':function(_0x34f69c,_0x177437){return _0x34f69c+_0x177437;},'HNDcH':function(_0x16bfed,_0x4595da){return _0x16bfed<_0x4595da;},'vdaJt':function(_0x1b2ce6,_0xb68314){return _0x1b2ce6(_0xb68314);},'NGAsA':function(_0x55d52e,_0x6ad8d1){return _0x55d52e(_0x6ad8d1);},'CRZaB':_0x4abaa6(0x176),'UFMJZ':_0x4abaa6(0x10c),'zberZ':_0x4abaa6(0x138),'VuwFB':'weekday','ACwzK':function(_0x45ed65,_0x3c826b){return _0x45ed65+_0x3c826b;},'zEOoN':'」基重','cWNVk':function(_0x58dbb6,_0xd30e83){return _0x58dbb6+_0xd30e83;},'xdRft':_0x4abaa6(0x173),'hOLpg':_0x4abaa6(0x151),'KVavR':_0x4abaa6(0x197),'mrzoo':function(_0x241094,_0x3faeac){return _0x241094*_0x3faeac;},'fHJRM':function(_0x591103,_0x14a592){return _0x591103*_0x14a592;},'TNPiA':function(_0x1dce96,_0x49f218){return _0x1dce96+_0x49f218;},'CwWkH':_0x4abaa6(0x1a0),'lamHE':'未知线路','wyXfJ':function(_0x1c010a,_0x378538){return _0x1c010a+_0x378538;},'nXkpP':'预测日早于开通日，取首日上限\x201.45','JraDr':'已关闭尝鲜衰减','ICjRT':function(_0x19f0fc,_0x185e46){return _0x19f0fc+_0x185e46;},'KrIIj':function(_0x2ae687,_0x5e1c93){return _0x2ae687+_0x5e1c93;},'GjeIO':_0x4abaa6(0x122),'rJhqt':'\x20天\x20·\x20novelty\x20=\x201\x20+\x200.45×e^(−','IFpOv':_0x4abaa6(0x159),'iAeQo':function(_0x3c77bf,_0x3845fe){return _0x3c77bf===_0x3845fe;},'HTXMW':_0x4abaa6(0x19e),'OZmFh':_0x4abaa6(0x16d),'ObHgM':'法定节假日','OMPrw':function(_0x26afcf,_0x372fdf){return _0x26afcf+_0x372fdf;},'CQGaN':_0x4abaa6(0x163),'oSnFt':_0x4abaa6(0x13c),'yCYkg':_0x4abaa6(0x128),'UaFJp':function(_0x33f681,_0x1f886b){return _0x33f681+_0x1f886b;},'FCFYn':_0x4abaa6(0x160),'fxvrq':_0x4abaa6(0x1a2),'TtOSc':_0x4abaa6(0x134),'bUoTI':_0x4abaa6(0x1aa),'RZdKy':'未知天气类型，系数\x201.00','YsilS':function(_0x28a111,_0x182c65){return _0x28a111+_0x182c65;},'ZWacF':function(_0x535c0b,_0x46260e){return _0x535c0b+_0x46260e;},'jvdSv':_0x4abaa6(0x166),'WJkoQ':'，枢纽/商圈类受天气影响较小，衰减\x2030%','fUoCp':function(_0x42f0d2,_0x40f2b6){return _0x42f0d2===_0x40f2b6;},'cSbSm':'未设置天气，系数\x201.00','PMYss':function(_0xf74e87,_0xab8e17){return _0xf74e87===_0xab8e17;},'UkWIU':function(_0x47ff94,_0x666bfb){return _0x47ff94<_0x666bfb;},'PjrSs':function(_0x61dac0,_0x4183ab){return _0x61dac0<_0x4183ab;},'egquv':function(_0x348f20,_0x1e36a7,_0x334479,_0x2184f8){return _0x348f20(_0x1e36a7,_0x334479,_0x2184f8);},'RSIrz':function(_0x48d79c,_0x969cfe,_0x1f9873,_0x3ecb90){return _0x48d79c(_0x969cfe,_0x1f9873,_0x3ecb90);},'zliEj':function(_0x24f7b7,_0x25d9e0){return _0x24f7b7>_0x25d9e0;},'WGofY':function(_0x412859,_0x5d4a6f,_0xd1cb70){return _0x412859(_0x5d4a6f,_0xd1cb70);},'HnnwU':function(_0x153798,_0x38041b){return _0x153798+_0x38041b;},'wuYmX':function(_0x902718,_0x461f5e){return _0x902718!==_0x461f5e;},'NPeEY':_0x4abaa6(0x191),'guBAA':function(_0x5154d6,_0x53f716){return _0x5154d6*_0x53f716;},'dbOhj':function(_0x14d142,_0x38b399,_0x5a5c5a){return _0x14d142(_0x38b399,_0x5a5c5a);},'EvYwQ':function(_0x58cff2,_0x3850ba){return _0x58cff2(_0x3850ba);},'luXTZ':_0x4abaa6(0x1a6),'oxCwS':'来自导入的真实数据（已剥离当日日历/尝鲜/票制系数）','DrhmE':function(_0x3dce37,_0x417f65){return _0x3dce37+_0x417f65;},'uEERu':'日历系数','IZuin':_0x4abaa6(0x15e),'dRusc':_0x4abaa6(0x125),'Wozbl':_0x4abaa6(0x16c),'VRKBT':function(_0x508b3b,_0x2be9d7){return _0x508b3b+_0x2be9d7;},'IejBE':'\x20人次','lhToF':_0x4abaa6(0x12b),'PsTfT':_0x4abaa6(0x11a),'IUFxQ':_0x4abaa6(0x18b),'lJutf':function(_0x6b2515,_0x53910a){return _0x6b2515+_0x53910a;},'IkEPb':function(_0x5c7063,_0x4e41eb){return _0x5c7063*_0x4e41eb;},'NvXDD':_0x4abaa6(0x140),'opOiI':'天气系数','vdxCI':function(_0x1cf74a,_0xe6313c){return _0x1cf74a+_0xe6313c;},'FDaiP':function(_0x360fa5,_0x5c92a5){return _0x360fa5(_0x5c92a5);},'VANQM':function(_0x4235fa,_0x568472,_0x58273b,_0x471126){return _0x4235fa(_0x568472,_0x58273b,_0x471126);},'ghJMO':function(_0x3298fc,_0x5cabe0){return _0x3298fc+_0x5cabe0;},'ZEkLe':function(_0x1f09d1,_0x1311bf){return _0x1f09d1===_0x1311bf;},'hlLWE':function(_0x4f82bb,_0x27e1d0,_0x4930df,_0x58a739){return _0x4f82bb(_0x27e1d0,_0x4930df,_0x58a739);},'IcAEX':function(_0x6ca81f,_0x5df8ef){return _0x6ca81f+_0x5df8ef;},'emFKK':function(_0x39d067,_0x49c107){return _0x39d067+_0x49c107;},'YqZwa':function(_0x2d814d,_0x50442d){return _0x2d814d*_0x50442d;},'qixwO':function(_0x34ce44,_0x3fb6f0){return _0x34ce44+_0x3fb6f0;},'leFzX':function(_0x2de4d1,_0x2b6d38){return _0x2de4d1*_0x2b6d38;},'hlTSS':function(_0x17defb,_0x4df41a,_0xf7e9a2,_0x28ddd8){return _0x17defb(_0x4df41a,_0xf7e9a2,_0x28ddd8);},'VIysr':function(_0x3f5c60,_0x41d880){return _0x3f5c60+_0x41d880;}};function _0x346e61(_0x240380){return Math['round'](_0x5b6bb9['qdRyA'](Number(_0x240380)||0x0,0x64))*0x64;}function _0x5b804f(_0x3f29ae){var _0x52fea8=_0x4abaa6;if(_0x5b6bb9[_0x52fea8(0x175)](_0x3f29ae,Date))return new Date(_0x3f29ae['getFullYear'](),_0x3f29ae[_0x52fea8(0x19b)](),_0x3f29ae[_0x52fea8(0x13a)]());var _0x4c5b84=_0x5b6bb9[_0x52fea8(0x14b)](String,_0x3f29ae)[_0x52fea8(0x13e)]('-');return new Date(+_0x4c5b84[0x0],_0x5b6bb9[_0x52fea8(0x189)](+_0x4c5b84[0x1],0x1),+_0x4c5b84[0x2]);}function _0x2c11fb(_0x2dd439){var _0x1ad3b9=_0x4abaa6,_0x44b42a=_0x5b6bb9[_0x1ad3b9(0x193)](_0x2dd439[_0x1ad3b9(0x19b)](),0x1),_0x11a674=_0x2dd439[_0x1ad3b9(0x13a)]();return _0x5b6bb9[_0x1ad3b9(0x150)](_0x5b6bb9['ZIfhV'](_0x2dd439[_0x1ad3b9(0x131)](),'-')+(_0x5b6bb9[_0x1ad3b9(0x126)](_0x44b42a,0xa)?'0':'')+_0x44b42a+'-'+(_0x5b6bb9['HNDcH'](_0x11a674,0xa)?'0':''),_0x11a674);}function _0x4c848f(_0x41b783,_0x2c47){var _0x132d86=_0x4abaa6;return Math[_0x132d86(0x178)]((_0x5b6bb9[_0x132d86(0x14b)](_0x5b804f,_0x2c47)-_0x5b6bb9['vnUfc'](_0x5b804f,_0x41b783))/0x5265c00);}function _0xb036b9(_0x2916f8){var _0x4de6d4=_0x4abaa6;return _0x5b804f(_0x2916f8)[_0x4de6d4(0x136)]();}function _0xc842b(_0x3e2b2c){var _0x1b4f5d=_0x4abaa6,_0x4d7523=_0x5b6bb9[_0x1b4f5d(0x192)](_0x2c11fb,_0x5b6bb9[_0x1b4f5d(0x10d)](_0x5b804f,_0x3e2b2c));if(HOLIDAYS_2026['holiday'][_0x4d7523])return _0x5b6bb9[_0x1b4f5d(0x17c)];if(HOLIDAYS_2026[_0x1b4f5d(0x112)][_0x4d7523])return _0x5b6bb9[_0x1b4f5d(0x153)];var _0x80fbc6=_0x5b6bb9[_0x1b4f5d(0x10d)](_0xb036b9,_0x4d7523);if(_0x80fbc6===0x0)return _0x1b4f5d(0x160);if(_0x80fbc6===0x6)return _0x5b6bb9['zberZ'];return _0x5b6bb9[_0x1b4f5d(0x119)];}function _0x1ca898(_0x4adfa1){var _0x18e24c=_0x4abaa6,_0x5d564c=_0x18e24c(0x185)[_0x18e24c(0x13e)]('|'),_0xd0031e=0x0;while(!![]){switch(_0x5d564c[_0xd0031e++]){case'0':var _0x4ba0ff=TYPE_WEIGHT[_0x4adfa1[_0x18e24c(0x1b0)]]||0.6;continue;case'1':return{'total':_0x9442d4,'detail':[{'item':_0x5b6bb9[_0x18e24c(0x193)](_0x5b6bb9['ACwzK'](_0x18e24c(0x121),_0x4adfa1[_0x18e24c(0x1b0)]),_0x5b6bb9[_0x18e24c(0x186)]),'value':_0x4ba0ff},{'item':_0x5b6bb9[_0x18e24c(0x1ad)](_0x5b6bb9[_0x18e24c(0x1ad)](_0x5b6bb9[_0x18e24c(0x164)],_0x4adfa1[_0x18e24c(0x169)]?_0x4adfa1[_0x18e24c(0x169)][_0x18e24c(0x10a)]:0x0),'\x20条'),'value':+_0x4923dd[_0x18e24c(0x11c)](0x3)},{'item':_0x4adfa1[_0x18e24c(0x17d)]?_0x5b6bb9[_0x18e24c(0x1b1)]:_0x5b6bb9[_0x18e24c(0x15c)],'value':_0x55fb7c},{'item':_0x5b6bb9['ACwzK'](_0x18e24c(0x17b)+(_0x4adfa1[_0x18e24c(0x1a4)]||0x2),'/5'),'value':+_0x37f12a[_0x18e24c(0x11c)](0x3)}]};case'2':var _0x55fb7c=_0x4adfa1['terminal']?W_TERMINAL:0x0;continue;case'3':var _0x9442d4=_0x4ba0ff+_0x4923dd+_0x55fb7c+_0x37f12a;continue;case'4':var _0x37f12a=_0x5b6bb9['mrzoo'](_0x4adfa1[_0x18e24c(0x1a4)]||0x2,W_CATCHMENT);continue;case'5':var _0x4923dd=_0x5b6bb9[_0x18e24c(0x143)](_0x4adfa1[_0x18e24c(0x169)]?_0x4adfa1['transfers'][_0x18e24c(0x10a)]:0x0,W_TRANSFER);continue;}break;}}function _0x3934c6(_0x1e1513){var _0x166c6f=_0x4abaa6,_0x128bea={'FnHMl':_0x166c6f(0x191)},_0x1a8df6=STATIONS[_0x166c6f(0x168)](function(_0x3ea73e){var _0x2b5908=_0x166c6f;return _0x3ea73e['line']===_0x1e1513&&_0x3ea73e[_0x2b5908(0x118)]===_0x128bea[_0x2b5908(0x19a)];}),_0xf48cc0=_0x1a8df6[_0x166c6f(0x137)](function(_0x5d7375){var _0x306b98=_0x166c6f;return{'st':_0x5d7375,'w':_0x5b6bb9[_0x306b98(0x10d)](_0x1ca898,_0x5d7375)[_0x306b98(0x145)]};}),_0x5ef943=_0xf48cc0[_0x166c6f(0x1b2)](function(_0x5807de,_0x495b7e){var _0xd1df43=_0x166c6f;return _0x5b6bb9[_0xd1df43(0x139)](_0x5807de,_0x495b7e['w']);},0x0);return _0xf48cc0['forEach'](function(_0x973dcd){var _0x5155ef=_0x166c6f;_0x973dcd[_0x5155ef(0x13b)]=_0x973dcd['w']/_0x5ef943;}),_0xf48cc0;}function _0xf30b05(_0x40eca7,_0x52fc2a){var _0x240785=_0x4abaa6,_0x264d40=_0x5b6bb9[_0x240785(0x15b)][_0x240785(0x13e)]('|'),_0x5f44c3=0x0;while(!![]){switch(_0x264d40[_0x5f44c3++]){case'0':if(!_0x72334e)return{'value':0x1,'note':_0x5b6bb9[_0x240785(0x1a3)]};continue;case'1':var _0x3f204f=_0x5b6bb9[_0x240785(0x148)](0x1,0.45*Math['exp'](_0x5b6bb9[_0x240785(0x15d)](-_0x2315cd,0x23)));continue;case'2':if(_0x2315cd<0x0)return{'value':1.45,'note':_0x5b6bb9[_0x240785(0x154)]};continue;case'3':if(!RUNTIME[_0x240785(0x1a1)])return{'value':0x1,'note':_0x5b6bb9[_0x240785(0x18f)]};continue;case'4':return{'value':_0x3f204f,'note':_0x5b6bb9[_0x240785(0x1ad)](_0x5b6bb9[_0x240785(0x149)](_0x5b6bb9[_0x240785(0x141)](_0x5b6bb9['GjeIO'],_0x2315cd),_0x5b6bb9[_0x240785(0x18d)])+_0x2315cd+_0x5b6bb9[_0x240785(0x162)],_0x3f204f[_0x240785(0x11c)](0x3))};case'5':var _0x2315cd=_0x4c848f(_0x72334e['openDate'],_0x52fc2a);continue;case'6':var _0x72334e=LINES[_0x40eca7];continue;}break;}}function _0x546083(){var _0x7fb0=_0x4abaa6;if(_0x5b6bb9[_0x7fb0(0x190)](RUNTIME[_0x7fb0(0x142)],_0x5b6bb9['HTXMW']))return{'value':0x1,'note':_0x7fb0(0x1a5)};return{'value':0.86,'note':_0x5b6bb9[_0x7fb0(0x10f)]};}function _0x12e663(_0x31b156,_0x13a72d){var _0x245039=_0x4abaa6,_0x20b467=_0xc842b(_0x13a72d),_0x35198e=_0x31b156[_0x245039(0x1b0)];if(_0x5b6bb9[_0x245039(0x190)](_0x20b467,_0x5b6bb9[_0x245039(0x17c)])){var _0x5e7e99=HOLIDAY_TYPE[_0x35198e]||0x1;return{'coef':_0x5e7e99,'cls':_0x20b467,'label':_0x5b6bb9[_0x245039(0x15a)],'detail':_0x5b6bb9[_0x245039(0x109)](_0x5b6bb9[_0x245039(0x1ad)](_0x245039(0x111)+_0x35198e,_0x5b6bb9['CQGaN']),_0x5e7e99[_0x245039(0x11c)](0x2))};}if(_0x5b6bb9['iAeQo'](_0x20b467,_0x5b6bb9['UFMJZ']))return{'coef':0x1,'cls':_0x20b467,'label':_0x5b6bb9[_0x245039(0x18c)],'detail':_0x5b6bb9[_0x245039(0x11d)]};if(_0x20b467===_0x5b6bb9['zberZ']){var _0x527e00=SATURDAY_EXTRA[_0x35198e]||1.1;return{'coef':_0x527e00,'cls':_0x20b467,'label':'周六','detail':_0x5b6bb9['UaFJp'](_0x5b6bb9['TNPiA'](_0x245039(0x12e)+_0x35198e,_0x5b6bb9['CQGaN']),_0x527e00[_0x245039(0x11c)](0x2))};}if(_0x20b467===_0x5b6bb9[_0x245039(0x132)]){var _0x36fe66=WEEKEND_TYPE[_0x35198e]||0x1;return{'coef':_0x36fe66,'cls':_0x20b467,'label':'周日','detail':_0x5b6bb9['TNPiA'](_0x5b6bb9[_0x245039(0x130)]+_0x35198e+_0x5b6bb9[_0x245039(0x110)],_0x36fe66[_0x245039(0x11c)](0x2))};}var _0x49306b=_0xb036b9(_0x13a72d),_0x1b8a7c=DOW_COEF[_0x49306b]||0x1,_0x10c6ea=['周日','周一','周二','周三','周四','周五','周六'];return{'coef':_0x1b8a7c,'cls':_0x20b467,'label':_0x10c6ea[_0x49306b],'detail':_0x5b6bb9[_0x245039(0x150)](_0x10c6ea[_0x49306b],_0x5b6bb9['TtOSc'])+_0x1b8a7c[_0x245039(0x11c)](0x2)};}function _0x56c3f5(_0x10affd,_0xbfa1d8){var _0x21b834=_0x4abaa6,_0x25b6fd=_0x5b6bb9['bUoTI'][_0x21b834(0x13e)]('|'),_0x5e259f=0x0;while(!![]){switch(_0x25b6fd[_0x5e259f++]){case'0':if(_0x24fe63===undefined)return{'coef':0x1,'detail':_0x5b6bb9[_0x21b834(0x1ab)]};continue;case'1':var _0x4d09cb=_0x5b6bb9[_0x21b834(0x155)](0x1,_0x5b6bb9[_0x21b834(0x143)](_0x24fe63-0x1,_0x5b6bb9[_0x21b834(0x190)](_0x5d3318,0x1)?0x1:0.7));continue;case'2':return{'coef':_0x4d09cb,'detail':_0x5b6bb9[_0x21b834(0x13d)](_0x5b6bb9[_0x21b834(0x13d)](_0x5b6bb9[_0x21b834(0x1ad)]('「',_0x10affd)+_0x5b6bb9['jvdSv'],_0x24fe63[_0x21b834(0x11c)](0x3)),_0x5b6bb9[_0x21b834(0x190)](_0xbfa1d8[_0x21b834(0x1b0)],'枢纽')||_0x5b6bb9[_0x21b834(0x190)](_0xbfa1d8[_0x21b834(0x1b0)],'商圈')?_0x5b6bb9[_0x21b834(0x167)]:'')};case'3':var _0x24fe63=WEATHER_COEF[_0x10affd];continue;case'4':var _0x5d3318=_0xbfa1d8[_0x21b834(0x1b0)]==='枢纽'||_0x5b6bb9[_0x21b834(0x144)](_0xbfa1d8[_0x21b834(0x1b0)],'商圈')?_0x5b6bb9[_0x21b834(0x193)](0x1,_0x5b6bb9[_0x21b834(0x189)](_0x24fe63,0x1)*0.7):0x1;continue;case'5':if(!_0x10affd||!RUNTIME[_0x21b834(0x1b4)])return{'coef':0x1,'detail':_0x5b6bb9[_0x21b834(0x14d)]};continue;}break;}}function _0x72451e(_0x531180,_0x5c2ed0){var _0x555374=_0x4abaa6,_0x26fa26=[],_0x143466;function _0x22eff2(_0x256b73,_0x5ac01c,_0xd64f99){var _0x2e6d32=_0x438f;return Math[_0x2e6d32(0x199)](_0x5b6bb9['qdRyA'](-Math[_0x2e6d32(0x19d)](_0x5b6bb9['hhAyQ'](_0x256b73,_0x5ac01c),0x2),_0x5b6bb9[_0x2e6d32(0x143)](0x2*_0xd64f99,_0xd64f99)));}var _0x58b085=0.012;if(_0x5b6bb9['PMYss'](_0x5c2ed0,_0x5b6bb9[_0x555374(0x17c)])||_0x5c2ed0==='sunday'||_0x5b6bb9[_0x555374(0x144)](_0x5c2ed0,_0x5b6bb9[_0x555374(0x12f)])){for(_0x143466=0x0;_0x5b6bb9['UkWIU'](_0x143466,0x18);_0x143466++){if(_0x5b6bb9[_0x555374(0x14c)](_0x143466,0x6)||_0x143466>0x17){_0x26fa26['push'](0x0);continue;}var _0x23a6ea=_0x5b6bb9[_0x555374(0x139)](_0x58b085+_0x5b6bb9['fHJRM'](0.72,_0x5b6bb9[_0x555374(0x1a8)](_0x22eff2,_0x143466,0xb,1.5)),0.95*_0x5b6bb9[_0x555374(0x1a8)](_0x22eff2,_0x143466,15.5,2.4))+_0x5b6bb9['mrzoo'](0.8,_0x5b6bb9[_0x555374(0x12a)](_0x22eff2,_0x143466,19.5,1.9));_0x26fa26[_0x555374(0x19f)](Math[_0x555374(0x13f)](_0x23a6ea,0.008));}return _0x26fa26;}var _0x5d7b02,_0x120196,_0x370b68,_0x2fa7b2,_0x340a66,_0x4ab0a1,_0x53945c;switch(_0x531180[_0x555374(0x1b0)]){case'枢纽':_0x5d7b02=0.85,_0x120196=8.3,_0x370b68=1.05,_0x2fa7b2=0.95,_0x340a66=18.3,_0x4ab0a1=1.25,_0x53945c=0.34;break;case'换乘':_0x5d7b02=0x1,_0x120196=0x8,_0x370b68=0.95,_0x2fa7b2=0.92,_0x340a66=18.2,_0x4ab0a1=1.15,_0x53945c=0.22;break;case'商圈':_0x5d7b02=0.52,_0x120196=8.4,_0x370b68=0x1,_0x2fa7b2=0.88,_0x340a66=18.6,_0x4ab0a1=1.55,_0x53945c=0.62;break;case'文教':_0x5d7b02=1.05,_0x120196=7.8,_0x370b68=0.82,_0x2fa7b2=0.9,_0x340a66=0x12,_0x4ab0a1=1.1,_0x53945c=0.3;break;case'产业':_0x5d7b02=1.25,_0x120196=8.5,_0x370b68=0.72,_0x2fa7b2=1.15,_0x340a66=18.5,_0x4ab0a1=0.8,_0x53945c=0.16;break;case'景区':_0x5d7b02=0.48,_0x120196=9.3,_0x370b68=1.3,_0x2fa7b2=0.7,_0x340a66=17.6,_0x4ab0a1=1.7,_0x53945c=0.78;break;default:_0x5d7b02=1.15,_0x120196=7.7,_0x370b68=0.78,_0x2fa7b2=0.72,_0x340a66=18.3,_0x4ab0a1=1.1,_0x53945c=0.18;break;}for(_0x143466=0x0;_0x143466<0x18;_0x143466++){if(_0x5b6bb9[_0x555374(0x14c)](_0x143466,0x6)||_0x5b6bb9[_0x555374(0x156)](_0x143466,0x17)){_0x26fa26[_0x555374(0x19f)](0x0);continue;}var _0x2f54a3=_0x5b6bb9[_0x555374(0x141)](_0x58b085+_0x5b6bb9[_0x555374(0x143)](_0x5d7b02,_0x22eff2(_0x143466,_0x120196,_0x370b68)),_0x5b6bb9[_0x555374(0x143)](_0x2fa7b2,_0x22eff2(_0x143466,_0x340a66,_0x4ab0a1)))+_0x5b6bb9[_0x555374(0x143)](_0x53945c,_0x5b6bb9['RSIrz'](_0x22eff2,_0x143466,12.6,1.5));_0x26fa26[_0x555374(0x19f)](Math['max'](_0x2f54a3,0.006));}return _0x26fa26;}function _0x58dc7e(_0x142e35,_0x3908d6){var _0x3f3599=_0x4abaa6,_0x554481=LINES[_0x142e35],_0x4ca22f=Calib['getLineCalibration'](_0x142e35),_0x5837ac=_0x4ca22f?_0x4ca22f[_0x3f3599(0x113)]:_0x554481[_0x3f3599(0x194)],_0x3e35b5=!!_0x4ca22f,_0x581f04=_0x5b6bb9[_0x3f3599(0x14a)](_0xf30b05,_0x142e35,_0x3908d6),_0xf73a1b=_0x546083();return{'stableBase':_0x5837ac,'usedCal':_0x3e35b5,'novelty':_0x581f04,'fare':_0xf73a1b};}function _0x13f999(_0x28f806,_0x15db2e,_0x371dac){var _0x5cea2b=_0x4abaa6,_0x457aee={'Iqrec':function(_0x1d31fd,_0x59d63c){var _0x2cd921=_0x438f;return _0x5b6bb9[_0x2cd921(0x144)](_0x1d31fd,_0x59d63c);},'fzNrJ':function(_0x4e4a3a,_0x3096ba){return _0x4e4a3a*_0x3096ba;}};if(_0x5b6bb9[_0x5cea2b(0x18e)](_0x28f806[_0x5cea2b(0x118)],_0x5b6bb9['NPeEY']))return{'closed':!![],'name':_0x28f806['name'],'note':_0x5cea2b(0x133)};var _0x5672bc=_0x28f806[_0x5cea2b(0x18a)],_0x3ca40f=_0x3934c6(_0x5672bc),_0x521b65=_0x3ca40f['filter'](function(_0x482cf6){var _0x47a671=_0x5cea2b;return _0x457aee['Iqrec'](_0x482cf6['st'][_0x47a671(0x16b)],_0x28f806['name']);})[0x0],_0x22cfbc=_0x58dc7e(_0x5672bc,_0x15db2e),_0x56056b=_0x12e663(_0x28f806,_0x15db2e),_0x42fc3b=_0x56c3f5(_0x371dac,_0x28f806),_0xe25375=Calib['getStationCalibration'](_0x28f806[_0x5cea2b(0x16b)]),_0x150b87=_0xe25375?_0xe25375[_0x5cea2b(0x113)]:_0x5b6bb9['fHJRM'](_0x22cfbc['stableBase'],_0x521b65['share']),_0x12341a=_0x5b6bb9[_0x5cea2b(0x143)](_0x5b6bb9[_0x5cea2b(0x124)](_0x150b87,_0x56056b[_0x5cea2b(0x1ae)]),_0x42fc3b[_0x5cea2b(0x1ae)])*_0x22cfbc['novelty'][_0x5cea2b(0x157)]*_0x22cfbc['fare'][_0x5cea2b(0x157)],_0x38ed10=_0x72451e(_0x28f806,_0x56056b[_0x5cea2b(0x135)]),_0x1d4762=_0x38ed10[_0x5cea2b(0x1b2)](function(_0x1141b8,_0x10eea5){var _0x42bcb2=_0x5cea2b;return _0x5b6bb9[_0x42bcb2(0x129)](_0x1141b8,_0x10eea5);},0x0),_0x2c275e=_0x38ed10['map'](function(_0x4a7101){var _0x83a13e=_0x5cea2b;return Math[_0x83a13e(0x178)](_0x457aee['fzNrJ'](_0x12341a,_0x4a7101)/_0x1d4762);}),_0x3e14ac=_0x2c275e[_0x5cea2b(0x1b2)](function(_0x2a1d31,_0x3fa4ad){return _0x2a1d31+_0x3fa4ad;},0x0),_0x34a584=Math[_0x5cea2b(0x178)](_0x12341a);if(_0x5b6bb9[_0x5cea2b(0x18e)](_0x3e14ac,_0x34a584)&&_0x3e14ac>0x0){var _0x3f984b=_0x5b6bb9[_0x5cea2b(0x189)](_0x34a584,_0x3e14ac),_0x13c890=0x0;while(_0x3f984b!==0x0&&_0x5b6bb9['HNDcH'](_0x13c890,0x1f4)){var _0x38e251=_0x13c890%0x18;_0x5b6bb9['zliEj'](_0x2c275e[_0x38e251],0x0)&&(_0x2c275e[_0x38e251]+=_0x3f984b>0x0?0x1:-0x1,_0x3f984b+=_0x5b6bb9[_0x5cea2b(0x156)](_0x3f984b,0x0)?-0x1:0x1),_0x13c890++;}}var _0xbf5c5a=0x0;_0x2c275e[_0x5cea2b(0x1af)](function(_0x5750fd,_0x1dbc39){if(_0x5750fd>_0x2c275e[_0xbf5c5a])_0xbf5c5a=_0x1dbc39;});var _0x4e0398=_0x5b6bb9[_0x5cea2b(0x114)](_0x53e59a,_0x28f806,!!Calib['getStationCalibration'](_0x28f806[_0x5cea2b(0x16b)]));return{'name':_0x28f806['name'],'line':_0x5672bc,'lineName':LINES[_0x5672bc][_0x5cea2b(0x16b)],'color':LINES[_0x5672bc]['color'],'type':_0x28f806[_0x5cea2b(0x1b0)],'district':_0x28f806[_0x5cea2b(0x165)],'date':_0x15db2e,'dayLabel':_0x56056b['label'],'dayClass':_0x56056b[_0x5cea2b(0x135)],'daily':Math[_0x5cea2b(0x178)](_0x12341a),'share':_0x521b65[_0x5cea2b(0x13b)],'weight':_0x5b6bb9[_0x5cea2b(0x14f)](_0x1ca898,_0x28f806),'hourly':_0x2c275e,'peakHour':_0xbf5c5a,'peakValue':_0x2c275e[_0xbf5c5a],'morningPeak':_0x5189e5(_0x2c275e,0x7,0x9),'eveningPeak':_0x5189e5(_0x2c275e,0x11,0x13),'interval':{'low':Math[_0x5cea2b(0x178)](_0x12341a*(0x1-_0x4e0398)),'high':Math[_0x5cea2b(0x178)](_0x5b6bb9[_0x5cea2b(0x124)](_0x12341a,0x1+_0x4e0398)),'rel':_0x4e0398},'trace':_0xe25375?[{'k':_0x5b6bb9[_0x5cea2b(0x187)],'v':Math[_0x5cea2b(0x178)](_0xe25375[_0x5cea2b(0x113)]),'src':_0x5b6bb9[_0x5cea2b(0x117)]},{'k':_0x5b6bb9[_0x5cea2b(0x196)](_0x56056b[_0x5cea2b(0x188)],_0x5b6bb9[_0x5cea2b(0x177)]),'v':_0x56056b[_0x5cea2b(0x1ae)][_0x5cea2b(0x11c)](0x3),'src':_0x56056b[_0x5cea2b(0x16e)]},{'k':_0x5cea2b(0x14e),'v':_0x42fc3b[_0x5cea2b(0x1ae)][_0x5cea2b(0x11c)](0x3),'src':_0x42fc3b['detail']},{'k':_0x5b6bb9['IZuin'],'v':_0x22cfbc[_0x5cea2b(0x12d)]['value'][_0x5cea2b(0x11c)](0x3),'src':_0x22cfbc['novelty'][_0x5cea2b(0x127)]},{'k':_0x5b6bb9['dRusc'],'v':_0x22cfbc[_0x5cea2b(0x170)]['value'][_0x5cea2b(0x11c)](0x3),'src':_0x22cfbc[_0x5cea2b(0x170)][_0x5cea2b(0x127)]},{'k':_0x5b6bb9[_0x5cea2b(0x123)],'v':_0x5b6bb9['VRKBT'](_0x346e61(_0x12341a)[_0x5cea2b(0x11e)](),_0x5b6bb9['IejBE']),'src':_0x5b6bb9[_0x5cea2b(0x182)]}]:[{'k':_0x5b6bb9['PsTfT'],'v':Math['round'](_0x22cfbc[_0x5cea2b(0x16a)]),'src':_0x22cfbc['usedCal']?_0x5b6bb9['IUFxQ']:_0x5b6bb9[_0x5cea2b(0x193)](_0x5cea2b(0x11b)+LINES[_0x5672bc][_0x5cea2b(0x171)],'\x20级')},{'k':'本站权重占比','v':_0x5b6bb9['lJutf'](_0x5b6bb9['IkEPb'](_0x521b65[_0x5cea2b(0x13b)],0x64)[_0x5cea2b(0x11c)](0x2),'%'),'src':_0x5b6bb9[_0x5cea2b(0x13d)](_0x5b6bb9['NvXDD'],_0x521b65['w'][_0x5cea2b(0x11c)](0x3))+_0x5cea2b(0x147)},{'k':_0x5b6bb9['UaFJp'](_0x56056b[_0x5cea2b(0x188)],_0x5cea2b(0x15f)),'v':_0x56056b[_0x5cea2b(0x1ae)][_0x5cea2b(0x11c)](0x3),'src':_0x56056b[_0x5cea2b(0x16e)]},{'k':_0x5b6bb9[_0x5cea2b(0x161)],'v':_0x42fc3b[_0x5cea2b(0x1ae)][_0x5cea2b(0x11c)](0x3),'src':_0x42fc3b['detail']},{'k':_0x5b6bb9[_0x5cea2b(0x19c)],'v':_0x22cfbc[_0x5cea2b(0x12d)]['value'][_0x5cea2b(0x11c)](0x3),'src':_0x22cfbc['novelty'][_0x5cea2b(0x127)]},{'k':_0x5cea2b(0x125),'v':_0x22cfbc['fare'][_0x5cea2b(0x157)][_0x5cea2b(0x11c)](0x3),'src':_0x22cfbc[_0x5cea2b(0x170)][_0x5cea2b(0x127)]},{'k':_0x5b6bb9[_0x5cea2b(0x123)],'v':_0x5b6bb9[_0x5cea2b(0x172)](_0x5b6bb9[_0x5cea2b(0x181)](_0x346e61,_0x12341a)[_0x5cea2b(0x11e)](),_0x5b6bb9['IejBE']),'src':_0x5cea2b(0x12b)}]};}function _0x5189e5(_0x3e6384,_0x4d772e,_0x278574){var _0x18672b=0x0;for(var _0x3f450e=_0x4d772e;_0x3f450e<=_0x278574;_0x3f450e++)_0x18672b+=_0x3e6384[_0x3f450e]||0x0;return _0x18672b;}function _0x14f09e(_0x24569f,_0x339306,_0x5e5f7c){var _0x361df8=_0x4abaa6,_0x600bdc={'FpuMN':function(_0x473cea,_0x2cf986){var _0x547ec1=_0x438f;return _0x5b6bb9[_0x547ec1(0x158)](_0x473cea,_0x2cf986);}},_0x41c0ab=LINES[_0x24569f],_0x553857=STATIONS[_0x361df8(0x168)](function(_0x214687){var _0x3be807=_0x361df8;return _0x600bdc['FpuMN'](_0x214687[_0x3be807(0x18a)],_0x24569f)&&_0x214687[_0x3be807(0x118)]==='open';}),_0x4ec923=_0x553857[_0x361df8(0x137)](function(_0x16967d){var _0x4fff01=_0x5b6bb9['VANQM'](_0x13f999,_0x16967d,_0x339306,_0x5e5f7c);return _0x4fff01;})[_0x361df8(0x168)](function(_0x539bea){var _0x581d82=_0x361df8;return!_0x539bea[_0x581d82(0x198)];}),_0x1b2423=new Array(0x18)[_0x361df8(0x1a7)](0x0);_0x4ec923[_0x361df8(0x1af)](function(_0x461e33){var _0x5a136f=_0x361df8;_0x461e33[_0x5a136f(0x17e)][_0x5a136f(0x1af)](function(_0x4f10ba,_0x392cda){_0x1b2423[_0x392cda]+=_0x4f10ba;});});var _0xae7f98=_0x4ec923[_0x361df8(0x1b2)](function(_0x58db6e,_0x527c48){var _0x5192b7=_0x361df8;return _0x5b6bb9['ghJMO'](_0x58db6e,_0x527c48[_0x5192b7(0x113)]);},0x0);_0x4ec923[_0x361df8(0x10b)](function(_0x10a376,_0x5307b1){var _0x609d1d=_0x361df8;return _0x5307b1[_0x609d1d(0x113)]-_0x10a376[_0x609d1d(0x113)];});var _0x592701=0x0;return _0x1b2423['forEach'](function(_0x37c30f,_0x4a5b85){if(_0x37c30f>_0x1b2423[_0x592701])_0x592701=_0x4a5b85;}),{'lineId':_0x24569f,'lineName':_0x41c0ab['name'],'color':_0x41c0ab[_0x361df8(0x152)],'date':_0x339306,'total':_0xae7f98,'hourly':_0x1b2423,'rows':_0x4ec923,'peakHour':_0x592701,'peakValue':_0x1b2423[_0x592701],'morningPeak':_0x5b6bb9['hlLWE'](_0x5189e5,_0x1b2423,0x7,0x9),'eveningPeak':_0x5b6bb9[_0x361df8(0x1a8)](_0x5189e5,_0x1b2423,0x11,0x13),'openCount':_0x553857[_0x361df8(0x10a)]};}function _0x53e59a(_0x3b051f,_0x47d1b1){var _0x326c42=_0x4abaa6;if(_0x47d1b1)return Math[_0x326c42(0x120)](_0x5b6bb9[_0x326c42(0x195)](_0x5b6bb9[_0x326c42(0x174)](_0x5b6bb9['YqZwa'](0.1,0.1),_0x5b6bb9['mrzoo'](0.03,0.03)),0.04*0.04));return Math[_0x326c42(0x120)](_0x5b6bb9[_0x326c42(0x180)](_0x5b6bb9[_0x326c42(0x1b3)](_0x5b6bb9[_0x326c42(0x17f)](0.3,0.3),_0x5b6bb9[_0x326c42(0x17f)](0.15,0.15)),0.06*0.06));}function _0x3fd88c(_0x4385e5,_0x4d0628){var _0xfa55d1=_0x4abaa6,_0x203820=_0x5b6bb9[_0xfa55d1(0x146)](_0x14f09e,'4',_0x4385e5,_0x4d0628),_0x40fb27=_0x14f09e('6',_0x4385e5,_0x4d0628),_0x1778d2=new Array(0x18)[_0xfa55d1(0x1a7)](0x0);return _0x203820[_0xfa55d1(0x17e)]['forEach'](function(_0x4bd465,_0xf8bd17){_0x1778d2[_0xf8bd17]+=_0x4bd465;}),_0x40fb27['hourly'][_0xfa55d1(0x1af)](function(_0x35524e,_0x26db4f){_0x1778d2[_0x26db4f]+=_0x35524e;}),{'date':_0x4385e5,'l4':_0x203820,'l6':_0x40fb27,'total':_0x5b6bb9[_0xfa55d1(0x1ac)](_0x203820[_0xfa55d1(0x145)],_0x40fb27['total']),'hourly':_0x1778d2,'peakHour':(function(){var _0x12e40a=_0xfa55d1,_0x229c94=0x0;return _0x1778d2[_0x12e40a(0x1af)](function(_0xdcc494,_0x3dfd8d){if(_0xdcc494>_0x1778d2[_0x229c94])_0x229c94=_0x3dfd8d;}),_0x229c94;}())};}return{'parseDate':_0x5b804f,'ymd':_0x2c11fb,'dayClass':_0xc842b,'dow':_0xb036b9,'daysBetween':_0x4c848f,'stationWeight':_0x1ca898,'lineWeights':_0x3934c6,'noveltyFactor':_0xf30b05,'fareFactor':_0x546083,'calendarFactor':_0x12e663,'weatherFactor':_0x56c3f5,'hourlyShape':_0x72451e,'predictStation':_0x13f999,'predictLine':_0x14f09e,'predictAll':_0x3fd88c,'uncertaintyOf':_0x53e59a,'sumRange':_0x5189e5};}());
+/* =====================================================================
+ * model.js — 预测模型层
+ *
+ * 总体结构：   站点日客流 = 线路日基准 × 站权重占比 × 日历系数 × 天气系数 × 票制系数
+ * 再叠加：     新线尝鲜衰减 novelty(t)
+ * 分布式输出： 24 小时曲线（按站点类型取形）
+ *
+ * 每个预测都返回 trace[]，把每一步的中间值暴露出来，
+ * 目的是让使用者能对着公式逐项核对，而不是给一个黑箱数字。
+ * =================================================================== */
+
+var Model = (function () {
+
+  /* 统一取整：所有对外客流数值四舍五入到百位 */
+  function round100(n) { return Math.round((Number(n) || 0) / 100) * 100; }
+
+  /* ---------- 工具 ---------- */
+  function parseDate(s) {
+    if (s instanceof Date) return new Date(s.getFullYear(), s.getMonth(), s.getDate());
+    var p = String(s).split("-");
+    return new Date(+p[0], +p[1] - 1, +p[2]);
+  }
+  function ymd(d) {
+    var m = d.getMonth() + 1, dd = d.getDate();
+    return d.getFullYear() + "-" + (m < 10 ? "0" : "") + m + "-" + (dd < 10 ? "0" : "") + dd;
+  }
+  function daysBetween(a, b) {
+    return Math.round((parseDate(b) - parseDate(a)) / 86400000);
+  }
+  function dow(dateStr) { return parseDate(dateStr).getDay(); }
+
+  /* ---------- 日历类型判定 ---------- */
+  function dayClass(dateStr) {
+    var key = ymd(parseDate(dateStr));
+    if (HOLIDAYS_2026.holiday[key]) return "holiday";
+    if (HOLIDAYS_2026.makeupWorkday[key]) return "makeup";   /* 调休补班，按工作日处理 */
+    var w = dow(key);
+    if (w === 0) return "sunday";
+    if (w === 6) return "saturday";
+    return "weekday";
+  }
+
+  /* ---------- 站点权重 ---------- */
+  /* 权重法的核心假设：在无真实客流数据的情况下，
+   * 站点客流吸引力可由「类型 + 换乘接入数 + 是否端点 + 腹地等级」线性加总近似。
+   *
+   * 与试乘首日媒体统计的对照：模型算出的第 1 名是官任，与该日唯一破万的站一致；
+   * 但媒体 Top5 中的角江路、角美中心、角海路并未进入模型前 5 名。
+   * 原因是首日的免费跨市尝鲜把漳州角美段短期推高，而本模型估计的是常态。
+   * 这个差异是结构性的，不应表述为「完全吻合」。 */
+  function stationWeight(st) {
+    var base = TYPE_WEIGHT[st.type] || 0.6;
+    var tr = (st.transfers ? st.transfers.length : 0) * W_TRANSFER;
+    var tm = st.terminal ? W_TERMINAL : 0;
+    var ca = (st.catchment || 2) * W_CATCHMENT;
+    var total = base + tr + tm + ca;
+    return {
+      total: total,
+      detail: [
+        { item: "类型「" + st.type + "」基重", value: base },
+        { item: "换乘接入 " + (st.transfers ? st.transfers.length : 0) + " 条", value: +tr.toFixed(3) },
+        { item: st.terminal ? "端点站加成" : "非端点站", value: tm },
+        { item: "腹地等级 " + (st.catchment || 2) + "/5", value: +ca.toFixed(3) }
+      ]
+    };
+  }
+
+  /* 线路内所有运营站的权重归一化占比 */
+  function lineWeights(lineId) {
+    var list = STATIONS.filter(function (s) { return s.line === lineId && s.status === "open"; });
+    var ws = list.map(function (s) { return { st: s, w: stationWeight(s).total }; });
+    var sum = ws.reduce(function (a, b) { return a + b.w; }, 0);
+    ws.forEach(function (x) { x.share = x.w / sum; });
+    return ws;
+  }
+
+  /* ---------- 新线尝鲜衰减 ---------- */
+  /* novelty(t) = 1 + A·e^(−t/τ)，A=0.45，τ=35天
+   * 依据：北京交通发展研究院客流成长规律研究（见 data.js ASSUMPTIONS.novelty） */
+  function noveltyFactor(lineId, dateStr) {
+    if (!RUNTIME.applyNovelty) return { value: 1.0, note: "已关闭尝鲜衰减" };
+    var line = LINES[lineId];
+    if (!line) return { value: 1.0, note: "未知线路" };
+    var t = daysBetween(line.openDate, dateStr);
+    if (t < 0) return { value: 1.45, note: "预测日早于开通日，取首日上限 1.45" };
+    var v = 1 + 0.45 * Math.exp(-t / 35);
+    return {
+      value: v,
+      note: "开通后第 " + t + " 天 · novelty = 1 + 0.45×e^(−" + t + "/35) = " + v.toFixed(3)
+    };
+  }
+
+  /* ---------- 票制系数 ---------- */
+  function fareFactor() {
+    if (RUNTIME.fareMode === "free") return { value: 1.0, note: "免费试乘模式，系数 1.00" };
+    return { value: 0.86, note: "正式收费运营，按需求价格弹性 −0.14 折算，系数 0.86（假设值）" };
+  }
+
+  /* ---------- 日历系数 ---------- */
+  function calendarFactor(st, dateStr) {
+    var cls = dayClass(dateStr);
+    var type = st.type;
+    if (cls === "holiday") {
+      var c = HOLIDAY_TYPE[type] || 1.0;
+      return { coef: c, cls: cls, label: "法定节假日", detail: "节假日 × 「" + type + "」= " + c.toFixed(2) };
+    }
+    if (cls === "makeup") {
+      return { coef: 1.0, cls: cls, label: "调休补班", detail: "调休上班日，按普通工作日处理，系数 1.00" };
+    }
+    if (cls === "saturday") {
+      var b = SATURDAY_EXTRA[type] || 1.10;
+      return { coef: b, cls: cls, label: "周六", detail: "周六 × 「" + type + "」= " + b.toFixed(2) };
+    }
+    if (cls === "sunday") {
+      var s = WEEKEND_TYPE[type] || 1.0;
+      return { coef: s, cls: cls, label: "周日", detail: "周日 × 「" + type + "」= " + s.toFixed(2) };
+    }
+    var d = dow(dateStr);
+    var w = DOW_COEF[d] || 1.0;
+    var names = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+    return { coef: w, cls: cls, label: names[d], detail: names[d] + " 周内系数 = " + w.toFixed(2) };
+  }
+
+  /* ---------- 天气系数 ---------- */
+  function weatherFactor(weather, st) {
+    if (!weather || !RUNTIME.applyWeather) return { coef: 1.0, detail: "未设置天气，系数 1.00" };
+    var base = WEATHER_COEF[weather];
+    if (base === undefined) return { coef: 1.0, detail: "未知天气类型，系数 1.00" };
+    /* 枢纽/商圈类站点受天气影响小于纯通勤/景区站 */
+    var damp = (st.type === "枢纽" || st.type === "商圈") ? 1 + (base - 1) * 0.7 : 1;
+    var coef = 1 + (base - 1) * (damp === 1 ? 1 : 0.7);
+    return {
+      coef: coef,
+      detail: "「" + weather + "」基准 " + base.toFixed(3) + (st.type === "枢纽" || st.type === "商圈" ? "，枢纽/商圈类受天气影响较小，衰减 30%" : "")
+    };
+  }
+
+  /* ---------- 24 小时分布形态 ---------- */
+  /* 返回 24 个非负实数（未归一化），0~5 与 23 点后为运营外 */
+  function hourlyShape(st, cls) {
+    var h = [], T;
+    function gauss(x, mu, sigma) { return Math.exp(-Math.pow(x - mu, 2) / (2 * sigma * sigma)); }
+
+    var flat = 0.012;   /* 全天基底 */
+
+    if (cls === "holiday" || cls === "sunday" || (cls === "saturday")) {
+      /* 非通勤日：以 10~21 点的宽平台为主 */
+      for (T = 0; T < 24; T++) {
+        if (T < 6 || T > 23) { h.push(0); continue; }
+        var v = flat
+          + 0.72 * gauss(T, 11.0, 1.5)
+          + 0.95 * gauss(T, 15.5, 2.4)
+          + 0.80 * gauss(T, 19.5, 1.9);
+        h.push(Math.max(v, 0.008));
+      }
+      return h;
+    }
+
+    /* 通勤日：按站点类型给出不同双峰形态 */
+    var morningAmp, morningMu, morningSig, eveningAmp, eveningMu, eveningSig, midAmp;
+    switch (st.type) {
+      case "枢纽":
+        morningAmp = 0.85; morningMu = 8.3; morningSig = 1.05;
+        eveningAmp = 0.95; eveningMu = 18.3; eveningSig = 1.25;
+        midAmp = 0.34; break;
+      case "换乘":
+        morningAmp = 1.00; morningMu = 8.0; morningSig = 0.95;
+        eveningAmp = 0.92; eveningMu = 18.2; eveningSig = 1.15;
+        midAmp = 0.22; break;
+      case "商圈":
+        morningAmp = 0.52; morningMu = 8.4; morningSig = 1.00;
+        eveningAmp = 0.88; eveningMu = 18.6; eveningSig = 1.55;
+        midAmp = 0.62; break;
+      case "文教":
+        morningAmp = 1.05; morningMu = 7.8; morningSig = 0.82;
+        eveningAmp = 0.90; eveningMu = 18.0; eveningSig = 1.10;
+        midAmp = 0.30; break;
+      case "产业":
+        morningAmp = 1.25; morningMu = 8.5; morningSig = 0.72;
+        eveningAmp = 1.15; eveningMu = 18.5; eveningSig = 0.80;
+        midAmp = 0.16; break;
+      case "景区":
+        morningAmp = 0.48; morningMu = 9.3; morningSig = 1.30;
+        eveningAmp = 0.70; eveningMu = 17.6; eveningSig = 1.70;
+        midAmp = 0.78; break;
+      default: /* 居住 */
+        morningAmp = 1.15; morningMu = 7.7; morningSig = 0.78;
+        eveningAmp = 0.72; eveningMu = 18.3; eveningSig = 1.10;
+        midAmp = 0.18; break;
+    }
+
+    for (T = 0; T < 24; T++) {
+      if (T < 6 || T > 23) { h.push(0); continue; }
+      var val = flat
+        + morningAmp * gauss(T, morningMu, morningSig)
+        + eveningAmp * gauss(T, eveningMu, eveningSig)
+        + midAmp * gauss(T, 12.6, 1.5);
+      h.push(Math.max(val, 0.006));
+    }
+    return h;
+  }
+
+  /* ---------- 线路日基准 ---------- */
+  function lineBaseline(lineId, dateStr) {
+    var line = LINES[lineId];
+    var cal = Calib.getLineCalibration(lineId);
+    var stableBase = cal ? cal.daily : line.baselineDailyStable;
+    var usedCal = !!cal;
+
+    var nov = noveltyFactor(lineId, dateStr);
+    var fare = fareFactor();
+    /* 线路级日历系数：用线路主导类型加权，这里简化为各站平均值在 lineDaily 中计算 */
+    return {
+      stableBase: stableBase,
+      usedCal: usedCal,
+      novelty: nov,
+      fare: fare
+    };
+  }
+
+  /* ---------- 单站预测 ---------- */
+  function predictStation(st, dateStr, weather) {
+    if (st.status !== "open") {
+      return { closed: true, name: st.name, note: "该站暂缓开通，不产生客流" };
+    }
+    var lineId = st.line;
+    var lw = lineWeights(lineId);
+    var self = lw.filter(function (x) { return x.st.name === st.name; })[0];
+    var base = lineBaseline(lineId, dateStr);
+
+    var cal = calendarFactor(st, dateStr);
+    var wx = weatherFactor(weather, st);
+
+    /* 站点级基准优先：该站若已导入真实数据，直接用校准值；
+     * 否则回落到「线路稳定期基准 × 本站权重占比」。 */
+    var stCal = Calib.getStationCalibration(st.name);
+    var stableBase = stCal ? stCal.daily : (base.stableBase * self.share);
+    var daily = stableBase * cal.coef * wx.coef * base.novelty.value * base.fare.value;
+
+    /* 24h 分布 */
+    var shape = hourlyShape(st, cal.cls);
+    var shapeSum = shape.reduce(function (a, b) { return a + b; }, 0);
+    var hourly = shape.map(function (v) { return Math.round(daily * v / shapeSum); });
+
+    /* 修正舍入误差，保证 sum(hourly) === daily */
+    var hs = hourly.reduce(function (a, b) { return a + b; }, 0);
+    var target = Math.round(daily);
+    if (hs !== target && hs > 0) {
+      var diff = target - hs, i = 0;
+      while (diff !== 0 && i < 500) {
+        var idx = i % 24;
+        if (hourly[idx] > 0) { hourly[idx] += (diff > 0 ? 1 : -1); diff += (diff > 0 ? -1 : 1); }
+        i++;
+      }
+    }
+
+    var peakH = 0;
+    hourly.forEach(function (v, i) { if (v > hourly[peakH]) peakH = i; });
+
+    var u = uncertaintyOf(st, !!Calib.getStationCalibration(st.name));
+
+    return {
+      name: st.name,
+      line: lineId,
+      lineName: LINES[lineId].name,
+      color: LINES[lineId].color,
+      type: st.type,
+      district: st.district,
+      date: dateStr,
+      dayLabel: cal.label,
+      dayClass: cal.cls,
+      daily: Math.round(daily),
+      share: self.share,
+      weight: stationWeight(st),
+      hourly: hourly,
+      peakHour: peakH,
+      peakValue: hourly[peakH],
+      morningPeak: sumRange(hourly, 7, 9),
+      eveningPeak: sumRange(hourly, 17, 19),
+      interval: { low: Math.round(daily * (1 - u)), high: Math.round(daily * (1 + u)), rel: u },
+      trace: stCal ? [
+        { k: "本站稳定期基准", v: Math.round(stCal.daily), src: "来自导入的真实数据（已剥离当日日历/尝鲜/票制系数）" },
+        { k: cal.label + "日历系数", v: cal.coef.toFixed(3), src: cal.detail },
+        { k: "天气系数", v: wx.coef.toFixed(3), src: wx.detail },
+        { k: "新线尝鲜系数", v: base.novelty.value.toFixed(3), src: base.novelty.note },
+        { k: "票制系数", v: base.fare.value.toFixed(3), src: base.fare.note },
+        { k: "最终日客流", v: round100(daily).toLocaleString() + " 人次", src: "以上各项连乘，四舍五入至百位" }
+      ] : [
+        { k: "线路稳定期日基准", v: Math.round(base.stableBase), src: base.usedCal ? "已用导入数据校准" : "推算值 " + LINES[lineId].baselineReliability + " 级" },
+        { k: "本站权重占比", v: (self.share * 100).toFixed(2) + "%", src: "权重 " + self.w.toFixed(3) + " / 线路合计" },
+        { k: cal.label + "日历系数", v: cal.coef.toFixed(3), src: cal.detail },
+        { k: "天气系数", v: wx.coef.toFixed(3), src: wx.detail },
+        { k: "新线尝鲜系数", v: base.novelty.value.toFixed(3), src: base.novelty.note },
+        { k: "票制系数", v: base.fare.value.toFixed(3), src: base.fare.note },
+        { k: "最终日客流", v: round100(daily).toLocaleString() + " 人次", src: "以上各项连乘，四舍五入至百位" }
+      ]
+    };
+  }
+
+  function sumRange(arr, a, b) {
+    var s = 0;
+    for (var i = a; i <= b; i++) s += (arr[i] || 0);
+    return s;
+  }
+
+  /* ---------- 线路级预测 ---------- */
+  function predictLine(lineId, dateStr, weather) {
+    var line = LINES[lineId];
+    var list = STATIONS.filter(function (s) { return s.line === lineId && s.status === "open"; });
+    var rows = list.map(function (s) {
+      var r = predictStation(s, dateStr, weather);
+      return r;
+    }).filter(function (r) { return !r.closed; });
+
+    var hourly = new Array(24).fill(0);
+    rows.forEach(function (r) { r.hourly.forEach(function (v, i) { hourly[i] += v; }); });
+
+    var total = rows.reduce(function (a, b) { return a + b.daily; }, 0);
+    rows.sort(function (a, b) { return b.daily - a.daily; });
+
+    var peakH = 0;
+    hourly.forEach(function (v, i) { if (v > hourly[peakH]) peakH = i; });
+
+    return {
+      lineId: lineId,
+      lineName: line.name,
+      color: line.color,
+      date: dateStr,
+      total: total,
+      hourly: hourly,
+      rows: rows,
+      peakHour: peakH,
+      peakValue: hourly[peakH],
+      morningPeak: sumRange(hourly, 7, 9),
+      eveningPeak: sumRange(hourly, 17, 19),
+      openCount: list.length
+    };
+  }
+
+  /* ---------- 不确定度 ---------- */
+  /* 未校准：线路基准 D 级 ±30%，站权重 ±15%，日历/天气 ±6% → 合成约 34%
+   * 已校准（用户导入真实数据）：基准 ±10%，权重 ±3%，日历 ±4% → 合成约 11% */
+  function uncertaintyOf(st, calibrated) {
+    if (calibrated) return Math.sqrt(0.10 * 0.10 + 0.03 * 0.03 + 0.04 * 0.04);
+    return Math.sqrt(0.30 * 0.30 + 0.15 * 0.15 + 0.06 * 0.06);
+  }
+
+  /* ---------- 全网/双线汇总 ---------- */
+  function predictAll(dateStr, weather) {
+    var l4 = predictLine("4", dateStr, weather);
+    var l6 = predictLine("6", dateStr, weather);
+
+    var hourly = new Array(24).fill(0);
+    l4.hourly.forEach(function (v, i) { hourly[i] += v; });
+    l6.hourly.forEach(function (v, i) { hourly[i] += v; });
+
+    return {
+      date: dateStr,
+      l4: l4, l6: l6,
+      total: l4.total + l6.total,
+      hourly: hourly,
+      peakHour: (function () { var p = 0; hourly.forEach(function (v, i) { if (v > hourly[p]) p = i; }); return p; })()
+    };
+  }
+
+  /* ---------- 对外接口 ---------- */
+  return {
+    parseDate: parseDate, ymd: ymd, dayClass: dayClass, dow: dow,
+    daysBetween: daysBetween,
+    stationWeight: stationWeight, lineWeights: lineWeights,
+    noveltyFactor: noveltyFactor, fareFactor: fareFactor,
+    calendarFactor: calendarFactor, weatherFactor: weatherFactor,
+    hourlyShape: hourlyShape,
+    predictStation: predictStation, predictLine: predictLine,
+    predictAll: predictAll,
+    uncertaintyOf: uncertaintyOf, sumRange: sumRange
+  };
+})();

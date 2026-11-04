@@ -1,1 +1,276 @@
-var TRIAL_NOTICE='新线现在还是在试乘阶段，客流量有一个很大的特征，就是很大一部分人都是体验性乘坐不适合拿来做客流预测的基准和参考，会有很大的偏差，现在只做一个样板，后续客流日常化之后导入真实数据再进行预测。',TRIAL_NOTICE_SHORT='试乘期客流含大量体验性乘坐，不可作为预测基准。当前仅为样板。',LINES={'4':{'id':'4','name':'4号线','fullName':'4号线一期（集美软件园北—前浯）','color':'#E60012','lengthKm':0x2d,'stationCountTotal':0xb,'stationCountOpen':0x8,'designSpeed':0x78,'goa':'GoA4\x20全自动运行（无人值守）','openDate':'2026-09-16','baselineDailyStable':0x7d00,'baselineReliability':'D','features':['福建首条设计时速\x20120\x20km\x20的快线，也是首条开进同安区的地铁线路','全线\x20GoA4\x20全自动运行，无驾驶室，可车头观景','官浔—城场段贴海而行，是厦门第二条海景地铁线路'],'notes':['翔安机场段（含西岩、机场西、翔安机场等站）尚未开通，需待翔安机场通航后同步投用','试乘期间免费、不刷卡，因此\x204\x20号线自身客流不计入官方全网客运量统计']},'6':{'id':'6','name':'6号线','fullName':'6号线（林埭西—华侨大学段\x20+\x20漳州角美延伸段）','color':'#7B2CBF','lengthKm':28.3,'stationCountTotal':0x14,'stationCountOpen':0x11,'designSpeed':0x50,'goa':'GoA4\x20全自动运行','openDate':'2026-09-16','baselineDailyStable':0xbb80,'baselineReliability':'D','features':['福建首条跨市域地铁，串联厦门集美、海沧与漳州角美','20\x20座车站全部为地下站，4\x20节编组','华侨大学站实现地铁与\x20BRT\x20免安检直接换乘'],'notes':['陈井、石美、龙江明珠\x203\x20站暂缓开通，全程不参与预测——未开通站点不臆测客流，预测值不做估算','试乘期间开行「华侨大学—角江路」交路，角江路为当前实际运营终点']}},TYPE_WEIGHT={'枢纽':0x1,'换乘':0.86,'商圈':0.8,'文教':0.68,'居住':0.58,'产业':0.54,'景区':0.5},W_TRANSFER=0.22,W_TERMINAL=0.16,W_CATCHMENT=0.11,STATIONS=[{'line':'4','name':'集美软件园北','seq':0x1,'district':'集美区','type':'产业','catchment':0x3,'transfers':[],'brt':![],'terminal':!![],'status':'open'},{'line':'4','name':'后溪','seq':0x2,'district':'集美区','type':'居住','catchment':0x2,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'4','name':'厦门北站','seq':0x3,'district':'集美区','type':'枢纽','catchment':0x5,'transfers':['1号线'],'brt':!![],'terminal':![],'status':'open'},{'line':'4','name':'官浔','seq':0x4,'district':'同安区','type':'换乘','catchment':0x3,'transfers':[],'brt':!![],'terminal':![],'status':'open'},{'line':'4','name':'丙洲','seq':0x5,'district':'同安区','type':'景区','catchment':0x2,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'4','name':'城场','seq':0x6,'district':'同安区','type':'居住','catchment':0x2,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'4','name':'洪坑','seq':0x7,'district':'翔安区','type':'换乘','catchment':0x3,'transfers':['3号线'],'brt':![],'terminal':![],'status':'open'},{'line':'4','name':'前浯','seq':0x8,'district':'翔安区','type':'居住','catchment':0x4,'transfers':[],'brt':![],'terminal':!![],'status':'open'},{'line':'6','name':'华侨大学','seq':0x1,'district':'集美区','type':'文教','catchment':0x4,'transfers':[],'brt':!![],'terminal':!![],'status':'open'},{'line':'6','name':'杏林湾','seq':0x2,'district':'集美区','type':'商圈','catchment':0x3,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'官任','seq':0x3,'district':'集美区','type':'换乘','catchment':0x5,'transfers':['1号线'],'brt':!![],'terminal':![],'status':'open'},{'line':'6','name':'董任','seq':0x4,'district':'集美区','type':'居住','catchment':0x2,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'内茂','seq':0x5,'district':'集美区','type':'居住','catchment':0x3,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'杏滨','seq':0x6,'district':'集美区','type':'商圈','catchment':0x3,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'碑头','seq':0x7,'district':'集美区','type':'居住','catchment':0x2,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'西滨','seq':0x8,'district':'集美区','type':'居住','catchment':0x2,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'陈井','seq':0x9,'district':'集美区','type':'居住','catchment':0x2,'transfers':[],'brt':![],'terminal':![],'status':'pending'},{'line':'6','name':'马銮中心','seq':0xa,'district':'海沧区','type':'换乘','catchment':0x4,'transfers':['2号线'],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'鼎美','seq':0xb,'district':'海沧区','type':'换乘','catchment':0x2,'transfers':['2号线'],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'林埭','seq':0xc,'district':'海沧区','type':'商圈','catchment':0x3,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'一农','seq':0xd,'district':'海沧区','type':'居住','catchment':0x2,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'角美东','seq':0xe,'district':'漳州台商投资区','type':'居住','catchment':0x3,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'角海路','seq':0xf,'district':'漳州台商投资区','type':'商圈','catchment':0x3,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'文圃路','seq':0x10,'district':'漳州台商投资区','type':'居住','catchment':0x2,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'角美中心','seq':0x11,'district':'漳州台商投资区','type':'商圈','catchment':0x4,'transfers':[],'brt':![],'terminal':![],'status':'open'},{'line':'6','name':'角江路','seq':0x12,'district':'漳州台商投资区','type':'商圈','catchment':0x3,'transfers':[],'brt':![],'terminal':!![],'status':'open'},{'line':'6','name':'石美','seq':0x13,'district':'漳州台商投资区','type':'居住','catchment':0x1,'transfers':[],'brt':![],'terminal':![],'status':'pending'},{'line':'6','name':'龙江明珠','seq':0x14,'district':'漳州台商投资区','type':'居住','catchment':0x1,'transfers':[],'brt':![],'terminal':!![],'status':'pending'}],BRT_TRANSFER=[{'station':'厦门北站','metroLine':'4','metroAlso':['1号线'],'brtLine':'BRT\x20集美线\x20/\x20快1','peakBias':'balanced','level':'A','note':'国家铁路枢纽\x20+\x20地铁\x201/4\x20号线\x20+\x20BRT，客流量级最大'},{'station':'官浔','metroLine':'4','metroAlso':[],'brtLine':'BRT\x20同安线\x20/\x20快2','peakBias':'residential','level':'A','note':'4\x20号线新增换乘站，同安片区进入轨道网的门户'},{'station':'华侨大学','metroLine':'6','metroAlso':[],'brtLine':'BRT\x20集美线\x20/\x20快1','peakBias':'balanced','level':'A','note':'6\x20号线北端终点，免安检直接换乘\x20BRT；同时是集美文教组团核心'},{'station':'文灶','metroLine':'1','metroAlso':[],'brtLine':'BRT\x20主线','peakBias':'employment','level':'A','note':'老三线换乘站，位于岛内成熟就业区'},{'station':'蔡塘','metroLine':'2','metroAlso':[],'brtLine':'BRT\x20主线','peakBias':'balanced','level':'A','note':'2\x20号线换乘站，周边居住与商业混合'},{'station':'火车站','metroLine':'3','metroAlso':[],'brtLine':'BRT\x20主线','peakBias':'balanced','level':'A','note':'厦门站\x20+\x20地铁\x203\x20号线\x20+\x20BRT，对外交通枢纽属性强'},{'station':'双十中学','metroLine':'3','metroAlso':[],'brtLine':'BRT\x20主线（湖里创新园）','peakBias':'employment','level':'A','note':'3\x20号线换乘站，湖里创新园通勤目的地，早晚高峰对称性最明显'}],BRT_BASE={'dailyInbound':0x34968,'year':0x7e9,'source':'厦门市财政局关于市人大代表建议的答复函（2025\x20年\x20BRT\x20全年客运\x207861\x20万人次）','metroDaily':0xb7ef8,'reliability':'A'},ANCHORS=[{'date':'2026-09-16','label':'双线试乘首日（周三）','metrics':[{'key':'line6_inbound','value':0x11170,'unit':'人次','text':'6\x20号线全线进站约\x207\x20万','rel':'B','detail':'网友按各站安检数据统计：角美段\x203\x20万出头\x20+\x20集美段\x202\x20万多\x20+\x20海沧段\x201\x20万出头。注：华侨大学站\x20BRT\x20免安检直接换乘，该部分未计入'},{'key':'line4_top3','value':null,'unit':'','text':'4\x20号线进站前三：厦门北站、洪坑站、前浯站','rel':'B','detail':'依据上午安检数据估算，原始作者已声明不一定正确、仅供参考','rel':'D'},{'key':'network','value':0xe0bb4,'unit':'人次','text':'全网\x2092.05\x20万（不含\x204/6\x20号线，因其不计入统计）','rel':'B','detail':'1\x20号线\x2036.14\x20万\x20+\x202\x20号线\x2030.90\x20万\x20+\x203\x20号线\x2025.01\x20万\x20=\x2092.05\x20万，与全网播报数完全吻合，可反证\x204/6\x20号线客流确实未计入'}]},{'date':'2026-09-17','label':'试乘第\x202\x20天（周四）','metrics':[{'key':'network','value':0xdaf84,'unit':'人次','text':'全网\x2089.69\x20万','rel':'B','detail':'较前三日均值回落'}]},{'date':'2026-09-18','label':'试乘第\x203\x20天（周五）','metrics':[{'key':'network','value':0xefcb8,'unit':'人次','text':'全网\x2098.22\x20万，同比上周五\x20+9.19%','rel':'B','detail':'1\x20号线\x2039.12\x20万\x20/\x202\x20号线\x2032.51\x20万\x20/\x203\x20号线\x2026.59\x20万；当日无演唱会、无大型赛事'}]},{'date':'2026-09-15','label':'试乘前一日（周二）','metrics':[{'key':'network','value':0xc3a14,'unit':'人次','text':'全网\x2080.13\x20万','rel':'B','detail':'周一\x2079.89\x20万，周二\x2080.13\x20万，作为\x20baseline\x20对照'}]},{'date':'2026-07/08','label':'暑期月度均值','metrics':[{'key':'network_avg','value':0xcaa30,'unit':'人次/日','text':'7、8\x20月日均\x2083\x20万+，历史峰值日均\x2083.44\x20万','rel':'B','detail':'用于确认老三线常态盘子'}]}],ASSUMPTIONS=[{'id':'trial_period','name':'试乘期客流不作为预测基准','level':'A','basis':'新线开通初期，体验性、观光性乘坐占比很高，这部分需求在客流日常化后会大幅消失。用它标定基准，会把一次性的新鲜感固化成常态。','note':'因此本平台当前只做功能样板，不把任何数值当作预测结论；待客流日常化后再导入实际数据重标定'},{'id':'pending_zero','name':'暂缓开通站点不产生预测值','level':'A','basis':'未开通\x20=\x20没有客流。任何为其填写数值的做法都属于臆测。','note':'陈井、石美、龙江明珠\x203\x20站已从权重分配中整体排除，页面上只标注状态，不出数'},{'id':'newline_baseline_6','name':'6\x20号线稳定期日均基准\x2048,000\x20人次','level':'D','basis':'试乘首日观测\x2070,000\x20÷\x20首日放大系数\x201.45','note':'见下方\x20novelty\x20模型；该基准为免费试乘口径，再乘\x200.86\x20折算为收费口径'},{'id':'newline_baseline_4','name':'4\x20号线稳定期日均基准\x2032,000\x20人次','level':'D','basis':'无首日总量观测。按站点权重法分配后，以厦门北站↔官任的进站量比值跨线推算','note':'本平台置信度最低的一项，强烈建议用真实数据导入替换'},{'id':'novelty','name':'新线「尝鲜系数」1\x20+\x200.45·e^(−t/35)','level':'C','basis':'北京交通发展研究院《提高轨道交通客流预测水平》：新线开通初期存在明显尝鲜客流，通常在\x201~2\x20个月内衰减至常态','note':'取\x2035\x20天为衰减时间常数，首日取值\x201.45'},{'id':'growth','name':'3~5\x20年培育期，之后进入快速增长期','level':'A','basis':'北京交通发展研究院：国内轨道交通开通后\x203~5\x20年为客流培育期，实际客流明显小于远期预测值；之后\x2010~15\x20年快速增长。北京\x2013\x20号线\x202003—2006\x20年均递增\x2039.4%；广州\x201\x20号线前\x204\x20年年均仅\x203.7%，2003—2006\x20年升至\x2020~25%','note':'本平台仅预测短期（≤1\x20年），不启用长期成长曲线'},{'id':'network_effect','name':'网络效应：新线接入使既有线客流显著增长','level':'A','basis':'广州地铁\x201\x20号线在\x202\x20号线开通的次月，客流由\x2016\x20万增至\x2024\x20万（+50%）；上海\x205\x20线成网后\x201\x20号线诱增客流上升约\x201/3','note':'本平台仅在\x206\x20号线尝鲜衰减中体现网络诱增，不为跨系统换乘单独建模'},{'id':'free_fare','name':'免费试乘\x20vs\x20收费运营的换算系数\x200.86','level':'D','basis':'交通需求价格弹性经验区间\x20−0.2\x20~\x20−0.4，新线尝鲜期取中偏低值','note':'票制开关已从界面移除，模型固定按收费运营口径输出'}],DATA_NEEDS=[{'pri':'★★★','name':'站级日客流报表（各站每日进站量，≥3\x20个月）','effect':'一次性替换全部\x2025\x20个站的推算基准\x20+\x20每站周内系数。站点级\x20MAPE\x20有望从\x2030%+\x20降到\x2010%\x20以内','status':'可通过本站「实际数据导入」页直接导入'},{'pri':'★★★','name':'4\x20号线各站实际客流','effect':'直接弥补当前最大的短板——4\x20号线基准无依据','status':'缺口'},{'pri':'★★☆','name':'分时客流（15\x20min\x20或\x201\x20h\x20粒度）','effect':'校准早/晚高峰形态，分时预测精度提升最大','status':'缺口'},{'pri':'★☆☆','name':'OD\x20客流（站对站）','effect':'支持网络效应与换乘传导建模','status':'远期'},{'pri':'★☆☆','name':'沿线人口与岗位分布','effect':'替代定性\x20catchment\x20等级，理论上可把误差压到接近兰州研究的水平','status':'远期'},{'pri':'★☆☆','name':'历史天气\x20×\x20历史客流配对','effect':'用本地数据回归天气弹性，替换文献\x20borrowed\x20系数','status':'可累积'}],RUNTIME={'fareMode':'paid','applyNovelty':!![],'applyWeather':!![]},HOLIDAYS_2026={'holiday':{'2026-01-01':!![],'2026-01-02':!![],'2026-01-03':!![],'2026-02-15':!![],'2026-02-16':!![],'2026-02-17':!![],'2026-02-18':!![],'2026-02-19':!![],'2026-02-20':!![],'2026-02-21':!![],'2026-02-22':!![],'2026-02-23':!![],'2026-04-04':!![],'2026-04-05':!![],'2026-04-06':!![],'2026-05-01':!![],'2026-05-02':!![],'2026-05-03':!![],'2026-05-04':!![],'2026-05-05':!![],'2026-06-19':!![],'2026-06-20':!![],'2026-06-21':!![],'2026-09-25':!![],'2026-09-26':!![],'2026-09-27':!![],'2026-10-01':!![],'2026-10-02':!![],'2026-10-03':!![],'2026-10-04':!![],'2026-10-05':!![],'2026-10-06':!![],'2026-10-07':!![],'2026-10-08':!![]},'makeupWorkday':{'2026-01-04':!![],'2026-02-14':!![],'2026-02-28':!![],'2026-04-07':!![],'2026-05-09':!![],'2026-06-22':!![],'2026-09-28':!![],'2026-10-10':!![]},'reliability':'A','source':'国务院办公厅关于\x202026\x20年部分节假日安排的通知'},DOW_COEF={0x1:1.01,0x2:0x1,0x3:0x1,0x4:1.02,0x5:1.1,0x6:0.92,0x0:0.86},WEEKEND_TYPE={'枢纽':1.13,'换乘':1.06,'商圈':1.25,'文教':0.72,'居住':0.9,'产业':0.55,'景区':1.48},SATURDAY_EXTRA={'枢纽':1.19,'换乘':1.17,'商圈':1.29,'文教':0.85,'居住':1.02,'产业':0.68,'景区':1.33},HOLIDAY_TYPE={'枢纽':1.5,'换乘':1.2,'商圈':2.3,'文教':0.45,'居住':0.95,'产业':0.22,'景区':2.5},WEATHER_COEF={'晴':0x1,'多云':0.992,'阴':0.985,'小雨':0.975,'中雨':0.96,'大雨':0.92,'暴雨':0.85,'雷阵雨':0.945,'雪':0.78,'雾':0.97,'浮尘':0.965};
+/* =====================================================================
+ * data.js — 数据层
+ * 厦门地铁新线（4号线 / 6号线）客流预测平台
+ *
+ * 原则：每一个数值都必须标注来源等级，不允许出现无法溯源的"裸数"。
+ *   A = 官方发布 / 政府文件 / 运营企业公告
+ *   B = 主流媒体报道（含记者现场采访数据）
+ *   C = 行业公认文献或同类城市经验值
+ *   D = 本平台推算（基于上述数据的外推，误差不可控，页面必须显式标注）
+ * =================================================================== */
+
+/* ---------- 0. 试乘期声明（全站显著展示） ---------- */
+/* 用户原话，不做改写。放在每个页面的显著位置，防止把样板量当成预测结论使用。 */
+var TRIAL_NOTICE = "新线现在还是在试乘阶段，客流量有一个很大的特征，就是很大一部分人都是体验性乘坐不适合拿来做客流预测的基准和参考，会有很大的偏差，现在只做一个样板，后续客流日常化之后导入真实数据再进行预测。";
+var TRIAL_NOTICE_SHORT = "试乘期客流含大量体验性乘坐，不可作为预测基准。当前仅为样板。";
+
+/* ---------- 1. 线路元信息 ---------- */
+var LINES = {
+  "4": {
+    id: "4",
+    name: "4号线",
+    fullName: "4号线一期（集美软件园北—前浯）",
+    color: "#E60012",           /* 活力红 C0 M100 Y100 K0 —— 厦门地铁官方标志色 */
+    lengthKm: 45,               /* A: 网易/海峡导报 2026-09-16 报道 */
+    stationCountTotal: 11,      /* B: 同上，全线规划设站数 */
+    stationCountOpen: 8,        /* B: 本地宝 2026-09-18，实际开通试乘 8 座 */
+    designSpeed: 120,           /* A: 福建首条设计时速120km全自动运行快线 */
+    goa: "GoA4 全自动运行（无人值守）",
+    openDate: "2026-09-16",     /* A: 试乘首日 */
+    baselineDailyStable: 32000, /* D: 推算值，见 ASSUMPTIONS */
+    baselineReliability: "D",
+    features: [
+      "福建首条设计时速 120 km 的快线，也是首条开进同安区的地铁线路",
+      "全线 GoA4 全自动运行，无驾驶室，可车头观景",
+      "官浔—城场段贴海而行，是厦门第二条海景地铁线路"
+    ],
+    notes: [
+      "翔安机场段（含西岩、机场西、翔安机场等站）尚未开通，需待翔安机场通航后同步投用",
+      "试乘期间免费、不刷卡，因此 4 号线自身客流不计入官方全网客运量统计"
+    ]
+  },
+  "6": {
+    id: "6",
+    name: "6号线",
+    fullName: "6号线（林埭西—华侨大学段 + 漳州角美延伸段）",
+    color: "#7B2CBF",           /* 缤纷紫 C50 M90 Y0 K0 —— 厦门地铁官方标志色 */
+    lengthKm: 28.3,             /* A: 厦门日报 2026-07-31 */
+    stationCountTotal: 20,      /* A: 同上 */
+    stationCountOpen: 17,       /* B: 本地宝时刻表 + 用户核实，陈井、石美、龙江明珠 3 站暂缓 */
+    designSpeed: 80,            /* A: 福建日报 2026-09-16 */
+    goa: "GoA4 全自动运行",
+    openDate: "2026-09-16",
+    baselineDailyStable: 48000, /* D: 由首日观测 7 万反推，见 ASSUMPTIONS */
+    baselineReliability: "D",
+    features: [
+      "福建首条跨市域地铁，串联厦门集美、海沧与漳州角美",
+      "20 座车站全部为地下站，4 节编组",
+      "华侨大学站实现地铁与 BRT 免安检直接换乘"
+    ],
+    notes: [
+      "陈井、石美、龙江明珠 3 站暂缓开通，全程不参与预测——未开通站点不臆测客流，预测值不做估算",
+      "试乘期间开行「华侨大学—角江路」交路，角江路为当前实际运营终点"
+    ]
+  }
+};
+
+/* ---------- 2. 站点 types 与权重常数 ---------- */
+/* 站点类型基础权重 —— 代表同腹地条件下该类站点的相对客流吸引力 */
+var TYPE_WEIGHT = {
+  "枢纽": 1.00,
+  "换乘": 0.86,
+  "商圈": 0.80,
+  "文教": 0.68,
+  "居住": 0.58,
+  "产业": 0.54,
+  "景区": 0.50
+};
+var W_TRANSFER = 0.22;   /* 每接入 1 条地铁换乘线的加成（换乘只是部分需求来源，增量不超过基重的 1/4） */
+var W_TERMINAL = 0.16;   /* 线路端点站加成（辐射半径单向扩大） */
+var W_CATCHMENT = 0.11;  /* 腹地等级（1~5）每级的加成 */
+
+/* ---------- 3. 站点清单 ---------- */
+/* catchment: 腹地辐射人口/岗位等级 1~5（依据行政区成熟度、周边建成度定性判定，D级）
+ * transfers: 接入的地铁换乘线路；BRT 换乘另计
+ * status   : open=正常运营 | pending=暂缓开通
+ */
+var STATIONS = [
+  /* ===== 4 号线（自西北向东南） ===== */
+  { line:"4", name:"集美软件园北", seq:1, district:"集美区", type:"产业",   catchment:3, transfers:[],            brt:false, terminal:true,  status:"open" },
+  { line:"4", name:"后溪",         seq:2, district:"集美区", type:"居住",   catchment:2, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"4", name:"厦门北站",     seq:3, district:"集美区", type:"枢纽",   catchment:5, transfers:["1号线"],     brt:true,  terminal:false, status:"open" },
+  { line:"4", name:"官浔",         seq:4, district:"同安区", type:"换乘",   catchment:3, transfers:[],            brt:true,  terminal:false, status:"open" },
+  { line:"4", name:"丙洲",         seq:5, district:"同安区", type:"景区",   catchment:2, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"4", name:"城场",         seq:6, district:"同安区", type:"居住",   catchment:2, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"4", name:"洪坑",         seq:7, district:"翔安区", type:"换乘",   catchment:3, transfers:["3号线"],     brt:false, terminal:false, status:"open" },
+  { line:"4", name:"前浯",         seq:8, district:"翔安区", type:"居住",   catchment:4, transfers:[],            brt:false, terminal:true,  status:"open" },
+
+  /* ===== 6 号线（自东北华侨大学向西南龙江明珠） ===== */
+  { line:"6", name:"华侨大学",     seq:1,  district:"集美区",   type:"文教", catchment:4, transfers:[],            brt:true,  terminal:true,  status:"open" },
+  { line:"6", name:"杏林湾",       seq:2,  district:"集美区",   type:"商圈", catchment:3, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"6", name:"官任",         seq:3,  district:"集美区",   type:"换乘", catchment:5, transfers:["1号线"],     brt:true,  terminal:false, status:"open" },
+  { line:"6", name:"董任",         seq:4,  district:"集美区",   type:"居住", catchment:2, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"6", name:"内茂",         seq:5,  district:"集美区",   type:"居住", catchment:3, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"6", name:"杏滨",         seq:6,  district:"集美区",   type:"商圈", catchment:3, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"6", name:"碑头",         seq:7,  district:"集美区",   type:"居住", catchment:2, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"6", name:"西滨",         seq:8,  district:"集美区",   type:"居住", catchment:2, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"6", name:"陈井",         seq:9,  district:"集美区",   type:"居住", catchment:2, transfers:[],            brt:false, terminal:false, status:"pending" },
+  { line:"6", name:"马銮中心",     seq:10, district:"海沧区",   type:"换乘", catchment:4, transfers:["2号线"],     brt:false, terminal:false, status:"open" },
+  { line:"6", name:"鼎美",         seq:11, district:"海沧区",   type:"换乘", catchment:2, transfers:["2号线"],     brt:false, terminal:false, status:"open" },
+  { line:"6", name:"林埭",         seq:12, district:"海沧区",   type:"商圈", catchment:3, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"6", name:"一农",         seq:13, district:"海沧区",   type:"居住", catchment:2, transfers:[],            brt:false, terminal:false, status:"open" },
+  { line:"6", name:"角美东",       seq:14, district:"漳州台商投资区", type:"居住", catchment:3, transfers:[],      brt:false, terminal:false, status:"open" },
+  { line:"6", name:"角海路",       seq:15, district:"漳州台商投资区", type:"商圈", catchment:3, transfers:[],      brt:false, terminal:false, status:"open" },
+  { line:"6", name:"文圃路",       seq:16, district:"漳州台商投资区", type:"居住", catchment:2, transfers:[],      brt:false, terminal:false, status:"open" },
+  { line:"6", name:"角美中心",     seq:17, district:"漳州台商投资区", type:"商圈", catchment:4, transfers:[],      brt:false, terminal:false, status:"open" },
+  { line:"6", name:"角江路",       seq:18, district:"漳州台商投资区", type:"商圈", catchment:3, transfers:[],      brt:false, terminal:true,  status:"open" },
+  { line:"6", name:"石美",         seq:19, district:"漳州台商投资区", type:"居住", catchment:1, transfers:[],      brt:false, terminal:false, status:"pending" },
+  { line:"6", name:"龙江明珠",     seq:20, district:"漳州台商投资区", type:"居住", catchment:1, transfers:[],      brt:false, terminal:true,  status:"pending" }
+];
+
+/* ---------- 4. BRT 换乘站（当前未启用） ---------- */
+/* BRT 模块已从站点下线（用户要求先不做 BRT 方向的内容），
+ * 下面两组数据保留在此以便日后恢复，页面与模型均不再引用。
+ * 官方口径 5 座 + 本次新线新增 2 座（官浔×4号线、华侨大学×6号线）
+ * peakBias: 早/晚高峰形态倾向
+ *   "residential" = 居住导向，早高峰以"进站"为主
+ *   "employment"  = 岗位导向，早高峰以"出站"为主
+ *   "balanced"    = 双向均衡
+ */
+var BRT_TRANSFER = [
+  { station:"厦门北站",   metroLine:"4", metroAlso:["1号线"], brtLine:"BRT 集美线 / 快1",   peakBias:"balanced",    level:"A",
+    note:"国家铁路枢纽 + 地铁 1/4 号线 + BRT，客流量级最大" },
+  { station:"官浔",       metroLine:"4", metroAlso:[],        brtLine:"BRT 同安线 / 快2",   peakBias:"residential", level:"A",
+    note:"4 号线新增换乘站，同安片区进入轨道网的门户" },
+  { station:"华侨大学",   metroLine:"6", metroAlso:[],        brtLine:"BRT 集美线 / 快1",   peakBias:"balanced",    level:"A",
+    note:"6 号线北端终点，免安检直接换乘 BRT；同时是集美文教组团核心" },
+  { station:"文灶",       metroLine:"1", metroAlso:[],        brtLine:"BRT 主线",           peakBias:"employment",  level:"A",
+    note:"老三线换乘站，位于岛内成熟就业区" },
+  { station:"蔡塘",       metroLine:"2", metroAlso:[],        brtLine:"BRT 主线",           peakBias:"balanced",    level:"A",
+    note:"2 号线换乘站，周边居住与商业混合" },
+  { station:"火车站",     metroLine:"3", metroAlso:[],        brtLine:"BRT 主线",           peakBias:"balanced",    level:"A",
+    note:"厦门站 + 地铁 3 号线 + BRT，对外交通枢纽属性强" },
+  { station:"双十中学",   metroLine:"3", metroAlso:[],        brtLine:"BRT 主线（湖里创新园）", peakBias:"employment", level:"A",
+    note:"3 号线换乘站，湖里创新园通勤目的地，早晚高峰对称性最明显" }
+];
+
+/* BRT 全网基准 —— 用于推算换乘量占比 */
+var BRT_BASE = {
+  dailyInbound: 215400,   /* A: 厦门市财政局答复函，2025 年 BRT 客运 7861 万人次 → 日均 21.54 万 */
+  year: 2025,
+  source: "厦门市财政局关于市人大代表建议的答复函（2025 年 BRT 全年客运 7861 万人次）",
+  metroDaily: 753400,     /* A: 同期地铁日均 75.34 万，地铁分担率 35.8% */
+  reliability: "A"
+};
+
+/* ---------- 5. 公开数据锚点 ---------- */
+/* 这些是唯一可以用来校验模型的真实观测值，全部带出处 */
+var ANCHORS = [
+  { date:"2026-09-16", label:"双线试乘首日（周三）",
+    metrics:[
+      { key:"line6_inbound", value:70000, unit:"人次", text:"6 号线全线进站约 7 万", rel:"B",
+        detail:"网友按各站安检数据统计：角美段 3 万出头 + 集美段 2 万多 + 海沧段 1 万出头。注：华侨大学站 BRT 免安检直接换乘，该部分未计入" },
+      { key:"line4_top3", value:null, unit:"", text:"4 号线进站前三：厦门北站、洪坑站、前浯站", rel:"B",
+        detail:"依据上午安检数据估算，原始作者已声明不一定正确、仅供参考", rel:"D" },
+      { key:"network", value:920500, unit:"人次", text:"全网 92.05 万（不含 4/6 号线，因其不计入统计）", rel:"B",
+        detail:"1 号线 36.14 万 + 2 号线 30.90 万 + 3 号线 25.01 万 = 92.05 万，与全网播报数完全吻合，可反证 4/6 号线客流确实未计入" }
+    ]},
+  { date:"2026-09-17", label:"试乘第 2 天（周四）",
+    metrics:[ { key:"network", value:896900, unit:"人次", text:"全网 89.69 万", rel:"B", detail:"较前三日均值回落" } ]},
+  { date:"2026-09-18", label:"试乘第 3 天（周五）",
+    metrics:[
+      { key:"network", value:982200, unit:"人次", text:"全网 98.22 万，同比上周五 +9.19%", rel:"B",
+        detail:"1 号线 39.12 万 / 2 号线 32.51 万 / 3 号线 26.59 万；当日无演唱会、无大型赛事" }
+    ]},
+  { date:"2026-09-15", label:"试乘前一日（周二）",
+    metrics:[ { key:"network", value:801300, unit:"人次", text:"全网 80.13 万", rel:"B", detail:"周一 79.89 万，周二 80.13 万，作为 baseline 对照" } ]},
+  { date:"2026-07/08", label:"暑期月度均值",
+    metrics:[ { key:"network_avg", value:830000, unit:"人次/日", text:"7、8 月日均 83 万+，历史峰值日均 83.44 万", rel:"B", detail:"用于确认老三线常态盘子" } ]}
+];
+
+/* ---------- 6. 显式假设清单 ---------- */
+/* 凡属 D 级推算，都必须在这里登记，页面上直接对用户展示 */
+var ASSUMPTIONS = [
+  { id:"trial_period", name:"试乘期客流不作为预测基准", level:"A",
+    basis:"新线开通初期，体验性、观光性乘坐占比很高，这部分需求在客流日常化后会大幅消失。用它标定基准，会把一次性的新鲜感固化成常态。",
+    note:"因此本平台当前只做功能样板，不把任何数值当作预测结论；待客流日常化后再导入实际数据重标定" },
+  { id:"pending_zero", name:"暂缓开通站点不产生预测值", level:"A",
+    basis:"未开通 = 没有客流。任何为其填写数值的做法都属于臆测。",
+    note:"陈井、石美、龙江明珠 3 站已从权重分配中整体排除，页面上只标注状态，不出数" },
+  { id:"newline_baseline_6", name:"6 号线稳定期日均基准 48,000 人次", level:"D",
+    basis:"试乘首日观测 70,000 ÷ 首日放大系数 1.45", note:"见下方 novelty 模型；该基准为免费试乘口径，再乘 0.86 折算为收费口径" },
+  { id:"newline_baseline_4", name:"4 号线稳定期日均基准 32,000 人次", level:"D",
+    basis:"无首日总量观测。按站点权重法分配后，以厦门北站↔官任的进站量比值跨线推算", note:"本平台置信度最低的一项，强烈建议用真实数据导入替换" },
+  { id:"novelty", name:"新线「尝鲜系数」1 + 0.45·e^(−t/35)", level:"C",
+    basis:"北京交通发展研究院《提高轨道交通客流预测水平》：新线开通初期存在明显尝鲜客流，通常在 1~2 个月内衰减至常态", note:"取 35 天为衰减时间常数，首日取值 1.45" },
+  { id:"growth", name:"3~5 年培育期，之后进入快速增长期", level:"A",
+    basis:"北京交通发展研究院：国内轨道交通开通后 3~5 年为客流培育期，实际客流明显小于远期预测值；之后 10~15 年快速增长。北京 13 号线 2003—2006 年均递增 39.4%；广州 1 号线前 4 年年均仅 3.7%，2003—2006 年升至 20~25%", note:"本平台仅预测短期（≤1 年），不启用长期成长曲线" },
+  { id:"network_effect", name:"网络效应：新线接入使既有线客流显著增长", level:"A",
+    basis:"广州地铁 1 号线在 2 号线开通的次月，客流由 16 万增至 24 万（+50%）；上海 5 线成网后 1 号线诱增客流上升约 1/3", note:"本平台仅在 6 号线尝鲜衰减中体现网络诱增，不为跨系统换乘单独建模" },
+  { id:"free_fare", name:"免费试乘 vs 收费运营的换算系数 0.86", level:"D",
+    basis:"交通需求价格弹性经验区间 −0.2 ~ −0.4，新线尝鲜期取中偏低值", note:"票制开关已从界面移除，模型固定按收费运营口径输出" }
+];
+
+/* ---------- 6b. 还缺哪些数据 ---------- */
+/* 用于「实际数据导入」页的缺口清单，按补齐后的收益排序 */
+var DATA_NEEDS = [
+  { pri: "★★★", name: "站级日客流报表（各站每日进站量，≥3 个月）", effect: "一次性替换全部 25 个站的推算基准 + 每站周内系数。站点级 MAPE 有望从 30%+ 降到 10% 以内", status: "可通过本站「实际数据导入」页直接导入" },
+  { pri: "★★★", name: "4 号线各站实际客流", effect: "直接弥补当前最大的短板——4 号线基准无依据", status: "缺口" },
+  { pri: "★★☆", name: "分时客流（15 min 或 1 h 粒度）", effect: "校准早/晚高峰形态，分时预测精度提升最大", status: "缺口" },
+  { pri: "★☆☆", name: "OD 客流（站对站）", effect: "支持网络效应与换乘传导建模", status: "远期" },
+  { pri: "★☆☆", name: "沿线人口与岗位分布", effect: "替代定性 catchment 等级，理论上可把误差压到接近兰州研究的水平", status: "远期" },
+  { pri: "★☆☆", name: "历史天气 × 历史客流配对", effect: "用本地数据回归天气弹性，替换文献 borrowed 系数", status: "可累积" }
+];
+
+/* ---------- 7. 运行参数 ---------- */
+/* 注意：票制开关已从界面移除。原因——试乘期客流本身不可作为基准，
+ * 所以模型统一输出「正式收费运营后的常态客流」，票制系数固定取 0.86。 */
+var RUNTIME = {
+  fareMode: "paid",       /* 固定为正式收费口径；界面不再提供切换 */
+  applyNovelty: true,     /* 是否启用新线尝鲜衰减 */
+  applyWeather: true
+};
+
+/* ---------- 8. 节假日日历（2026） ---------- */
+/* 来源：国务院办公厅 2026 年部分节假日安排；Level A */
+var HOLIDAYS_2026 = {
+  holiday: {
+    /* 元旦 */
+    "2026-01-01":true,"2026-01-02":true,"2026-01-03":true,
+    /* 春节（除夕 2-16） */
+    "2026-02-15":true,"2026-02-16":true,"2026-02-17":true,"2026-02-18":true,"2026-02-19":true,
+    "2026-02-20":true,"2026-02-21":true,"2026-02-22":true,"2026-02-23":true,
+    /* 清明 */
+    "2026-04-04":true,"2026-04-05":true,"2026-04-06":true,
+    /* 劳动节 */
+    "2026-05-01":true,"2026-05-02":true,"2026-05-03":true,"2026-05-04":true,"2026-05-05":true,
+    /* 端午 */
+    "2026-06-19":true,"2026-06-20":true,"2026-06-21":true,
+    /* 中秋+国庆 */
+    "2026-09-25":true,"2026-09-26":true,"2026-09-27":true,
+    "2026-10-01":true,"2026-10-02":true,"2026-10-03":true,"2026-10-04":true,"2026-10-05":true,
+    "2026-10-06":true,"2026-10-07":true,"2026-10-08":true
+  },
+  makeupWorkday: {
+    /* 需要上班的调休日 */
+    "2026-01-04":true,"2026-02-14":true,"2026-02-28":true,"2026-04-07":true,
+    "2026-05-09":true,"2026-06-22":true,"2026-09-28":true,"2026-10-10":true
+  },
+  reliability: "A",
+  source: "国务院办公厅关于 2026 年部分节假日安排的通知"
+};
+
+/* ---------- 9. 周内系数（工作日） ---------- */
+/* 以周二为 1.00 基准。厦门为旅游+会展城市，周五晚间出行明显抬升 */
+var DOW_COEF = { 1:1.01, 2:1.00, 3:1.00, 4:1.02, 5:1.10, 6:0.92, 0:0.86 };
+/* 注：6/0（周六/日）的值仅在 type 未区分时使用，正常走 WEEKEND_TYPE 表 */
+
+/* 站点类型 × 周末/假日 的响应系数 */
+var WEEKEND_TYPE = {
+  "枢纽": 1.13, "换乘": 1.06, "商圈": 1.25, "文教": 0.72,
+  "居住": 0.90, "产业": 0.55, "景区": 1.48
+};
+var SATURDAY_EXTRA = {
+  "枢纽": 1.19, "换乘": 1.17, "商圈": 1.29, "文教": 0.85,
+  "居住": 1.02, "产业": 0.68, "景区": 1.33
+};
+var HOLIDAY_TYPE = {
+  "枢纽": 1.50, "换乘": 1.20, "商圈": 2.30, "文教": 0.45,
+  "居住": 0.95, "产业": 0.22, "景区": 2.50
+};
+
+/* 天气系数 —— 依据 2 篇独立实证文献标定（见 method.js 论文 2、3） */
+var WEATHER_COEF = {
+  "晴": 1.000, "多云": 0.992, "阴": 0.985, "小雨": 0.975, "中雨": 0.960,
+  "大雨": 0.920, "暴雨": 0.850, "雷阵雨": 0.945, "雪": 0.780, "雾": 0.970, "浮尘": 0.965
+};

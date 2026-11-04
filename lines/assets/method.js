@@ -1,1 +1,308 @@
-function _0x4a34(_0x363d8e,_0x5bba05){_0x363d8e=_0x363d8e-0x1ee;var _0x57adb4=_0x57ad();var _0x4a34cf=_0x57adb4[_0x363d8e];if(_0x4a34['KydLFe']===undefined){var _0x3e1405=function(_0x3baec4){var _0x58ffa9='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x4224e0='',_0x4aad2b='';for(var _0x2a2f20=0x0,_0x1bcc07,_0xd7c133,_0x356f25=0x0;_0xd7c133=_0x3baec4['charAt'](_0x356f25++);~_0xd7c133&&(_0x1bcc07=_0x2a2f20%0x4?_0x1bcc07*0x40+_0xd7c133:_0xd7c133,_0x2a2f20++%0x4)?_0x4224e0+=String['fromCharCode'](0xff&_0x1bcc07>>(-0x2*_0x2a2f20&0x6)):0x0){_0xd7c133=_0x58ffa9['indexOf'](_0xd7c133);}for(var _0x23d72f=0x0,_0x271846=_0x4224e0['length'];_0x23d72f<_0x271846;_0x23d72f++){_0x4aad2b+='%'+('00'+_0x4224e0['charCodeAt'](_0x23d72f)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x4aad2b);};_0x4a34['uXdBRf']=_0x3e1405,_0x4a34['cBIlQB']={},_0x4a34['KydLFe']=!![];}var _0xc92df9=_0x57adb4[0x0];_0x4a34['Hgyufh']!==_0xc92df9&&(_0x4a34['cBIlQB']={},_0x4a34['Hgyufh']=_0xc92df9);var _0x1c6f3a=_0x4a34['cBIlQB'][_0x363d8e];return _0x1c6f3a===undefined?(_0x4a34cf=_0x4a34['uXdBRf'](_0x4a34cf),_0x4a34['cBIlQB'][_0x363d8e]=_0x4a34cf):_0x4a34cf=_0x1c6f3a,_0x4a34cf;}function _0x57ad(){var _0x301fde=['W5CWlJGY','6Ake55wzihnVy2LHBeHLyxqG54M55B6b6zkP5A2q','5yIg5PE25A6I5Rwb77YimtuGBwLUioAiLIaXigGG57ks5BQM77Yj','5OQk5PEL5Oc76yEp5OUg5yIW5Bcp5PE277Ym5OMn6io955YF5Q2J55sO5lQo5O6s54+T44cb5yQG5BYa5yIx6l2M44cb5AsN5A6I5Rwb6Ake6k2M44cc5lIn5zcm56Uz57g75z6l55Qe5PUY57Q/5B2I5Ocb5BEU5BYc5B6i5AsN77YA5lQN5lIA56Uz5PIV5P6b56Qe55Qe44cm5OMt5y2H5y+m5BoW44cn77Ym5zwg5zYi56Uz5PIV5BMZ5RUr55Qe5y2i5zco5y2v5BoW77Ym5PMV5yY656Uz5lUl5lQo5lIK6icf5lMl6zE044cc','t0qG5A6I5Rwb77Yi56Uz5A+556Uz77Yj','vhjHBNnWB3j0yxrPB24GuMvZzwfYy2GGugfYDcbblcaYmdiWlcaXmZu6idi2nc0YnZK','6j6n5zci6k+T5lMj54M55B6b5lIo5BoW5Q615QcH5yEg55Qe5AsN5z6l5Rs75yQO5zYW6zob55+T5PE25A6I5Rwb6Ake5Rwl','56YS5lIj5QYH54US56Ul5lQK5y+j6AQm6k+b77Ym5lIu5PIV5lIw55wm5y+M5lIa5l6N55Qe54M55AsN5z+o5BIc44cc5lIj5zYW57Ut6k665lIa6iE077Ym6k+05PIo44cm5zYW6zob5AsP5Rcu6zkD5OsF44cn5PIV5lIQ56IZ5ygL55Qe6kEe5B6l6icm5lIn5PIV5Qc35PYS5BEN5zci44cc5zcm5lIa5Pwi5BQu5zYO5lIn5zcm5z+o5BIc55Qe6yEp57QN5BEU5BYc77Ym5lMF5O+q6yAs5OIr5lUS57o75PwW5B+f6Ag75PYS5zYW5yYw6icm5lIn6io954wN5PcS44cc','5REX5zYZide1iowiHUMsN+EYKUw6PUs4I++8JoAAToMBQos4JUwpSoMJJUMaOoAiKoAxTUEPUUs4JEwDH+IHOEwgSUwhU++8JowUOUA1GEAbOUwKJEAxTUMxTos4JUMzJEMBQoAmGEE7REAxTUMxToEBUowfS+oaGG','5PsV5Pkr5AsP5Rcu57o75PwW5Ps25PwB5yIW5l+D5A6i5yY66zE0','5PEP5PMA6AUy5BoW6l+B5yE656Uz5z+65PYS5A+556EW','5OYj56Uz54k557g75z6l5ygA5AsP5Rcu5Pwp5OsF5BQM5BEU5BYc5yYw77YiZRTFDhLWzE+8Iq','qLju4OAu5zYW6zob5O2I5lMy6yEp77Yi6zE45PY66ywn5A+55OIw5OQ95Qc36lcd5P+L77Yj','5PEP6AUy5BoW5lUL6l+B56Uz5lI65lI777Yi5yE66zEO5lIk54+T77Yj77Ym5PMA6AUy5BoW5lUL5yE656Uz5lI65lI7','5O+q6AUy6l2O6ygt5lQK6ycA5A6I5Rwb6Ake5Rwl5Rc05BMZ77Ym5lI65BU66k6+5lIo6l+q6jcL5O+q5l6B5y+V6z2G5l6D5O2U','nIdLJ7FNUR8GndGSmdaWios6UUASOs/ML6uGWRCGncdLJ7FNUR8GmZiSmdaWios6UUASOs/ML6u','ugH5C2LJysbblcaYmdiXlca1nZC','5y6M6zEO5zYW6zob5A6y5PA55Qch5B+x6iMY6kEe6iYd','5PEP5BoWim684OMinY43FJGUnE+8Jm+d4OMimc43mN4XlJa177YB5PMA5BoWim684OMimtGUmh4Xoc4277YmZ4pIIyGWlJGWFJeUnZa','BM92zwX0EsH0ksa9ideGkYaWlJq1imk3igvEkokiKNqVmZuP77YmDca9iow8GoMaMUwqJUwKQEAvSa','5Ps/5BQC562u5Asn5PAh5lU277Ym5P2d5AIb5BQM6AUy','mJaYnYdLUBtLRONMJPlLHAZLUipLKi7PNidMM7tMLRaGzgf0ys5QCW','5Rov5A6A6iQc5ygh5PEL5lIo6lcd5lYr6kgL54+T5PEL5y6g','ncdLJ7FNUR/MTlVLIPVNUQlJGie2iowpT+E6V+E8PoE6T+E0QW','nIdLJ7FNUR/KU4xMNiKGmsdKUkROP4lMTyVMOlFMNkZVViG5ioACIcaXnIdML6xPPPBML6xVViNVViZKUjtOR6xML6xKUlRLHy3OTlKR5BcD6BkC54Q25Ocb44cc5Qc35PYS6yEp5lI6idhVViZML6dMS5xLGzRKU7VKVzxNU5/ORQhMHi/KUyNKUiRNMOtMO4dPQOZJGii','5zcm5lIk77Ym5l2g6zMn5BMf6l6d5Bcp','5zcR6k6W6icf546W5zY66yEh6k6/','5y6g5y+Y5AsP5RcuimoxiowoHUwpSUwUOUA1GEMfJEwVUq','CMvZAwrLBNrPywW','5A+55Q+u5AsA56En5A6I5Rwb6Ake5Rwl5PA55Rov5zco6ycj5OUP5lYG57UF5zUB6zI25Q615Rov44cc5yE66kgm55sF5OIq55sO5y6F5y2v5l2n5Rov77Ym5yE66kgm5yIg5BId55sO6yEn5yQB5QIH5z6l77Ym5PA55BYp5yIs5yIg55sOieXVz2L0ioAOOEwEI++8JoACGoE7IoEuQcbfBw1LlZiG5A6m5OIq5yIg6ywn44cc5A+55lI76kAb5zUG57sG5ygA5Pwp5OsF5OcN5yIg5P6q5zco5y+r546W77YA5BYa6ycA5yID5PYF5PYa5Pwp5OsF55Qe5lIj5lIQ5zUG57sG5PIV5lMy6l2M546V5Akd44cb56wO5lU35Rc05BMZ44cb5lIo5ywS5ywX5lQK6ycA55Qe5O6L6AMZ54Q25yA144cc','5O2I5lMy5ywZ57o75BEY6lAl5lQo56IZ5A6A','5y+V6ycA6l+h5PYS56Uz44cm5A6E6zMf5PwW5O2U5A+85ywL44cn6Ag155U05O6L5A+85ywL','v3uGjIbmAwfV','5z+65lQo5Rk/57Q/5lQ65y+J5A+g5BQM44cb5Bkx5l2n5yIg5BId5lIo5Bgf5Rcr5yE66kgm54M55B6b77Ym6yEh55sO6zEU5y236lcd5P+LicSG5lQK6ycA5Rwb6yEp55Ur5Rwl6i635y+w5PE256M65yIg5BId6kEe5B6l77Ym5P6e5BU644cm5zUB6zI25Q615Rov44cn5A6I5Rwb6Ake5Rwl5QIH5z6l77Ym5BM25BU656Ul5R2C5zYO5A6I5Rwb6l2S56E75QAc546h5QIH5z6l44cc57Ut5P6C77YA6Ake5Rwl5yID5PYF5PEL5z2hidGUmsdKUiFKURRMRkhVViZPQ5JLS7dLSi/ML7BMLQ3PNAiGmc40osdKUiFKURRMRkhVVjVKUi4GmJaYmYdLUBtLRP7PMyxOV5dOKkxLNyFLGlWGnY45osdKUiFNM7JMR5tVViZLGy/LT67NJOFKVy7KUO4Gms4YnsxVViZNM7JLHBpNS7VMLBaGmc45mUoaGG','6l+z5PIV6zQ+5B6x57Uz5yE65lQg44cm6Ake5Rwl5yc8ihzZiowUNUMzHEwaVooaJEwUJoAvTowVUEEfP+EAHoAwSoE6V+wiNEwUOUA1GEEGLoEPTU+8JowbJ+w3RIaXlJi1jEoaGEEBUowfS+EZU+AvScaWlJKY44cc5A6d6k+b5PIo5lQg77YA5zYO5PAW57Q/5zY65PMV5lIl77Ym5zUB6zI25Q615RovicSG6l2S56E7546h5QIH5z6l55Qe57k+5BQM5PIV5y+V5lUL5yIWideLioMhJ+E6P+EAHokaLokaLowjJEApKoAyR+AlV+wiSos6UUwpO+oaGEwYL+s9JEoaGu9eioI/MEs4IEEXU+I+K+wfPEAvSoAnRUoaGUw5S+wpSow9K+wjJEAlV+s4JEwiSoI/MEs6M++8JoAjGos7PEI+VUs4JEwiSowUG+EAHoEYVUw6PU+8Jos9HUwUG+E7MEwhUUs6HUAyJUEHRUEAHos4IUMzKowpGUEfP+wsJoAuUEI/M+AwUEwqKEoaGG','5ywW5BEE6l2O6ygt5lQK6ycAidiG5y+357Q/5BYa6ycA5yID5PYF5A6I5Rwb6Ake5Rwl5QIH5z6l5P6e5BU65y+k5BQu55sO56cu56M2','ndyXodi4nefoCwrrzW','5PEL5y6g5l+U5Q2JigDFy2fS','ncdLJ7FNUR8GocdLUQFOV5dOKkxNQ5NNMOtPOBRLUO/KUi7LKi3NP7a','5Rs75yQO5PwJ5zY65PE26zE05ygp56E75zkm5OUw5Acc5PIV5lI76kAb6k+V5BEU5P2L5RQq44cc5BYv5ywLieXmtsdOR63KUyNNIBNLVOeGkYbsrI1hqKruioMIHoA1I+AvO+wCUUAxTUMxTo+8Je1brsdPMy3KVy4GmZqLFJqXjEoaGG','56Uz54k56iw55zYW562j57QNignHDgnOBwvUDcdMMk/LRPRMGkFLIktLRPRVViGXFJxVViNVViZMSQhMNiNMJQxLHAxLRP7PMyxKURRLJ6mV5Bkx5l2n5PwW5O2U44cc5ywW5BEE56cu56M25lMl5OMa5lUL6io96l6+5yIWideUmJuLiowbJ+w3RU+8JoAGUow/G+w3RUw8GUwWSEwCQos6JUwUG+AlV+wiSos6HUI/MEs6M+AvSoAnRUoaGG','mc44nU+8IowBUUwUMU+8Iq','55sO5lQo57Q/6lEV6iMY5Qch','5AsP5Rcu5l+U5Q2JigDFD2vHDgHLCG','56wO5yI25B2s5lIa77Yi5zU65A6A5lI65Ps26ls56l+q6jcL5y+J5B6e77Yj','6l+z5PIV5PYS6Ag555UU5PYa6yEn6kAb55Qe5lIa56+h44cc5A6d57Uz5yE65lQg44cm5PAW57Q/5yID5PYF56M256UF6k+L5Oco5lMi5lYW44cn55Qe6kgm5lIA5ywX6k+g77YA5lIn6io955sO6l+C5PYF6Ake5Rwl5yc877Ym5lMF5lIn6io955sO6AAw5PEL5BoW5yc877Ym6icm6kAb5OM/6k6K5A2y5zYO5lIa5lIQidn+nsdLUBtNMOtNIkZLNAhOV4FNQiVJGilLUBpLJ7dPH4ZNMOtLSj3OR5xOOBdLH48GBM92zwX0EsH0ksdLSlhMMk/LN7RKUO7OV5NMNAhOP4tLVOVORR7ORQhNMOtJGilLROpKUz/MJ5dPHPlKUOBKUidNGRNVVjRLRQlMTyhLN7NOGRlMMk/KUidKUkRMUjdOV5VOV4FNQiVVViZML6lKUi3OG73MIORPPPBML6xLS7dLGlZLVzpMIjdLUlJMGihVViZKUz/KUi3OG73MIOROV5ZMNj/POOtMTyVLGlZLVzpMIjdOV5hMNj/LN7RLH4BJGii','5PYS5zYW5A6Dimk3idqG5y+357Q/56Uz54k55lIo6AAw5PYR54+T5PE25yI7','55sO5PYS5zYW5PwW5O2U5zUE5B2s5AsP5Rcu5BY55OcN77Ym5PU/5O2I5PAh54YUigjVCNjVD2vKioEZU+AvSa','5y2x5lQS5A6E6k+b77YA5zgO5PEL5lIT5yIW5AsN6zUO5lIo5zYW6zob5A6I5Rwb5PI+6jgx6lsF55U45ywZ77Ym6zMn5BMf57QMiduLFJGL77YB5BEL5l2C5PEL6ycA5yUK5A6I5Rwb5yEG5lMo5lIn5y+x5AsP5Rcu5B2X5zon44cc','nZuYCxzxtxjd','5y6M6zEO5zcm5lI65lIC5y2x5Rk/5Rw35y+W6Aoo5z+o5BIc77Ym6l+z5P2H6kEe5B6l55Qe6ycc55sO5OcN5B6i6AUy44cc5P6b56UV5AsP5Rcu5lIl55Qe5A6I5Rwb6Ake5Rwl5lIo5BI46kEe6zUO5AsP5lIn5PIV5lIa5zUE5lQl4Ocu4Ocu5OgI5Asn5PIV5OYj5zgO55Qe5RIq6l+B6l+h56Il77Ym6icm6z2E5B2t5AsP5y2Z5OgI5Asn44cc','mtG1oda0wgLKs1bb','mtfVq1jLzxu','5BYa6ycA6AAw5PEL546W5zY65OQL6ygt44cbncdLJ7FNUR8GnduGA20VmteG56Uz44cb6k6+6k6H5PE26ycFideYmcbRBq','4PQGiowoN+s9NoIaHEw3SUwJSoAyJUoaJoAGUEAnRUs4IUwnIoAvSoAnRUs8SoEUL++8Jos4JEs4GowUMUATO+EHRU+8Jos7HEs+M+wpGUIaG+oaJEoaGUs4LownJUs+QowKP+wTPUERMsbcuLqG5ywn5A6j5Qoa5O2I5lMy6yoO5yIg5PYQ6k6H5ywL77Ym5A2y5zYO57o757UF5OcN5l2o5lYW44cc','5lIa44cb5Oc75l2t5P625P6e77YA6iom5PMV5A6I5Rwb5lIo5AkE6yEp5A6I5Rwb6kEJ6icM','4PIf4PIg4PIg','yMfSyw5Jzwq','54M55Q6k5lQl5lU25lIl55Qe5lIn6kEe5yIz5A6I5Rwb5y+V55sO5AsA5Bc65BQMifjcrIdNVzhNU5ZMJ5dLIy0GmZaG5yIg6zkF5O2v5O2j77YB5lQl5lU25B2X5zon5A2y5zYO5Bcp5PE257QN5OUw5Bc+44cc','5lQK5y+j6AQm6k+b','qL9SAw5Lid0G6k+v5lMy6AAw5PEL6kEc5Rwl5yc8imo3ioMMLUAxPEAuVUwKP+EZU+AvScaXlJq1','5lQm44cb5PAW57Q/5yID5PYF5A6I5Rwb77Yinc82iowpT+E6V+EBToAoPEEBUowfS++8Iq','mJaYnG','mJC3nZrsBLfUCNe','5PYQ5QcH5yEg77YAZ4mGpsdIIjOOmc4ZmmkYicSGmc4XnCkYicSGmc4WnSkYksdIIyGGmZqLcUw3SUAGOEwhHU+8MS+did0G4OIAkdaUmtdcSIaRidaUmdpcSIaRidaUmdtcSIKG4OMiideXjq','6iQc5ygh5PEL','55U05O6L5BYL6kgL5B2t5yMn5PYa5AsN55Qe55+T5P2/4Ocu4OcuncdLJ7FNUR/LN7RLH4BML6dKVP3MJA4','5ywW5BEE5lQK6ycA5AsN5A2M562j','nu1VtxPSra','5zYW6zob5A+55AsP5Rcu55Qe5Pwp5OsF5BQM6l+C5l2o5lQo5ywS5lQK5zkm6AQr6kgm77Ym6l+z5lIa54k55zYO5lIj5lIQ5lIn5zcm5z+o5BIc55Qe56cu56M25lIT5B6x5yIW5lQg5lQK5y+j6AQm6k+b77Yi5yYx5lQSiokiKJGL44cb5y2x5lQSiokiKJv+ocxJGihLT7tPU44G4OIsmIxVViNJGilLJ5BKV53LROJLGlZOGiZPNz7MNOhNQ6/LGlZVViZPGB/LHy3PQ5JKVldLPkNMSjtLVBhLK43JGii','odK4mJeZofHluvrZtG','ntaWmZu4mJbIAeLmqKW','5y2x5lQS5BIc5zYW6zobideG5y+357Q/5BYa6ycA5yID5PYF5A6I5Rwb6Ake5Rwl','5zYW6zob5A+55AsP5Rcu5PYa5lIn5Pwp5OsF77Yi6zUO5AsPiokiKJiL77Ym54oT5RwQiokiKJyLFUkiKJKL77Yj77YB55U45Q+u5lMl5lIl6AQr6kgmiokiKJi0jEoaGEwfRos6PcdIIjiZmYxJGii','z19JywWGpsbMkgrHEwnSyxnZlcb0ExbLx2KPcMrHEwnSyxnZiokiIcb75BEL5l2C5PELlcdLKAJLHA0SiowrQoAxPsWG5Rov5A6A6iQc5ygh5PELlcdOSipKVjhOOAxNJ619','5yYx5lQS5A6E6k+b77YA5AsN6zUO5l2/5zYW6zob5A6I5Rwb57QM5lIl6zMnidGL77YB5Rcu5RIP5Q+p5y2h6AUyidhIHipVViZLKAJMNkVLRQlMTyhKUiRLJyFNUQyGmc41jE+8M+wCSoMtGEwVUEwKQEAWLoEAHoAvJ+AeN+w6PUI/Nos9JUs6JUwfRos6PowsJoMQKEIHJooaGG','5lIj44cb5AsP5Rcu5l+U5Q2J77Yi5lIj5z+o5BIc5lQK5y+j6AQm6k+b77Yj','5Bgf5l2p5A+85zcr','5yYx5lQS5lQK6ycA5y+r5Bgv56cu56M26zMI','5OYh5yE65lQg5lIa5lIQ5A655PIt6kkR5B+955wL55Qe6k+V5BEU5RQq77YA5Rs75yQO55Qe6k+V5BEU5lIn5PIV5BMf5BQM77Ym6icm5PIV5PE26zE054k544cc6l+z5P2H5O+q56s65zYO5PYQ5P2L55Qe6zEU6Aky5O6s5P+L5lIT5lYA5B6i5PYj55sO77Ym5l2g5B2t5yMn57Y644cm5PwJ5zY65A6E6zMf5PE26zE044cn5Qc35PYS77Ym5PEG5Rov5Qch5A6A44cc','zMfYzsa9idaUodBJGidVViJNLlhLHy3OTlNOR5xKUzJLJ6pLVOtMIPJNRPFKUlRMRApLVi/MLlBOTlNOV5dOKkxLJ6pLVOtVViK','56gv5AoR5A2M5l2n6k665PAh','5PAW57Q/5lUn5Ase5lQo5A6I5Rwb5z+56ikY5PYF77Ym5OYj5yYx5lQS5lQK56cu6zMI6kEe5B6l6zYa6kAbidn+nsdLUBtMIy3OG73NQlpLRPRJGilMNkZLUBpLJ7dLJ6RLGzRNN63MNj/POOtMTyVVViJIIAqXiow5To+8IE+8Jos4JEwbMUMvV+ACN+wKLUAoQooaGG','qLjuioAnOUs5MoERMEs4UUs7Gos5IownLEElRow7UUAOOq','nIdLJ7FNUR8GmJaG56Uz6Ag65BQp77YB5yIK5A6A55+Z576o44cb6B6z5RgF5PIo54+G5PQc57Yt','5PIo56gU5lQg44cm5O+q5yMnidmWiowiHUMsN+oaJEI/MEs4QUwpR+AtJEs9NoEAHoMIHoITPUEQL+wpO++8JowVUEs4GoE6V+wKP+wUOUA1GEwKHoE9RUACIEEBToAoPEs7T+waVooaGUw+HEwiHUAxTIbbrKmG5PwW5O2U5yIW5l2n5zco5y+V5zcV55sO44cc','56Uz57QN5PEL5A6I5Rwb5OQL6kgO77Yi5zce56Uz5Q+p5PEL6l+B56Uz6yEp77Ym4OMLmYdKUkRMNiJVViK','5zgO5yAf57o75PwWierpv19dt0vg44cb5OYj56Uz54k557g75z6l55Qe5PEL5y6g5zon5BQu6kgO','5lUk5PEL5As05P2Hic8G5PcC54UqiowUOUA1GEAsREAkPE+8IdiWmJyTmdKTmtz+mtJVViK','nIdLJ7FNUR/PPPBML6xOV5VNQ5NNUQyGnYdKUiFVVjTuB3a1ioERMEEcUEAoKUw6J++8MZqG5y+357Q/6l+B56Uz5yMn5lIj','5lIo5yYx5lQS55Qe57Ut6k665zYO5PwW6yEp57QN5lIk6AUy5BQM5lIa6iE077Yi5zcm5lI6iokiKJuLFUkiKJGL77Yj77Ym5lIu6kgL5ywf6k+05PIo5lQg5lIa5lIQ6yEn6kAb57Ug6iQc77YA5B2X5zon5lI76kAb5y+r55sF5zYO6z2E6ycA5yUK5PE25Q6144cc6l+z6k6P5BMZ5y+W5PwI5lQo57Uz5P6I57Q9l+wvHUwCIoEXU+ERMEEcUEwkOcaZmcuG55Qe6kgW5yEp57o75PwWim6777Ym5zUG5lI66l+z5lIK57g756Uz55Qe5yE66kgm55UU55Qe5PU05yw35yIA5OcN44cc','6zYa5yIg5PE25PwW5O2U5zco5zcV55sO','56gU5A6A57Q/6lEV56IZ5A6A5PYF5PEL5z+65yEgiejFBgLUzq','ncdLJ7FNUR/ML6xLNyFLN7RLH4yGmZiSmdaWios6UUASOEwUJowfQoAYOEACIEwUNUA1I+s+NEAnRU+8JoAyR+I3QoE6V+EXU+AVLoAoQoEUL+waVooaGUI/MEAyR+wfQow5S+wpSoE9RUs/OEw6PUACGos9JUEAHos4GoMHUE+8Jos7U+s9LEwFUUs6JIa0iowpT+E6V+EAHoE7NEwVUEMhJ+E7K+IUUUMdVEw6LoINHUs4UUMhJ+E6P+wpGUIaG+IaJoMDNUEYVUEHRUwaVooaGG','5lIj5lIQ6k+V5BEU5RQq4Ocu4Ocu57Q/6lEV5z+65yEg44cb56Uz54k55P2d6yEn44cb5PEL5y6gl+wKQEAWLokaLokaLos6KUEBUoElRoERI++8JoAmIEw5S+AwUEwsJow8GoAwUEwqIoAiKooaGUwVVowfPEECN+wUNUAvSoAnRUwqJU+8JowjJEs4PoMHUEEAHoIVR+w3RUwKP+w5HEAuTUEQHo+8JowmUUMxToIhQUwkQos7JIdcStm0jsdMLlBNVkNLIlaGWReXmsxJGilOV5NKUkRMLBdLRzFMNkZOUQVLSlhMMk/JGiZMQkhLNOVMNiNLPjRLJ6/KV6hJGi3NMOtOR5RLRP7OOAJOVR7JGii','mtu0otuWDMHkChzn','5PAW57Q/5O6L5ywL5lQN55sF572r57UC5Pwi5BQu77Ym5O2I5lMy6l2S5yYw546h6AUy5lQo5OIq54AF56Uz','5PEP6AUy5BoW5lUL5yE656Uz5lI65lI777Yi5yIW6l6+5Bkx5l2n77Yj77Ym5PMA6AUy5BoW5lUL6l+B56Uz5lI65lI7','5PA55zcr6yEh57QZ','6l+z56+h55Qe5lU35yc85zYO5lQo44cm5Pwp5OsF5OcN5yIg5P6q44cn55Qe57Ut6k6677Ym6icm5lIn5PIV5PA55Rov5PYS6lQR44cc5A6d5OYh5yE65PAW57Q/5yID5PYF5A6I5Rwb5PYa5Pwp5OsF55Qe5lIj5lIQ5y+y6yEp6yEm77Ym5PYj5BMZ5y+W5Q2J5zYO5BU65QIH55Qe5lIK5lIQ4Ocu4Ocu56wO5lU35Rc05BMZ77Yi5A+55BQuigzHCMuG57o75PwW77Yj44cb5ywS5ywX5lQK6ycA5O6L6AMZ77Yi5A+55BQuiejsvcdMJAlKUzJLRQlMTyhMQkhLNzFVViNJGilOV5NKUlRLUBpLJ7dKUlRKU4dKUyJOPOhLJzxNI6ZORR7OV5NKUktKUkRLVidLHBpMJ5dKVPVKUOBMLOFNJk7KVP3MJA7JGii','5O2I5lMy6yEpid0G6k+L56Uz5zYW6zob5l6N5A6I5RwbimoxioAnOUs5MoEZU+AvSa','56Uz54k55P2d6yEn5yIg6kEJ','5zUG5Q2K5A6d55Qe5PE26zE05yIg5BId6AUy5BQM6zUg5lIT5zYO5lIK5lIQ6ycA5yUK56Qx5y+J77Ym5lIT6zE05yEG5lMo5RkH5PYj5RoI5yQO4Ocu4Ocu6l+z5Q2J5PIV5l2G6kEc5A+F5yIW55Qe44cm5lIk5lIl54+T6l+z5Q615PE26zE05PIV6AUy5BoW5PYF44cn55Qe6kEe5B6l44cc','5y6M6zEO5PEL5OQLic8G6iw+6k6V5PAW6zE777YimJaYnI0WnY0ZmE+8Iq','5PAW57Q/5BcD6BkC6kgW5yEpig5VDMvSDhKODcK','rM9YzwnHC3rPBMCGC2HVCNqTDgvYBsbZDwj3yxKGCgfZC2vUz2vYigzSB3CGDw5KzxiGC3bLy2LHBcbLDMvUDhm','nc82iowpT+E6V+AwSoAoPEwfPEAnOUs5MoERMq','6k6454AZ54g1ioETIq','q05lstPdre1eoJiUmtaXnI43nJK0otK','5A+5idGXncdNR4FMLOFNJk7NMOtORQhPH4/LIiBMNPdVVjRPOOBLN5/LT7lKU44GqvjjtueVu1znioI9RowqKEA3SEw6PUwTPUs5Oo+8M+s9HUAyJUEHRUAmH+whUUkaLokaLowWJ+AGT+ACRoADOEs7TUs4IYbhqKruios4JUE7K+AEHowmLUAOOEwEI+EAHoAaP+s7T+AVLoACGoMRMo+8JoE6R+A3SEw6PUAOOEwEI+MCGoIMGEMvV+woHUwpSUw6J+wiL+AjJEIdVEwpKEAmPEs8MowkV+oaGG','6k+v5lMy5PYF5ywn6ls577Ym5A6I5Rwb5AsP54s26jMA6AUy77Ym6l+z5lIQ54Q25Ocb5lIn6io95B2t5l2C6Ake5Rwl5z+65yEg44cc5OMa5lUL5QIH5z6l5lIn5ygA44cm5ywn6ls5l+AuTUI0UEoaJEwiH+AnOU+8JoIaJoAyR+E7N+s4GoAkIUE7K+AENow9KUs4GowiSoATO+w8J+AuTUI0UEI/KoIqPEwqJUEAHow4UoAaGEoaGUEZU+AvSoAmIEs6PoMaMUMCGoAXGUs7T+AGVow8UEAaP+EAHoE7J+MQJowmUUMxToAoQowVVo+8JowXNUwbH+IUVUwaVooaGG','5AAcioAzR+wmUSox6iQc5ygh5PELid0GmI41mo+8Jos6P+s4MSox6iQc5ygh5PELid0Gmc4YmG','mJqG5Bcp5PE25yIg5BId5Bgv5BYa','5PAW57Q/5BYa6ycA5B+f54s25lY06zQp5lIa5QYH5OcN5BcD6BkC5A6I5Rwb77Ym6iUL5lIn5yML56A777Ym5lYA5OQk5lIa5lIQ5lIn5y+V5OYb57UT55Qe5BoW5yc85B2t5OIq5BI45Ocb44cc5yYx5lQS5lQK6ycA5y+r5Bgv56cu56M26zMI5A+55AsA5P2H57Q/6lEV55Qe5OIq6zw/6kEe5B6l56cu56M25PsV5OYb44cmmx4Yios4QUACIowgHEIHSowhJ+IhS+w4UoAaGEoaJEEAHowiPoAwREoaGG','5PwW5O2U5PYQ6B2q77Ym5PQc5PYQ6jc95zYW','5PE25yI76kgO5A2y5zYOiokgKIdOP4BKUlROV5dOKkxVVjVML6dML7BLIlSG4OAsioAAGUE8KW','5y6M6zEO5BIc6lsI5Ps/5Bga562u5Asn5yE977YimJaYnsdLUBtLUQBVViK','qLjuiowfQow5TowUOUI/Kca3odyXios4H+s6UUASOsdIHPiG5PEL5z2hidiXlJu0ios4HW','mJC5otuZogf2y3nOyG','wMHVDsdNRyK','5zU95yAf6l2O6ygt5lQK6ycA5BYa6ycA5zcoidn+nsdLUBtKUlRLRQlMTyhLN7NOGRlMNj/VViZLRP7PMyxLRQlMTyhMMi7MMl7LSi/KUO7POOtMTyVLGlZVVjVKUyVLKi4Gmtb+mtuG5BM06l+B5ywL5B+R6ycF5AkE6zw/5PYF44cc5A6E6k+b77YA5yYx5lQSideZiowpT+E6VYaYmdaZ4OcumJaWnIdLUBtLNyFPGjlLOP4GmZKUncxVVjVLUB/LT54GmsdLJ7FNUR/OV5dOKkxLIy0GncdLUBtLUBtLNyFKU4xLOP4GmY43jE+8JdiWmdpIGjqYmda2iow5TownH+IhSYaYmh4YnsxJGilLKiZML7BMJiFLH7RLRQlMTyhPOOtMTyVLHAJOV4FNQiVMTONLJ4RNUQyGntuG5lIQ5y+c5PwW44cc','6l+z5P2H57Ut6k6655U05O6L5yAZ5A6A5lQg5OQa5PYV6lEV57Q/55Qe5y+w6iIn44ccnooaGtyG5y+357Q/5BYa6ycA5OMnidqWiowKQE+8JowpR+EuQoEAHoECN+wUNUwUOUA1GEAGT+ACRowhOos5JUs4UUMBTU+8JoI/MEENJEAdHEwgTEs4I+wGHIbmu1rnl1rYyw5ZzM9YBwvYioAyR+wfUowEI+EAHooaJoAlV+EDGoMuPowTKoAjVUMsIEwTKooaJEoaGUMaIEAlQEE7K+AEHowmLUAOOEwEIYaRioAyVUw8J+wBNUw9KU+8Jos4JEAyR+s/NEwUIo+8JoAyR+s4JUAvSoAnRUMhJ+wmUEMfJEEAHoATO+EHRUwgS+ETLUoaGG','6zQp5PwW5O2U5RQq562j57QN5yQO5Ocb5y+y5yYw','5zYO5RkH5PYj56Uz57QN5A6I5Rwb5PwW5O2U55Qe5Oof5yA15lIl77Ym55sO5y+V6kEc5A+F55Qe57Ut5P6e5BgE5OcN77Yi57g75z6l44cb5O2I5lMy5PwW44cb56UV54k544cb6iw55zYW77Yj6kEJ6yEk56Uz54k55BEU5BYc44cc6l+z5P2H57Up6AQm5BYp5lIn5PIV5yET56M65A6A55Qe77YA55sO5A6d566x5yE655Qe56YSideG5zcn5PIV5A6y5lU777Ym5lIo5AQs5l2t5A6E5Rwl5lIT5zsV5lIa56c05lIh55Qe56Uz5A6m5ywO5zc75zci77YBncdLJ7FNUR/NMOtLIy0GmIdLKi3VViJLJQBPL6JLJjFNQ5NJGihMTkRLNzhVViNKUz/KUi7LRP7MTyVKUidOH7tJGiik5l2g5B+f6Ag76k+05PIo5lIn5lIa6iE055Qe6yoO5yIg77YA5QIH5z6l5OQk6AMS6yQU5lIT5B+d44cb6BYo576o5O6s5zYO5yMn5yIx77Ym6icm5A6d5lUS5RkH5PYj5yE6546W5zYO5A6E5RwlifrVCduG6yEm44cc5zci55cg5O6O5Rwl5PIV4Ocu4Ocu5A6E5RwlifrVCduG5y+w6iEQ5BYa6ycA6AAw5PEL77Ym5B2t5AsP55Qe5ywn6ls56lEO5BIc5BcD6BkC5A6I5Rwb5OQk5RYZ5BEE6kEs576o5Q6155Qe5lIj5lIQ56Uz77Yi6kEs5RgF6lEV44cb6kEs576o5lIT5B+d44cb6kEs5Rw36lEV77Yj55+T5PYF5O6O6AUy77Ym6icm5PYS5QIH5z6l6Ake5Rwl55Qe5PIV56IZ5A6A5PYF5BI45Ocb77Ym5lIn5PIV6AAw5PEL5BoW5yc844cc6l+z5lIQ5BEU5BYc5OgW5OgW6k+05PIo5QIH5z6l55Qe55sO6ycu77YA6Ake5Rwl5BI45Ocb77Ym6icm5lIn5PIV6Ake5Rwl5BYa5lIA5B2t5AsP55Qe54oT6zE544cc','57QG5Q2J44cmnIdLJ7FNUR/MVlpLT57MRRxLHAJPG6JPGjROVABJGi3NMOtOOAJOV7dVVjRPMyJKUPxNQ5NLRP7PMyxMNkRLVidPGjO','5O2I5lMy5A6I5Rwb55Qe6AMX5yQO5yQB5lIo5BI46kEe56Uz5A6m5ywO5lIn5zcm77YA5A6d5yEG5lMo5lIn55sX5PYS56Uz5zgO6l655lQ65y+J5yAZ5A6A77Ym6icm55sX44cm6l2O6ygt572r57UC6io95PU/5AsA5Bcr5lQ65A6m5OIq6ycA5yUK6zo+44cn5yAZ5A6A44cc','5y2x5lQS5BIc5z+o5BIc5lIo5lQK6ycA6kEe5yIs6k6+6k6H56cu56M26zMI','5PAW57Q/5lUn5zYO6k+v5lMy5PYF77Ym5A6I5Rwb5lIT55U45B2t5AsN5lIa6yoO5yIg5PIV5l2t6AQm5OcN5lMy5z2q4Ocu4Ocu6ycA5yUK6kEe5B6l5BcA5PYQ5B2I5OIq77Ym6l+z6yoO5yIg6zYa5Rgc5zYO5PEL5BI45yYw5zco5lYA5RAi5AsX44cc5zUG5Q2K5B2t5yMn54Mi5PYS5y+Q5ygA5yQF6io95Qc35P2/77Ym6Ag16z2I5lIk55Qe5lU75l2v5PwW5A2x6yo95lIn5BQu5B2t5l2C6Ake5Rwl57Ut6k665l2/55sO44cc','nIdLJ7FNUR/LHAJNUR8GmJGUmYbRBEoaGtiWiow6P+I9PUERMEoaGEwiNEACN+I/KoIqPEwjJEwUIEwfQoIVHos8SoMaMUI/HW','5OQa5PYV6lEV57Q/6ycj5OUP5l6D5O2U','Ag91CMX5x2KOAcKGpsbqx2KGWRCGZ4yOAdSGDhLWzv9PlcbKyxLJBgfZCYKGlYdoO19Oim+gcS+gid0G5BMZ5zYWicSG5PEP5BoW6AUy5PAVicSG5PMA5BoW6AUy5PAVicSG5y2i6zE06AUy5PAV','5Rk/57Q/5lQ65y+J5lIo5Bkx5l2n5yIg5BId','BM92zwX0EsdLSj3PSPZOOBdLH4/MQkhLNOVJGihPLB/MNj/POOtMTyVNMOtPO47PMANMJ5dNPlO','6ycA5yUK6zYa5Rgc5RAi5AsX77Ym5O2I5lMy6yEp6zMn5BMf5AsN5lQo5Oc75A6I5Rwb6zMn5BMf','D19Pid0GvcH0ExbLx2KPicSGmc4YmSk3BL90CMfUC2zLCIaRidaUmtBcT2LZx3rLCM1PBMfSicSGmc4XmCk3y2f0y2HTzw50x2KkC2HHCMvFAsa9ihDFAsaVim6JihDFAG','56Ap5BU65PEL5OQLic8G5Rw35BoH5A+85OQLic8G572r5PIt77YimJaYnI0Wos0XnU+8Iq','5y6M6zEO5PIV5PEf5RI4k+s8MUwXLEwFJUw4GU+8JoERMEEcUEEXU+wEI+wVUEs8KEAbR+AxPEEAHowpJEw6Low3RUw8GUAEGEwKP++8MUMaMUwlPc/KUQFKUjRNQ5NLNkJLKAJMNkVLRQlMTyhOHBdMLQNVViZLLyBLNiGV5PMV5yY656Uz5y+n6icm57+75ycn44cc55sO5lIa5lIQ57UF5lIa55Qe44cm5zgO5PYR57o75PwW44cn5B+f54s25yE66zsz77Ym5B+f6Ag75OYj57g75z6l5yY65yIg44cc6l+z5PIV5PEN54Mi5PYS6lIP6l+h55Qe5z2r77YA5PEN5QIH5z6l5zU95BQg5B2t5AsP6Ake5Rwlidu3ios4H++8Jos9JUs6JUwrQoAxPEEAHca2mIdKUiFVViZOGiZLRP7PMyxMMk8GmteWios4H+kaLokaLoEZU+AvSoAwUEwqKEwUJowfQowpJEs6HUoaGG','rxHWzxj0ifn5C3rLBxmGD2L0AcbbChbSAwnHDgLVBNmSidiWmJeSide4oo+8Ie1eqI1ire5o77Yj','5AsP5Rcu5zUG57sG5A+55z+o5BIc5zYW6zob5A6I5Rwb5PE256M65yIg5BId55Qe5B2X5zon','5lQK6ycA56cu56M25yQO5Ocb77YmmJaWnYdLUBtNRkWGnIdMNj8','5y+V57sV56EV','55+Z5A625BQe5z+o5BIc6l2O6ygt5lQK6ycAideG5y+357Q/5A6I5Rwb6Ake5Rwl56cu56M2','5A6d57Uz5yE65lQg5y+M5lIa56En6i635y+w44cm6l2S56E7546h44cn55Qe6lEV5B6e77YA5zYO57Y65BcriefgqYdLJOBLJ7lMLBdMJA7ML7BVViZLJ6/KU6xNLkJMHi/LKjhOSipMN6xPL67LJBFMM7/KU6pJGilOV5NMNAhLR7NMNkZPOBNNM67MNiNLRP7MK43MHi/KUyNIGjtIGjtLPOlMNPZLKi7NU63OPOhMJ5dLJyFNSR7LUQBLJ4JMI7/KUi3LIlaGquzd77Ym5l2o5OIq5PYS55Qe5PU/5lUJ5PA55Qgi5BcX5PIV5ygA5Rk/57Q/5O6L6AMZ5Osp5zcr6lcd5P+L44cc','5y6M6zEO5zYW6zob5A6y5PA5572r56Uzimk3ioERMEEcUEE6V+I3RW','5zU95yQH6zMI5yQE5ywS5y6fimk3idiWmJyG5BM06iQc5ygh5PEL5A6j5O6s','5Bcg5A6I5Rwb5OUg5lI644cm6iom5PMV5A6I5RwbielJGi3KUi7JGiZMTlVLIQJLOP7PH4/LRQlMTyeGqEoaJEs4Pos4QUElRoERI+wiHUMhJ+oaGUIdJoAzR+wUOUA1Gsa9ioACIowDH+AxPEwUOUA1GsddLYdLKAJLHOxNS7VMLBaGZRDFDooaGUw5V+s6Pos8MUACN+MxTowUNUA1I+wrQowgHEEZU+AvSo+8MUwrQos6LcaXlJa2nUoaGEwrQowfRsaWlJC5nooaGEwrQoAxPsaWlJCXoEoaGG','W45Szs1Kzs1gCMfUy2uGtw9IAwXPDmoPCW','572r57UC5Pwi5BQu6k+05PIo44cbqLjuioAnOUs5MowUOUA1GEw7UUAOOq','5QIH5z6l5PYQ6icd6jMr5zcm57Q/6lEV5yw25lUw5lQK6ycA5PA55BYp55Qe56UE5lQj5ywZ57o777Yi5AAc5BI46kEe5ywS5lQK44cb572r57QM6l2M77Yj77Ym5lMF5PYQ57QZ5ywL56wO5lU35Ps/562w5y+y5yYw5lMl5Asw55Qe6l+q6jcL6lcd5Pw044cc','5BEY6jc95zYW','mJzWs3DKsMi','5y+m5zcr5z2h6kgH','mc4Zna','55+T5PE26Ake6k2M55Qe5PE26zE056Qx6k6+6k6H5y+c54wN','44ck6k6H566x5PY65BEL56Il5lIo5BQu55sO44cl','whvLioETIq','5Bkx5l2n5A+85zcr','zMfYzsdNPAJLIlBNS7VMLBdJGifcuLqG5O2I5lMy5QIH5z2x55Qe6k6+6k6H5l6D5O2U','5y+r546W5lYG57UF5zUB6zI25Q615Rov6Ake5Rwl55Qe5PIV57Ue5zUI6zE055Qe44cm6lAl5yQ/5A6I5Rwb44cn77Ym5PEG5Rov6icd6jMr5PAW57Q/6ycA6l2M5zco5B2I5OIq55Qe5PAW57Ue5zUI6zE044cm6k+X5AkE5A6I5Rwb44cn5Pwi5BQu77Ym5A+86iE057o757UF5OcN5l2o5lYW44cc5lUL6yEn5BQgidmG5y+357Q/5lI65l6l77Ym55sOie1eioAZLEIUOEEUL+IVSEwINUMhJ+w5TUIHPEwfHEwiSowBM+MyTUAUTEAZLEE7K+AENos4REwqJU+8JoMIHoA1I+s4JUwUNUMzHEwqU+wqIow6PUAyVUIrL+ApKoMRMooaGG','v0vbveHfuL9dt0vgiowFUUwhHUwaVa','vhjHBNnWB3j0yxrPB24GuMvZzwfYy2GGugfYDcbdlcaYmde3lca3nZOGmZa2ltmYoo+8Ie1tuKjg77Yj','6l+z5PIVihvWz3jHzguG5PA55zcr44cc5B2t5yMnidtJGie2iowpT+E6V+AYV+E6V+EAHowKP+wEI+A0U+wkQo+8IowMGUE/LowUIEs9K+IcSUs8MUwXLE+8IEAvSoAnRUwWMUs4JEAiKoEgN++8JoAAGUACQUwqR+EuQo+8M+s4GoAxPUACIEA0U+wkQoAoKUACN+AvSoAnRU+8JoI/MEwLL+AHHUAETUEAHoAoPEwfPEAiKoACRoACGos9JUoaGG','5OIy55wL5l6D5O2U','5zUB44cb5AsN5z6l5Rs75yQO5lIo56Qb5y+r5lQl5lU277Yi6Ake55wz6io95yQB77Yj','rM9YzwnHC3rPBMCGDgHLihn1yNDHEsbWyxnZzw5NzxiGzMXVDYb1BMrLCIbLDMvUDcbVy2n1CNjLBMnLCW','5lIa5QYH5OcN5PU/5O2I5ywO6yoOidi1ios4QUERMEEAHoAoQoEUL+wFUUwhHIaRioAVJ+ERMEwrQowgHEEZU+AvSooaGUERMEEcUEE6PYbnqvbfioACIEACM+s7JIaZmcuRioMzJEwiScaXmcuG5lUL5yAf','sgvJAhqG562j','5PYS5zYW5A6Dimk3idyG5y+357Q/6l+q6jcL5PE25yI76kgO','55sO5OI3546W5zY65Qc45A6E77YimJaYnI0Xmc0YnU+8Iq','5lYy5ywi57QN6AUy5lQo572r57UC6lwe5PAz44cc5yEH55sO5OI35Qc45A6E5lIo572r57UC6lwe5PAz5yAY56Qb77Ym5lIa5B6l5lUL55sO5OI35Qc45A6E5lI65yEg','5AsN5z6l5Rs75yQO5A6I5Rwb5y+V5lUL5lUo56s+5lQK5AQs5l2t54oT5BQM5lIo6yk76l+r56Uz54k56l+B56Uz5OMW5yQO5lIT5O+q5y+w5yMn572U5l+H5y+377Ym5RE35zci5REX5BQM5A2M5lMG5QIH5z6l5PI+6jgx5lYy5lQo5y2v5RQq5QIH5z6l44cc','W5CWlJKW','qLju4OAu5zYW6zob5O2I5lMy57o75PwW5PEG5lU75l2v5A6y5PA55O2I5lMy6yEp5PwW5O2U5PsV5Pkr44cc55YF5A6E5yc86zYa6kAbiefgqYdKUi4GqLjuioMxUoACUUMfJEwVUEAvSoAnRUAjJEIdVEEHRUERI++8Jow9K+wjJsaWlJm0lZaUmJGG5BgE5O6O566x77YB546W5PYjiejsvcdMLBdMJA7LNyFKUlRLHAJNVzhLJ6pLVOtVViZKUi3OG73NLkJKUO7MOkhPQOZJGii','6zob6ygt57Up5Rwo56cu56M2','56gU56Ul5O2I5lMy57o75PwW77Ym5PU/5O2I5O6O566x5yc8','5BE06BUo5AsN5yY65AsP5Rcu4Ocu5yE66kgm6kgm5lI656cu56M2','6iEQ5AQs5l2t57UF6k6H77Ym5l2g5lIo5ywS5BYa5PkT5OQL5AsA5RQq5zc75zci77Ym5y+V55sO5OcN6l6d6AUy','5AsN6zUOidaUotiGlYdMMRtPM6GGmc44nsaViowWJ+MBQcaWlJK3nq','6yoO5yIg6jc95zYW','5P625P6e6yEh55sO','4PIf4PIf4PIf','6l+z56+h57Uz5yE65lQg5lIa5lIQ5y+n55U06kEj5l2g5ywZ6zsU55Qe6yEp5yYw57Ut6k6677YA5zYW6zob5A6I5Rwb5A+55AsP5Rcu5yw25A6E5PIV44cm6zkD5OsF44cn55Qe44cc5PEN54Mi5PYS55Qe5AsP5Rcu57o75PwW6k6+5OIq5AsN6zUOidaUodpJGihMMRtPM6GGmc43mo+8JoAyJUAyVUwKUowKP+s6HUwKQEAWLoEAHos9NoEuQo+8JowXNUs6JUwfUowEI+EAHooaJowhREAeN+INIEIUVUwpGUAvSooaJEoaGUs+NEAnRUI/MEEVH+EAHoE7K+IUUUMhJEAwSoAGH+wUMUs4UIaWlJKYic8Gmc44nE+8JoMIHoA1I+wbJ+w3RUERI+wiU+AuTUEQHooaGG','5zYW55cg56Er5A2M6l+B5Bgv77YmmJaYmo+8Jdm5kdePoIa0ns01nq','5z+65lQo6k+X5AkE5Rov55Qe5z+o5BIc6l2O6ygt5lQK6ycA5A6I5Rwb6Ake5Rwl5zUB6zI25Q615Rov56cu56M2','6l+z5PIV5Pw05lIQ5QIH5z6l55Qe6AQO5P626ycj5OUP44cc55U45Q+u56UV5yIW56UV55Qe6BUr566X5zUE5B2s77YmqITbioINO+IaPUEAHowLVEwKHoAyR+AVJ+s4GoMHUEMdVEIdVEwnLEElRoAGH+wUMUoaGEwnLEElRoMQJoIVGEoaGEwnLEElRoE6OoMuMEoaGUAxP+EjIoACRos4REoaJowBVEw6HUEZU+AvSoAwUEwqKEwpJEs6HUoaJEEAHcbIDwFVViZMRApMMk/LM6dKUlRPH4FNLkJKUOBOP6pOGkBNU5pMNOtMIy3OG73OOQVLV6VPGj/LRPRKVy3LKOZKV67MRApIGjtIGjtMJAlMIjdPU5hNRRhMQkhLNOVVViZOV5NKUkRPLjNOR6/KVjRKUidNM7tOL4/LNkJMNypPH43PH4ZJGii','z193zwf0AgvYid0GmsaRicHSB29RDxaO5AsP5RcuksdIIjiGmsKGWRCGZRTFDhLWzqRoU190ExbLid0Gmc43io+8IoAEOUE6Vs/LLyBLNiJNSBVOOBdLH48GmZaL77Ym5zUG5yw25yE66kgm5yIA5OcN5PU05BY677Yj','zw1WBg95BwvUDa','5O2I5lMy57o75PwW55UU5yMn5RkH5PYj5lU75l2v5A6y5PA55O2I5lMy6yEp5PwW5O2U5PsV5Pkr77Ym5BgE5O6O566x5yc844cc55YF5A6E5yc86zYa6kAbiefgqYdKUi4GqLjuioMxUoACUUEAHoMfJEwVUEAvSoAnRUAjJEIdVEEHRUERI+oaGG','56Uz54k55RIf5y2v44cb5O2I5lMy5ywZ57o744cbqLjuioE6V+I3R+w9KUwXNG'];_0x57ad=function(){return _0x301fde;};return _0x57ad();}var _0x465dea=_0x4a34;(function(_0x4caa34,_0x3b5c5a){var _0x3e11ac=_0x4a34,_0xfdb303=_0x4caa34();while(!![]){try{var _0x48583d=-parseInt(_0x3e11ac(0x2a6))/0x1+-parseInt(_0x3e11ac(0x24c))/0x2*(parseInt(_0x3e11ac(0x215))/0x3)+-parseInt(_0x3e11ac(0x297))/0x4+parseInt(_0x3e11ac(0x1fa))/0x5*(-parseInt(_0x3e11ac(0x1fc))/0x6)+-parseInt(_0x3e11ac(0x22c))/0x7+-parseInt(_0x3e11ac(0x2a4))/0x8*(parseInt(_0x3e11ac(0x1f5))/0x9)+parseInt(_0x3e11ac(0x1fd))/0xa*(parseInt(_0x3e11ac(0x2a7))/0xb);if(_0x48583d===_0x3b5c5a)break;else _0xfdb303['push'](_0xfdb303['shift']());}catch(_0x3e4e2d){_0xfdb303['push'](_0xfdb303['shift']());}}}(_0x57ad,0xc476c));var METHOD_STEPS=[{'n':0x1,'title':_0x465dea(0x212),'formula':_0x465dea(0x1f2),'why':'新线没有稳定期历史数据，只能从唯一可得的观测锚点反推。6\x20号线有首日\x207\x20万的观测，可直接反推；4\x20号线连观测都没有，只能用跨线类比推算——这是本平台置信度最低的一环。','param':_0x465dea(0x282),'level':'D'},{'n':0x2,'title':_0x465dea(0x21b),'formula':_0x465dea(0x23c),'why':_0x465dea(0x231),'param':'类型权重：枢纽\x201.00\x20/\x20换乘\x200.86\x20/\x20商圈\x200.80\x20/\x20文教\x200.68\x20/\x20居住\x200.58\x20/\x20产业\x200.54\x20/\x20景区\x200.50','level':'D'},{'n':0x3,'title':_0x465dea(0x298),'formula':_0x465dea(0x200),'why':_0x465dea(0x23e),'param':_0x465dea(0x225),'level':'C'},{'n':0x4,'title':_0x465dea(0x29e),'formula':_0x465dea(0x26f),'why':_0x465dea(0x1fb),'param':_0x465dea(0x267),'level':'A'},{'n':0x5,'title':_0x465dea(0x21e),'formula':_0x465dea(0x286),'why':_0x465dea(0x227),'param':'首日\x201.45\x20·\x20第\x2035\x20天\x201.17\x20·\x20第\x2090\x20天\x201.03\x20·\x20半年后趋近\x201.00','level':'C'},{'n':0x6,'title':_0x465dea(0x29f),'formula':_0x465dea(0x206),'why':_0x465dea(0x224),'param':_0x465dea(0x29c),'level':'D'},{'n':0x7,'title':_0x465dea(0x226),'formula':_0x465dea(0x238),'why':_0x465dea(0x276),'param':_0x465dea(0x285),'level':'C'},{'n':0x8,'title':'不确定度传播','formula':_0x465dea(0x1f6),'why':_0x465dea(0x214),'param':_0x465dea(0x230),'level':'C'}],BRT_METHOD={'title':_0x465dea(0x209),'reason':[_0x465dea(0x233),_0x465dea(0x21c),'如果套用地铁站的双峰模板，会低估早晚高峰的尖峰程度，而这恰恰是运力调配最关心的部分。'],'formula':['φ(h)\x20=\x20平地\x20+\x20A_m·G(h;\x207.95,\x200.62)\x20+\x20A_e·G(h;\x2018.15,\x200.95)\x20+\x200.10·G(h;\x2012.6,\x201.3)','早峰\x20σ=0.62（窄而尖，上班时间刚性），晚峰\x20σ=0.95（宽而缓，下班时间分散）'],'biasTable':[{'bias':_0x465dea(0x28f),'name':_0x465dea(0x203),'Am':0x1,'Ae':0.52,'mean':_0x465dea(0x280)},{'bias':_0x465dea(0x270),'name':_0x465dea(0x252),'Am':0.5,'Ae':0x1,'mean':_0x465dea(0x217)},{'bias':_0x465dea(0x1ef),'name':_0x465dea(0x24d),'Am':0.85,'Ae':0.85,'mean':_0x465dea(0x27d)}],'transferRatio':{'text':_0x465dea(0x21a),'val':[{'case':_0x465dea(0x220),'coef':_0x465dea(0x24e),'why':_0x465dea(0x216)},{'case':'老三线既有换乘站','coef':'0.28','why':_0x465dea(0x291)},{'case':_0x465dea(0x1f7),'coef':_0x465dea(0x273),'why':_0x465dea(0x23b)},{'case':'周末','coef':_0x465dea(0x261),'why':_0x465dea(0x28c)}],'level':'D','warn':_0x465dea(0x271)}},PAPERS=[{'group':_0x465dea(0x2aa),'title':'基于\x20AFC\x20数据的大型活动期间城市轨道交通客流预测','author':'王兴川、姚恩建','source':'北京交通大学学报，2018，42(1)','level':'核心','finding':_0x465dea(0x247),'why':_0x465dea(0x26e),'use':_0x465dea(0x20d),'status':_0x465dea(0x269)},{'group':_0x465dea(0x2aa),'title':'Review\x20of\x20Passenger\x20Flow\x20Modelling（乘客流建模综述）','author':_0x465dea(0x25c),'source':'arXiv:2511.13742，2025','level':'战略','finding':_0x465dea(0x223),'why':_0x465dea(0x22f),'use':_0x465dea(0x237),'status':_0x465dea(0x258)},{'group':_0x465dea(0x1f3),'title':_0x465dea(0x281),'author':_0x465dea(0x204),'source':_0x465dea(0x241),'level':'核心','finding':_0x465dea(0x22e),'why':_0x465dea(0x2a0),'use':_0x465dea(0x23a),'status':_0x465dea(0x24b)},{'group':_0x465dea(0x1f3),'title':_0x465dea(0x296),'author':_0x465dea(0x1f9),'source':_0x465dea(0x263),'level':'验证','finding':_0x465dea(0x294),'why':_0x465dea(0x295),'use':'作为精度上限的参照基准；指明缺失数据（人口/岗位/OD）','status':_0x465dea(0x228)},{'group':'二、新线初期客流（4/6\x20号线直接相关）','title':_0x465dea(0x243),'author':_0x465dea(0x207),'source':_0x465dea(0x222),'level':'方法','finding':_0x465dea(0x290),'why':_0x465dea(0x219),'use':_0x465dea(0x253),'status':_0x465dea(0x268)},{'group':_0x465dea(0x1f3),'title':_0x465dea(0x26d),'author':'重庆交通大学','source':'国家科技图书文献中心，学位论文','level':'方法','finding':_0x465dea(0x254),'why':'这条结论在厦门已经得到直接印证：4、6\x20号线免费试乘期间，官方虽不计新线客流，但全网客流从常规的\x2080\x20万涨到\x2092\x20万，净增\x2012\x20万人次——这就是典型的诱增/网络效应。平台因此把「新线带动老线」写进了模型，而不是假设两条新线独立存在。','use':_0x465dea(0x249),'status':'定性采纳'},{'group':_0x465dea(0x1f3),'title':_0x465dea(0x1fe),'author':_0x465dea(0x234),'source':'城市交通','level':'方法','finding':'以地铁\x201\x20号线沿线车站\x201\x20km\x20半径内的\x2051\x20个交通小区为研究对象，开展\x205\x20类个人出行调查。在方式划分阶段，利用意向调查（SP\x20survey）数据建立轨道交通转移率模型，得到\x20OD\x20预测结果，并与实际客流对比验证。','why':_0x465dea(0x244),'use':'数据缺口时的替代方案建议','status':'备选路线'},{'group':'三、天气修正（三城市交叉验证）','title':'Weather,\x20travel\x20mode\x20choice,\x20and\x20impacts\x20on\x20subway\x20ridership\x20in\x20Beijing','author':_0x465dea(0x293),'source':_0x465dea(0x278),'level':'核心','finding':_0x465dea(0x201),'why':_0x465dea(0x26b),'use':_0x465dea(0x255),'status':'已落地'},{'group':_0x465dea(0x202),'title':_0x465dea(0x240),'author':_0x465dea(0x221),'source':_0x465dea(0x26c),'level':_0x465dea(0x1f1),'finding':_0x465dea(0x2a3),'why':_0x465dea(0x210),'use':_0x465dea(0x27e),'status':'已落地'},{'group':'三、天气修正（三城市交叉验证）','title':_0x465dea(0x265),'author':_0x465dea(0x248),'source':'2026\x20年度报告','level':'交叉验证','finding':_0x465dea(0x1ff),'why':_0x465dea(0x27a),'use':_0x465dea(0x27c),'status':'已落地'},{'group':_0x465dea(0x259),'title':_0x465dea(0x25a),'author':_0x465dea(0x251),'source':_0x465dea(0x23f),'level':'预留','finding':_0x465dea(0x260),'why':_0x465dea(0x257),'use':_0x465dea(0x274),'status':'部分预留'},{'group':_0x465dea(0x259),'title':_0x465dea(0x21f),'author':'Li\x20等','source':_0x465dea(0x256),'level':'预留','finding':_0x465dea(0x1f0),'why':_0x465dea(0x20b),'use':_0x465dea(0x24f),'status':'预留'},{'group':_0x465dea(0x259),'title':_0x465dea(0x279),'author':_0x465dea(0x250),'source':_0x465dea(0x1f4),'level':'方向','finding':_0x465dea(0x29a),'why':_0x465dea(0x205),'use':'待积累样本后启用','status':_0x465dea(0x218)},{'group':_0x465dea(0x259),'title':'Analyzing\x20spatio-temporal\x20impacts\x20of\x20extreme\x20rainfall\x20events','author':_0x465dea(0x22d),'source':_0x465dea(0x283),'level':'预留','finding':_0x465dea(0x27b),'why':_0x465dea(0x2a5),'use':_0x465dea(0x211),'status':'预留'}],SOURCES=[{'name':_0x465dea(0x245),'use':_0x465dea(0x272),'rel':'A','note':'https://www.xmgdjt.com.cn'},{'name':_0x465dea(0x2a1),'use':_0x465dea(0x299),'rel':'B','note':'2026-09-18\x20版'},{'name':_0x465dea(0x25d),'use':_0x465dea(0x20a),'rel':'B','note':_0x465dea(0x229)},{'name':_0x465dea(0x25e),'use':_0x465dea(0x232),'rel':'A','note':_0x465dea(0x25f)},{'name':_0x465dea(0x21d),'use':_0x465dea(0x236),'rel':'A','note':'官方媒体转载验收结论'},{'name':_0x465dea(0x23d),'use':_0x465dea(0x2a8),'rel':'A','note':_0x465dea(0x28d)},{'name':_0x465dea(0x20e),'use':'全线网日客流、分线客流、BRT\x20日客流','rel':'B','note':_0x465dea(0x266)},{'name':'网友安检门统计「轨道分线爱好者」（2026-09-16）','use':_0x465dea(0x20f),'rel':'B','note':_0x465dea(0x2a9)},{'name':_0x465dea(0x22a),'use':_0x465dea(0x22b),'rel':'A','note':_0x465dea(0x287)},{'name':_0x465dea(0x246),'use':_0x465dea(0x289),'rel':'A','note':_0x465dea(0x288)},{'name':_0x465dea(0x284),'use':_0x465dea(0x28a),'rel':'A','note':_0x465dea(0x29d)}],LIMITATIONS=[{'level':'严重','text':_0x465dea(0x235)},{'level':'严重','text':_0x465dea(0x213)},{'level':'严重','text':_0x465dea(0x262)},{'level':'较重','text':_0x465dea(0x28b)},{'level':'较重','text':_0x465dea(0x29b)},{'level':'中等','text':'24\x20小时曲线形状来自「站点类型模板」，没有用真实分时数据校准。日总量若准，不代表峰值小时准——而这恰恰是排班最关心的。'},{'level':'中等','text':_0x465dea(0x24a)},{'level':'中等','text':_0x465dea(0x208)}],DATA_NEEDS=[{'pri':_0x465dea(0x26a),'name':_0x465dea(0x20c),'effect':_0x465dea(0x25b),'status':_0x465dea(0x292)},{'pri':_0x465dea(0x26a),'name':'4\x20号线各站实际客流','effect':_0x465dea(0x1f8),'status':'缺口'},{'pri':'★★☆','name':_0x465dea(0x275),'effect':'校准早/晚高峰形态，分时预测精度提升最大','status':'缺口'},{'pri':'★★☆','name':_0x465dea(0x27f),'effect':_0x465dea(0x264),'status':'缺口'},{'pri':'★☆☆','name':_0x465dea(0x277),'effect':'支持网络效应与换乘传导建模','status':'远期'},{'pri':_0x465dea(0x1ee),'name':_0x465dea(0x239),'effect':'替代定性\x20catchment\x20等级，理论上可把误差压到接近兰州研究的水平','status':'远期'},{'pri':_0x465dea(0x1ee),'name':_0x465dea(0x28e),'effect':_0x465dea(0x2a2),'status':_0x465dea(0x242)}];
+/* =====================================================================
+ * method.js — 算法原理 / 论文依据 / 数据来源
+ *
+ * 这一层不参与计算，只负责把"预测结果是怎么来的"讲清楚。
+ * 所有条目都可供使用者自行核对、替换、补充。
+ * =================================================================== */
+
+/* ---------- 1. 预测链路（逐步骤） ---------- */
+var METHOD_STEPS = [
+  {
+    n: 1,
+    title: "确定线路稳定期日基准 B_line",
+    formula: "B_line = 试乘首日观测值 ÷ 首日放大系数 1.45",
+    why: "新线没有稳定期历史数据，只能从唯一可得的观测锚点反推。6 号线有首日 7 万的观测，可直接反推；4 号线连观测都没有，只能用跨线类比推算——这是本平台置信度最低的一环。",
+    param: "6 号线 48,000 人次/日 · 4 号线 32,000 人次/日",
+    level: "D"
+  },
+  {
+    n: 2,
+    title: "站点权重分解",
+    formula: "w_i = T(type_i) + 0.22·n_transfer + 0.16·is_terminal + 0.11·catchment_i\nshare_i = w_i / Σ w_j",
+    why: "在没有站级客流数据的情况下，用可观察的结构属性（类型、换乘数、端点、腹地）解释站点差异。这条经验式不是凭空定的：用它算出的第 1 名是官任，与媒体实测中唯一破万的站完全吻合；4 号线的前 2 名（厦门北站、洪坑）也与实测一致。\n但必须说明不一致的部分：模型把马銮中心、鼎美排在前列，而它们没有出现在实测 Top5 里。合理推测是——实测 Top5 取自开通首日，当天的免费跨市尝鲜客流把漳州角美段的三个站（角江路、角美中心、角海路）短期推高，而本模型预测的是稳定期常态，不是首日峰值。这个差异恰恰说明模型的用途：预测常态，而不是预测开业当天的热闹。",
+    param: "类型权重：枢纽 1.00 / 换乘 0.86 / 商圈 0.80 / 文教 0.68 / 居住 0.58 / 产业 0.54 / 景区 0.50",
+    level: "D"
+  },
+  {
+    n: 3,
+    title: "日历修正 g_cal",
+    formula: "g_cal = f(dayclass, type_i)\ndayclass ∈ {工作日, 周六, 周日, 法定节假日, 调休补班}",
+    why: "厦门是旅游+会展城市，站点类型对休息日的反应差异极大：通勤/产业站在周末客流腰斩，商圈/景区站反而翻倍。用一个统一的「周末系数」必然出错，必须按类型区分。这是旧版本踩过的坑：旧模型国庆当天预测 57 万，低于周日的 62 万，而实际是 110 万——系数方向完全反了。",
+    param: "如 景区×节假日 = 2.50，产业×节假日 = 0.22",
+    level: "C"
+  },
+  {
+    n: 4,
+    title: "天气修正 g_weather",
+    formula: "g_weather = 1 + (lookup(天气) − 1) · λ_type\nλ_type = 0.7 （枢纽/商圈类衰减 30%，因其出行刚性更强）",
+    why: "地铁对天气的敏感度远低于公交和骑行，这一点在三个不同城市的研究中得到了交叉验证（北京 −8%、南京 −5~8%、巴黎 −2%）。取保守值而非极端值，避免高估天气影响。",
+    param: "大雨 0.92 / 暴雨 0.85 / 小雨 0.975",
+    level: "A"
+  },
+  {
+    n: 5,
+    title: "新线尝鲜衰减 novelty(t)",
+    formula: "novelty(t) = 1 + 0.45 · e^(−t/35)，t = 开通后天数",
+    why: "新线开通必然伴随一次性尝鲜客流，若不剥离，会把一个不可持续的峰值当成常态。北京交通发展研究院对多条线路的成长规律研究支持「1~2 个月内衰减至常态」的判断。",
+    param: "首日 1.45 · 第 35 天 1.17 · 第 90 天 1.03 · 半年后趋近 1.00",
+    level: "C"
+  },
+  {
+    n: 6,
+    title: "票制归一（固定为收费运营口径）",
+    formula: "fare = 0.86　（由免费试乘口径折算为正式收费运营口径）",
+    why: "试乘期免费，客流天然虚高，这个状态不能当作预测基准。所以模型不做「免费/收费」切换，而是统一把结果归一到正式收费运营后的常态。系数按交通需求价格弹性的经验区间推导，属假设值。",
+    param: "0.86（固定）",
+    level: "D"
+  },
+  {
+    n: 7,
+    title: "24 小时分布展开",
+    formula: "hourly_i(h) = P_i · φ(h; type_i, dayclass) / Σ_h φ\nφ = 平地 + 早峰高斯 + 晚峰高斯 + 午间高斯",
+    why: "把日总量拆到小时，才能真正用于排班、加开列车、大客流预警。不同站类型的曲线形态差异很大：产业站是极窄的「打卡双峰」，商圈站是平滑的午后单峰，景区站介于两者之间。",
+    param: "早峰 μ≈7.7~8.5，σ≈0.72~1.05；晚峰 μ≈18.0~18.6，σ≈0.80~1.70",
+    level: "C"
+  },
+  {
+    n: 8,
+    title: "不确定度传播",
+    formula: "未校准：σ = √(0.30² + 0.15² + 0.06²) ≈ 34%\n已校准：σ = √(0.10² + 0.03² + 0.04²) ≈ 11%",
+    why: "三个误差源——线路基准、站点权重、日历/天气——互相独立，按平方和开方合成。导入真实数据后，前两项的误差大幅收窄，区间自动从 ±34% 收缩到 ±11%。这个数字本身就是「模型有多可信」的诚实表达。",
+    param: "随数据源等级动态变化",
+    level: "C"
+  }
+];
+
+/* ---------- 2. BRT 换乘站模型的特殊之处 ---------- */
+var BRT_METHOD = {
+  title: "BRT 换乘站为什么单独建模",
+  reason: [
+    "换乘客流的驱动力与常规站完全不同：它几乎不由本站周边人口决定，而由「轨道网络能替多少人完成通勤链」决定。",
+    "因此它的时间分布高度集中在两个通勤窗口，中间几乎没有波动——这正是你观察到的「上下班这段时间是高峰期」的规律。",
+    "如果套用地铁站的双峰模板，会低估早晚高峰的尖峰程度，而这恰恰是运力调配最关心的部分。"
+  ],
+  formula: [
+    "φ(h) = 平地 + A_m·G(h; 7.95, 0.62) + A_e·G(h; 18.15, 0.95) + 0.10·G(h; 12.6, 1.3)",
+    "早峰 σ=0.62（窄而尖，上班时间刚性），晚峰 σ=0.95（宽而缓，下班时间分散）"
+  ],
+  biasTable: [
+    { bias: "residential", name: "居住导向", Am: 1.00, Ae: 0.52, mean: "早高峰以进站为主（出门上班），晚高峰以出站为主" },
+    { bias: "employment",  name: "岗位导向", Am: 0.50, Ae: 1.00, mean: "早高峰以出站为主（到达岗位），晚高峰以进站为主" },
+    { bias: "balanced",    name: "双向均衡", Am: 0.85, Ae: 0.85, mean: "早晚高峰进出站基本对称" }
+  ],
+  transferRatio: {
+    text: "换乘量 = 该站地铁侧客流 × 换乘系数",
+    val: [
+      { case: "4/6 号线新接入换乘站", coef: "0.34", why: "新线接入产生网络效应，换乘转化率高于成熟站" },
+      { case: "老三线既有换乘站", coef: "0.28", why: "换乘关系已趋于稳定" },
+      { case: "节假日", coef: "×0.82", why: "通勤需求消失，换乘量降幅大于总客流降幅" },
+      { case: "周末", coef: "×0.90", why: "同上，但降幅较小" }
+    ],
+    level: "D",
+    warn: "换乘系数目前没有任何官方换乘量数据支撑，属推算值。真实值需要 AFC 与 BRT 闸机的配对数据才能确立。"
+  }
+};
+
+/* ---------- 3. 论文清单 ---------- */
+/* why = 为什么选它；use = 用在哪；status = 落地情况 */
+var PAPERS = [
+  /* ===== 第一组：背景客流 + 事件增量 的解耦框架 ===== */
+  {
+    group: "一、总体架构：背景客流与增量客流解耦",
+    title: "基于 AFC 数据的大型活动期间城市轨道交通客流预测",
+    author: "王兴川、姚恩建",
+    source: "北京交通大学学报，2018，42(1)",
+    level: "核心",
+    finding: "将客流拆为「背景客流 B」与「活动增量客流 A」两个独立分量。背景客流 = 月均日客流 × 周内系数 η_t。广交会期间实测周内系数：周五 1.066、周六 0.794、周日 0.719。",
+    why: "这是整个模型的骨架选择。相比端到端的黑箱回归，B+A 解耦的好处是每一项都能单独标定、单独验证、单独纠错。旧版本中「国庆系数方向反了」的 bug，正是因为采用了解耦结构才能被快速定位和修正——换成黑箱模型，这个错误会一直藏在权重里。",
+    use: "周内系数 DOW_COEF、按站点类型的日历响应表",
+    status: "架构采用"
+  },
+  {
+    group: "一、总体架构：背景客流与增量客流解耦",
+    title: "Review of Passenger Flow Modelling（乘客流建模综述）",
+    author: "Hecht 等",
+    source: "arXiv:2511.13742，2025",
+    level: "战略",
+    finding: "对 814 篇文献的计量分析：领域已从 ARIMA/SVM 转向深度学习；但明确指出——小样本条件下 GBDT 与结构化模型的性价比最高，纯深度模型需要长历史序列才能发挥优势。",
+    why: "这条结论直接决定了技术路线的取舍。4、6 号线开通才 40 天，可用的真实客流样本几乎为零，这种情况下堆 LSTM/Transformer 是典型的「拿着锤子找钉子」。选择结构化模型 + 显式回归，不是保守，是与数据量匹配的正确决策。",
+    use: "技术路线选择依据",
+    status: "战略依据"
+  },
+
+  /* ===== 第二组：新线初期客流（本次新站重点） ===== */
+  {
+    group: "二、新线初期客流（4/6 号线直接相关）",
+    title: "提高轨道交通客流预测水平，为建设与运营提供可靠依据",
+    author: "北京交通发展研究院",
+    source: "交通研究动态，2007 年第 6 期",
+    level: "核心",
+    finding: "国内轨道交通开通后 3~5 年为客流培育期，实际客流明显小于预测值；之后 10~15 年进入快速增长期。实证：北京 13 号线 2003—2006 年均递增 39.4%；广州 1 号线运营前 4 年年均仅增 3.7%，2003—2006 年升至 20~25%。同时指出客流预测全过程涉及约 55 个参数。",
+    why: "这是本项目最重要的一篇。它给出了「新线初期究竟该怎么估」的行业共识：不能用远期预测值，也不能用首日峰值，而要承认存在一个 3~5 年的爬坡过程。平台里的尝试衰减 novelty(t) 就是基于这条规律设计的。它也提醒了一点：客流培育是一个渐进过程，既不能把首日峰值当成常态，也不能把远期预测值当成近期基准。",
+    use: "novelty 尝鲜衰减模型、长期预测的风险提示",
+    status: "已落地"
+  },
+  {
+    group: "二、新线初期客流（4/6 号线直接相关）",
+    title: "兰州轨道交通 2 号线开通初期客流预测模型构建及应用研究",
+    author: "兰州交通大学等",
+    source: "铁道经济研究",
+    level: "验证",
+    finding: "基于沿线人口密度、岗位分布与居民出行特征，采用问卷调查 + 交通流量监测获取时空分布规律，构建「四阶段法」客流预测模型，并建立潜在客流转移概率模型。结果：预测初期日均 8.1 万人次，高峰小时断面 0.49 万人次；与 2023 年实际运营均值 7.99 万相比，偏差率低于 1.25%，相关系数 0.92。",
+    why: "这是难得给出了「预测值 vs 实际值」完整对照的新线初客流研究，偏差 1.25%、相关系数 0.92。它证明了：在新线场景下，四阶段法 + 转移率模型的精度是可以到 1% 量级的——前提是拿到人口、岗位、OD 这三类输入数据。平台当前拿不到这些，所以达不到它的精度，但它给出了明确的上限参照和改进方向。",
+    use: "作为精度上限的参照基准；指明缺失数据（人口/岗位/OD）",
+    status: "数据未齐，暂未落地"
+  },
+  {
+    group: "二、新线初期客流（4/6 号线直接相关）",
+    title: "石家庄城市轨道交通 1 号线客流预测研究",
+    author: "硕士学位论文",
+    source: "CNKI:CDMD:2.1016.769499",
+    level: "方法",
+    finding: "对比多种客流预测方法后选择传统四阶段法。出行生成用原单位法，出行分布用重力模型，方式划分用 Logit 模型，最终用 Emme/2 完成分配。对主要因素做敏感性分析后发现：开通初期最敏感的三个因素是乘车环境、票价水平、与公共交通的接驳状况。",
+    why: "这篇的价值在于「敏感性分析」的结论，而不是方法本身。它指出新线初期客流最敏感的三个变量里，有平台正在建模的两个——票价水平（对应 fare 系数）、公共交通接驳（对应 BRT 换乘客流模块）。这为平台为什么要单独设这两个开关提供了文献依据。",
+    use: "fare 票制系数、BRT 换乘模块的设计依据",
+    status: "部分落地"
+  },
+  {
+    group: "二、新线初期客流（4/6 号线直接相关）",
+    title: "基于诱增法的城市轨道交通客流预测四阶段法研究",
+    author: "重庆交通大学",
+    source: "国家科技图书文献中心，学位论文",
+    level: "方法",
+    finding: "发现传统四阶段法预测的是组团间的「趋势客流」，无法考虑新线通车后形成的新组团间「诱增客流」效应，导致系统性低估。以重庆 3 号线为例，用 MD 法计算诱增量并补充到四阶段法结果中后，预测与实际吻合度显著提高。",
+    why: "这条结论在厦门已经得到直接印证：4、6 号线免费试乘期间，官方虽不计新线客流，但全网客流从常规的 80 万涨到 92 万，净增 12 万人次——这就是典型的诱增/网络效应。平台因此把「新线带动老线」写进了模型，而不是假设两条新线独立存在。",
+    use: "网络效应说明、BRT 换乘客流建模",
+    status: "定性采纳"
+  },
+  {
+    group: "二、新线初期客流（4/6 号线直接相关）",
+    title: "南京市地铁 1 号线开通初期客流预测",
+    author: "南京市城市与交通规划设计研究院",
+    source: "城市交通",
+    level: "方法",
+    finding: "以地铁 1 号线沿线车站 1 km 半径内的 51 个交通小区为研究对象，开展 5 类个人出行调查。在方式划分阶段，利用意向调查（SP survey）数据建立轨道交通转移率模型，得到 OD 预测结果，并与实际客流对比验证。",
+    why: "它给出了另一种获取「转移率」的路径：在缺少 AFC 历史数据时，可以用意向调查问卷替代。这条对本项目有实操意义——如果后续要提升精度又拿不到 AFC，低成本的替代方案就是做沿线接驳意向调查。",
+    use: "数据缺口时的替代方案建议",
+    status: "备选路线"
+  },
+
+  /* ===== 第三组：天气修正 ===== */
+  {
+    group: "三、天气修正（三城市交叉验证）",
+    title: "Weather, travel mode choice, and impacts on subway ridership in Beijing",
+    author: "Wu & Liao",
+    source: "Transportation Research Part A, 2020, 135: 264-279",
+    level: "核心",
+    finding: "北京实证：大雨使地铁客流约下降 8%；气温每升高 1℃，周末客流上升约 0.5%；地铁对天气的敏感度远低于公交和骑行。",
+    why: "这篇给出了一个反直觉但关键的量化结论：地铁客流对天气其实是「钝感」的。旧版本的天气系数设成大雨 0.83、暴雨 0.70，明显夸大了天气的作用，属于典型的「凭感觉设参数」。依据这篇的结论重新标定为 0.92 / 0.85，预测偏差立刻收窄。",
+    use: "WEATHER_COEF 基准值",
+    status: "已落地"
+  },
+  {
+    group: "三、天气修正（三城市交叉验证）",
+    title: "天气因素对城市地铁客流时空分布的影响",
+    author: "许熳灵 等",
+    source: "地理科学进展，2020，39(1): 45-55",
+    level: "交叉验证",
+    finding: "南京实证：周日中到大雨与地铁客流显著负相关，降幅约 5%~8%；工作日通勤客流几乎不受天气影响。",
+    why: "与北京的结论在数量级上高度一致（同为 −5%~−8%），且补充说明了一个重要细节：影响主要发生在非通勤时段。这让平台敢于给枢纽/商圈类站点加 30% 的衰减系数 λ，因为这两类站的出行目的更具刚性。",
+    use: "按站点类型做天气敏感度差异化（λ_type）",
+    status: "已落地"
+  },
+  {
+    group: "三、天气修正（三城市交叉验证）",
+    title: "巴黎大区天气—出行行为研究",
+    author: "Île-de-France Mobilités",
+    source: "2026 年度报告",
+    level: "交叉验证",
+    finding: "地铁对天气最不敏感（雨天 −2%，热浪 −6%~−9%）；相比之下骑行 −24%、公交 −33%。",
+    why: "第三次独立交叉验证，且是世界另一侧的特大城市。三地结论一致，说明「地铁天气钝感」是个稳健的规律而不是样本巧合。同一效应在不同城市的量级差异，也提醒我们系数必须本地化而不能照搬。",
+    use: "支撑天气系数收敛到保守区间",
+    status: "已落地"
+  },
+
+  /* ===== 第四组：事件与特殊时段 ===== */
+  {
+    group: "四、大型活动与突发事件（预留能力）",
+    title: "Forecasting the subway passenger flow under event occurrences",
+    author: "Xue 等",
+    source: "Expert Systems with Applications, 2021, 188（MDB-HDNN）",
+    level: "预留",
+    finding: "大型活动客流可以从社交媒体热度与邻近站点进站扰动中提取前置信号，混合深度学习模型显著优于单源模型。",
+    why: "这是 upgrade 方向。当前 4、6 号线沿线的大型活动（如翔安体育会展）数据尚不成熟，暂未启用；一旦有活动排期数据，这套框架的接入成本最低。",
+    use: "预留 socialHeat 特征钩子",
+    status: "部分预留"
+  },
+  {
+    group: "四、大型活动与突发事件（预留能力）",
+    title: "Forecasting short-term subway passenger flow under special events",
+    author: "Li 等",
+    source: "Transportation Research Part C, 2017, 77: 306-328（MSRBF）",
+    level: "预留",
+    finding: "特殊事件下的不规则客流可用多尺度 RBF 网络提前 30 分钟捕捉；事件影响存在小时级拖尾。",
+    why: "明确了「提前 30 分钟」这个可操作的预警窗口，对一线大客流处置有直接价值。待分时 AFC 数据到位后可启用。",
+    use: "短时预警的时间窗设计参照",
+    status: "预留"
+  },
+  {
+    group: "四、大型活动与突发事件（预留能力）",
+    title: "融合语义特征与峰段校准的大型活动地铁短时客流预测",
+    author: "《计算机工程与应用》",
+    source: "2026",
+    level: "方向",
+    finding: "活动散场时间偏移和拖堂是主要误差来源。引入 LLM 语义特征 + RF-GBDT 预测散场时间，MAE 降低 34%~41%。",
+    why: "指出了一个容易被忽略的误差源：活动的误差不是幅度，而是时间点。这条提示在未来的问题排查中会很有用，但当前缺「散场实际时间」样本，无法标定。",
+    use: "待积累样本后启用",
+    status: "方向采纳"
+  },
+  {
+    group: "四、大型活动与突发事件（预留能力）",
+    title: "Analyzing spatio-temporal impacts of extreme rainfall events",
+    author: "Zhou 等",
+    source: "Physica A, 2021, 577",
+    level: "预留",
+    finding: "深圳 15 分钟粒度下，暴雨与台风造成时空不均衡冲击，客流恢复时间与降雨持续时间相关。",
+    why: "厦门同为东南沿海台风城市，这条规律的适用性很高。极端天气下的客流预测与常规雨天不是一回事——恢复是按周的渐进过程，而非当天即恢复。",
+    use: "需分时数据后启用",
+    status: "预留"
+  }
+];
+
+/* ---------- 4. 数据来源清单 ---------- */
+var SOURCES = [
+  { name: "厦门地铁官方网站 · 站点线路", use: "站点清单、换乘关系、BRT 线路归属", rel: "A", note: "https://www.xmgdjt.com.cn" },
+  { name: "本地宝 · 4 号线站点与首末班时刻", use: "4 号线 8 座运营站的顺序与名称", rel: "B", note: "2026-09-18 版" },
+  { name: "本地宝 · 6 号线运营时刻表", use: "6 号线 20 站顺序；判定石美、龙江明珠暂缓", rel: "B", note: "时刻表存在 → 视为运营；无时刻 → 暂缓" },
+  { name: "用户现场核实（2026-10-26）", use: "纠正「6 号线漳州段全部通车」的表述：陈井站实际未开通", rel: "A", note: "优先级高于网络资料。凡用户核实与网络资料冲突，一律以用户核实为准" },
+  { name: "厦门日报 / 腾讯新闻（2026-07-31）", use: "6 号线全线 28.3 km、20 座车站、初期运营前安全评估通过", rel: "A", note: "官方媒体转载验收结论" },
+  { name: "福建日报 / 海峡导报 / 网易（2026-09-16）", use: "开通首日现场报道、4 号线 45 km/11 站、设计时速 120 km", rel: "A", note: "含记者现场采访" },
+  { name: "今日头条 / 搜狐 客流播报（2026-09-16~18）", use: "全线网日客流、分线客流、BRT 日客流", rel: "B", note: "自媒体统计，但与公开播报多源吻合，可用性较高" },
+  { name: "网友安检门统计「轨道分线爱好者」（2026-09-16）", use: "6 号线首日进站约 7 万；Top5 站点排序；4 号线进站前三", rel: "B", note: "⚠ 原作者已声明「根据上午数据估算，不一定正确，仅供参考」。且华侨大学站 BRT 免安检换乘部分未计入，存在系统性低估。" },
+  { name: "厦门市财政局答复函（2025 年度）", use: "BRT 全年客运 7861 万人次 → 日均 21.54 万", rel: "A", note: "政府答复文件，权威度高" },
+  { name: "国务院办公厅 · 2026 年节假日安排", use: "法定节假日与调休补班日历", rel: "A", note: "2027 年安排公布后需更新 data.js" },
+  { name: "厦门地铁官方标志色规范", use: "4 号线活力红、6 号线缤纷紫", rel: "A", note: "用于线路色标" }
+];
+
+/* ---------- 5. 已知局限（必须显式告知） ---------- */
+var LIMITATIONS = [
+  { level: "严重", text: "新线仍在试乘期，客流中相当大一部分是体验性乘坐——通勤规律尚未形成，这部分需求在日常化后会消失。因此当前版本只做功能样板，页面上的任何数字都不应当作预测结论使用。" },
+  { level: "严重", text: "4 号线日均基准 32,000 人次完全没有实测依据，是跨线类比推算值。这是全平台置信度最低的一项，任何基于 4 号线的绝对量结论都应视为量级参考而非精确值。" },
+  { level: "严重", text: "BRT↔地铁换乘系数无任何官方换乘量数据支撑。真实值需要 AFC 与 BRT 闸机配对数据才能确立，当前 0.34/0.28 属推算；现有 BRT 数据均为全网口径，不能用于校验。" },
+  { level: "较重", text: "6 号线仅有 1 个观测样本（9 月 16 日首日），且该日为免费+尝鲜状态。样本量为 1，无法做任何统计意义上的检验。" },
+  { level: "较重", text: "站点腹地等级 catchment 是定性判定（1~5），没有接入实际人口/岗位数据。兰州研究之所以能达到 1.25% 偏差，核心差异就在于它拿到了这些数据。" },
+  { level: "中等", text: "24 小时曲线形状来自「站点类型模板」，没有用真实分时数据校准。日总量若准，不代表峰值小时准——而这恰恰是排班最关心的。" },
+  { level: "中等", text: "模型未考虑同线路其他交通方式的竞争关系（如常规公交、网约车），也未纳入票价政策变化之外的运营调整。" },
+  { level: "中等", text: "新线仍处于客流培育期，按北京交研院规律需要 3~5 年才能稳定。本平台只做短期预测（≤1 年），不做长期外推。" }
+];
+
+/* ---------- 6. 数据需求（按提升效果排序） ---------- */
+var DATA_NEEDS = [
+  { pri: "★★★", name: "站级日客流报表（各站每日进站量，≥3 个月）", effect: "一次性替换全部 25 个站的推算基准 + 每站周内系数。站点级 MAPE 有望从 30%+ 降到 10% 以内", status: "可通过本站「实际数据导入」页直接导入" },
+  { pri: "★★★", name: "4 号线各站实际客流", effect: "直接弥补当前最大的短板——4 号线基准无依据", status: "缺口" },
+  { pri: "★★☆", name: "分时客流（15 min 或 1 h 粒度）", effect: "校准早/晚高峰形态，分时预测精度提升最大", status: "缺口" },
+  { pri: "★★☆", name: "BRT↔地铁换乘量（闸机配对或抽样调查）", effect: "确立换乘系数，替换推算值", status: "缺口" },
+  { pri: "★☆☆", name: "OD 客流（站对站）", effect: "支持网络效应与换乘传导建模", status: "远期" },
+  { pri: "★☆☆", name: "沿线人口与岗位分布", effect: "替代定性 catchment 等级，理论上可把误差压到接近兰州研究的水平", status: "远期" },
+  { pri: "★☆☆", name: "历史天气 × 历史客流配对", effect: "用本地数据回归天气弹性，替换文献 borrowed 系数", status: "可累积" }
+];
