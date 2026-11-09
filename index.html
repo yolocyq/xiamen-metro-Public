@@ -7671,7 +7671,7 @@ var ImportMod = (function(){
   var state = blank();
 
   function blank(){
-    return { version:1, stations:{}, globalDow:null, history:[], meta:{}, updatedAt:null };
+    return { version:2, stations:{}, alias:{}, globalDow:null, history:[], meta:{}, updatedAt:null };
   }
   function mean(a){ return a.length ? a.reduce(function(x,y){return x+y;},0)/a.length : 0; }
   function uniq(a){ var o={},r=[]; a.forEach(function(x){ if(!o[x]){o[x]=1;r.push(x);} }); return r; }
@@ -7698,15 +7698,39 @@ var ImportMod = (function(){
     if(!CRAWLED.historicalData.station_calibration) CRAWLED.historicalData.station_calibration = {};
     return CRAWLED.historicalData.station_calibration;
   }
-  /* 学到的基准写回模型，使全站预测立即生效 */
+  /* 模型当前给某站算出的「常态日合计」——作为量级校验的参照物。
+   * 有校准条目的站用条目值；没有的站按 profile × 站规模 × 全局系数 还原，与预测口径一致。 */
+  function modelAnchor(stn){
+    var e = calMap()[stn + '站'] || {};
+    if(e._origNormal !== undefined) return e._origNormal;
+    if(e.daily_normal) return e.daily_normal;
+    if(e.daily_summer_avg) return e.daily_summer_avg;
+    if(e.daily_2024) return e.daily_2024;
+    try{
+      var stype = getStationType(stn);
+      var profile = BASELINE_PROFILES[stype] || BASELINE_PROFILES['通勤'];
+      var scale = getStationScale(stn);
+      var sum = 0;
+      for(var h=0;h<24;h++) sum += (profile[h] || 0) * scale * GLOBAL_BASELINE_SCALE;
+      return sum;
+    }catch(err){ return null; }
+  }
+
+  /* 学到的基准写回模型，使全站预测立即生效。
+   * 只有「属本站线网」且通过量级校验的站才写回：
+   * - ext     = 不在 1/2/3 号线 70 站名单里（BRT、4/6 号线等），只存档不改模型
+   * - suspect = 名字对得上但日均与原锚点相差 45% 以上，多半是同名不同线网，默认不覆盖 */
   function applyToModel(){
     var sc = calMap();
     Object.keys(state.stations).forEach(function(name){
       var r = state.stations[name];
-      if(!r || !(r.daily > 0)) return;
+      if(!r || r.ext || r.suspect || !(r.daily > 0)) return;
       var k = name + '站';
       if(!sc[k]) sc[k] = {};
-      if(sc[k]._origNormal === undefined) sc[k]._origNormal = sc[k].daily_normal;
+      if(sc[k]._origNormal === undefined){
+        sc[k]._origHad = (sc[k].daily_normal !== undefined && sc[k].daily_normal !== null);
+        sc[k]._origNormal = Math.round(modelAnchor(name));
+      }
       sc[k].daily_normal = Math.round(r.daily);
       sc[k].learned = true;
       sc[k].learned_days = r.days;
@@ -7718,6 +7742,21 @@ var ImportMod = (function(){
 
   /* ---- 统计 ---- */
   function stationCount(){ return Object.keys(state.stations).length; }
+  function linkedCount(){
+    var n = 0;
+    Object.keys(state.stations).forEach(function(k){
+      var r = state.stations[k];
+      if(r && !r.ext && allStations.indexOf(k) >= 0) n++;
+    });
+    return n;
+  }
+  function extCount(){ return stationCount() - linkedCount(); }
+  function suspects(){
+    return Object.keys(state.stations).filter(function(k){
+      var r = state.stations[k];
+      return r && r.suspect;
+    });
+  }
   function totalRecords(){
     var t = 0;
     Object.keys(state.stations).forEach(function(n){ t += Object.keys(state.stations[n].byDate||{}).length; });
@@ -7727,13 +7766,55 @@ var ImportMod = (function(){
   function meta(){ return state.meta || {}; }
   function history(){ return state.history || []; }
 
-  /* ---- 站名匹配：允许「镇海路」与「镇海路站」两种写法 ---- */
+  /* ---- 站名归一化：容忍「站」后缀、括号备注、空格、地铁/BRT 字样 ---- */
+  var _normIdx = null;
+  function normName(s){
+    return String(s == null ? '' : s)
+      .replace(/[\s　]/g, '')
+      .replace(/[（(][^）)]*[）)]/g, '')      // 「滨海新城（西柯）」→「滨海新城」
+      .replace(/地铁|轻轨|BRT|brt/g, '')
+      .replace(/站$/, '');                    // 「镇海路站」→「镇海路」
+  }
+  function normIdx(){
+    if(_normIdx) return _normIdx;
+    _normIdx = {};
+    for(var i=0;i<allStations.length;i++){ _normIdx[normName(allStations[i])] = allStations[i]; }
+    return _normIdx;
+  }
+
+  /* ---- 站名匹配：匹配到本站线网站点则返回该站名，否则返回 null（属其他线网） ---- */
   function matchStation(name){
     if(!name) return null;
     var n = String(name).trim();
+    if(state.alias && state.alias[n] && allStations.indexOf(state.alias[n]) >= 0) return state.alias[n];
     if(allStations.indexOf(n) >= 0) return n;
-    if(n.length > 1 && n.slice(-1) === '站' && allStations.indexOf(n.slice(0,-1)) >= 0) return n.slice(0,-1);
-    return null;
+    var hit = normIdx()[normName(n)];
+    return hit || null;
+  }
+
+  /* ---- 归属分类：哪些站能进线网模型，哪些只是独立存档 ---- */
+  function classify(records){
+    var map = {}, order = [];
+    (records || []).forEach(function(r){
+      var key = String(r.station == null ? '' : r.station).trim();
+      if(!key) return;
+      var o = map[key];
+      if(!o){ o = map[key] = { name:key, n:0, sum:0, days:{}, stn:matchStation(key) }; order.push(key); }
+      o.n++;
+      o.sum += Number(r.inbound) || 0;
+      o.days[r.date] = 1;
+    });
+    var all = order.map(function(k){
+      var o = map[k];
+      o.avg = Math.round(o.sum / Math.max(1, Object.keys(o.days).length));
+      o.daysCount = Object.keys(o.days).length;
+      return o;
+    });
+    return {
+      all: all,
+      linked: all.filter(function(o){ return !!o.stn; }),
+      external: all.filter(function(o){ return !o.stn; })
+    };
   }
 
   /* ---- 剥离当日系数，反算「常态日基准」 ---- */
@@ -7793,6 +7874,7 @@ var ImportMod = (function(){
     var acc={0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
     Object.keys(state.stations).forEach(function(stn){
       var r = state.stations[stn];
+      if(r.ext || r.suspect) return;          // 其他线网/疑似同名站不参与地铁作息学习
       var ds = Object.keys(r.byDate||{});
       /* 门槛：单站至少两周样本。样本太少时，星期系数会把日间随机波动
        * 误当成星期规律，反而拉低精度，不如不学。 */
@@ -7818,25 +7900,34 @@ var ImportMod = (function(){
     return any ? out : null;
   }
 
-  /* ---- 主流程 ---- */
-  function learn(records, fileName){
+  /* ---- 主流程 ----
+   * 约定：
+   *   records 里每个站要么能对上线网（linked，参与回测、可写回模型），
+   *   要么对不上（external，仅存档，绝不改模型）。
+   * opts.force = true 时，即使量级差异过大也照旧覆盖（用户已确认是同一线网）。 */
+  function learn(records, fileName, opts){
+    opts = opts || {};
+    var force = !!opts.force;
     var before = backtest(records);
-    var added = 0, touched = {};
+    var added = 0, touched = {}, extTouched = {}, suspect = [];
     records.forEach(function(r){
-      var stn = matchStation(r.station);
-      if(!stn) return;
       var v = Number(r.inbound) || 0;
       if(v <= 0) return;
-      var rec = state.stations[stn];
-      if(!rec) rec = state.stations[stn] = { byDate:{}, days:0, daily:0, rawMean:0, firstAt:null, lastAt:null };
+      var stn = matchStation(r.station);
+      var key = stn || String(r.station == null ? '' : r.station).trim();
+      if(!key) return;
+      var rec = state.stations[key];
+      if(!rec) rec = state.stations[key] = { byDate:{}, days:0, daily:0, rawMean:0, firstAt:null, lastAt:null };
+      if(!stn) rec.ext = true;
       if(rec.byDate[r.date] === undefined) added++;
       rec.byDate[r.date] = v;                          // 同日期以最新值为准，天然去重
-      touched[stn] = true;
+      if(stn) touched[stn] = true; else extTouched[key] = true;
     });
 
     var gdow = dowFromAll();
     if(gdow) state.globalDow = gdow;
 
+    /* 线网站点：剥离当日系数后反算常态日基准 */
     Object.keys(touched).forEach(function(stn){
       var rec = state.stations[stn];
       var ds = Object.keys(rec.byDate).sort();
@@ -7847,16 +7938,54 @@ var ImportMod = (function(){
       rec.daily = Math.round(sb.length ? mean(sb) : rec.rawMean);
       rec.stripped = sb.length > 0;
       if(ds.length){ rec.firstAt = ds[0]; rec.lastAt = ds[ds.length-1]; }
+      rec.ext = false;
+
+      /* 量级校验：与模型当前锚点比，偏差超过 ±45% 视为「疑似同名不同线网」。
+       * 典型场景：文件里的「文灶」是 BRT 文灶（约 6 千/日），地铁文灶是 2 万级。
+       * 这类数据写进模型会把地铁站的基准打到地板价，所以默认拦下。 */
+      var ref = modelAnchor(stn);
+      if(!force && ref > 0 && (rec.daily / ref < 0.55 || rec.daily / ref > 1.8)){
+        rec.suspect = true;
+        rec.suspectRef = ref;
+        suspect.push(stn);
+      } else {
+        rec.suspect = false;
+        delete rec.suspectRef;
+      }
     });
+
+    /* 其他线网站点：只算实际日均，不做系数剥离（没有对应模型），纯存档 */
+    Object.keys(extTouched).forEach(function(k){
+      var rec = state.stations[k];
+      var ds = Object.keys(rec.byDate).sort();
+      rec.days = ds.length;
+      rec.rawMean = mean(ds.map(function(d){ return rec.byDate[d]; }));
+      rec.daily = Math.round(rec.rawMean);
+      rec.stripped = false;
+      rec.ext = true;
+      if(ds.length){ rec.firstAt = ds[0]; rec.lastAt = ds[ds.length-1]; }
+    });
+
+    /* 只统计「真正写回模型的站」的复测结果：
+     * 疑似同名站被拦下后仍留在样本里会把 MAPE 拖高，单看总数会误判学习无效。 */
+    var learnedSet = {};
+    Object.keys(touched).forEach(function(n){ if(suspect.indexOf(n) < 0) learnedSet[n] = 1; });
+    var learnedRecs = records.filter(function(r){
+      var s2 = matchStation(r.station);
+      return s2 && learnedSet[s2];
+    });
+    var beforeLearned = learnedRecs.length ? backtest(learnedRecs) : { n:0 };
 
     applyToModel();
     save();
     var after = backtest(records);
+    var afterLearned = learnedRecs.length ? backtest(learnedRecs) : { n:0 };
 
     var ds2 = records.map(function(r){ return r.date; }).sort();
     state.history.push({
       at:new Date().toISOString(), file:fileName || '手动导入',
       records:records.length, stationCount:Object.keys(touched).length, added:added,
+      extCount:Object.keys(extTouched).length, suspectCount:suspect.length,
       dateFrom:ds2.length?ds2[0]:null, dateTo:ds2.length?ds2[ds2.length-1]:null,
       beforeMape:before.mape, afterMape:after.mape, n:after.n
     });
@@ -7873,7 +8002,33 @@ var ImportMod = (function(){
       })()
     };
     save();
-    return { before:before, after:after, added:added, stationCount:Object.keys(touched).length, globalDow:gdow };
+    return { before:before, after:after, beforeLearned:beforeLearned, afterLearned:afterLearned,
+             added:added, stationCount:Object.keys(touched).length,
+             extCount:Object.keys(extTouched).length, suspects:suspect,
+             linkedNames:Object.keys(touched).filter(function(n){ return suspect.indexOf(n) < 0; }),
+             extNames:Object.keys(extTouched), globalDow:gdow };
+  }
+
+  /* ---- 一键修复：把历史上被其他线网覆盖掉的站点基准还原 ---- */
+  function revertSuspects(){
+    var sc = calMap(), fixed = [];
+    Object.keys(state.stations).forEach(function(name){
+      var r = state.stations[name];
+      if(!r) return;
+      var e = sc[name + '站'];
+      if(!e || e._origNormal === undefined) return;
+      var now = e.daily_normal;
+      if(now > 0 && (now / e._origNormal < 0.55 || now / e._origNormal > 1.8)){
+        if(e._origHad === false) delete e.daily_normal;
+        else e.daily_normal = e._origNormal;
+        delete e._origNormal; delete e._origHad; delete e.learned; delete e.learned_days;
+        delete e.learned_from; delete e.learned_to;
+        r.ext = true; r.suspect = false; delete r.suspectRef;
+        fixed.push(name);
+      }
+    });
+    if(fixed.length){ save(); applyToModel(); }
+    return fixed;
   }
 
   /* ---- 清空：还原模型到导入前 ---- */
@@ -7882,7 +8037,11 @@ var ImportMod = (function(){
     Object.keys(state.stations).forEach(function(name){
       var k = name + '站', e = sc[k];
       if(!e) return;
-      if(e._origNormal !== undefined){ e.daily_normal = e._origNormal; delete e._origNormal; }
+      if(e._origNormal !== undefined){
+        if(e._origHad === false) delete e.daily_normal;
+        else e.daily_normal = e._origNormal;
+        delete e._origNormal; delete e._origHad;
+      }
       else delete e.daily_normal;
       delete e.learned; delete e.learned_days; delete e.learned_from; delete e.learned_to;
     });
@@ -7919,8 +8078,11 @@ var ImportMod = (function(){
   return {
     load:load, save:save, backtest:backtest, learn:learn,
     clearAll:clearAll, exportJSON:exportJSON, importJSON:importJSON,
-    matchStation:matchStation, isEmpty:isEmpty, meta:meta, history:history,
-    stationCount:stationCount, totalRecords:totalRecords,
+    matchStation:matchStation, classify:classify, normName:normName, modelAnchor:modelAnchor,
+    isEmpty:isEmpty, meta:meta, history:history,
+    stationCount:stationCount, linkedCount:linkedCount, extCount:extCount,
+    suspects:suspects, revertSuspects:revertSuspects,
+    totalRecords:totalRecords,
     get raw(){ return state; }
   };
 })();
@@ -8078,7 +8240,16 @@ function imParseRows(rows, fname){
   recs.forEach(function(r){ if(names.indexOf(r.station)<0) names.push(r.station); });
   recs.forEach(function(r){ if(dates.indexOf(r.date)<0) dates.push(r.date); });
   dates.sort();
-  var un = names.filter(function(n){ return !ImportMod.matchStation(n); });
+
+  /* 归属分类：能进线网模型的 / 只能存档的 / 量级对不上的 */
+  var cls = ImportMod.classify(recs);
+  var susList = [];
+  cls.linked.forEach(function(o){
+    var ref = ImportMod.modelAnchor(o.stn);
+    if(ref > 0 && (o.avg / ref < 0.55 || o.avg / ref > 1.8)){ o.ratio = o.avg / ref; o.ref = ref; susList.push(o); }
+  });
+  IMP.cls = cls;
+  IMP.suspectNames = susList.map(function(o){ return o.stn; });
 
   var colDesc = wide
     ? ('宽表：首列为站名，另有 ' + fields.dates.length + ' 个日期列')
@@ -8094,10 +8265,40 @@ function imParseRows(rows, fname){
     h += '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px;margin-top:8px">'
       + '检测到 <b>' + imInt(dupRows) + '</b> 条同站同日记录（分时表或流水明细），已按「站 + 日」<b>求和聚合</b>为 ' + imInt(recs.length) + ' 条日记录。</div>';
   }
-  if(un.length){
-    h += '<div style="background:#fff3e0;border-left:4px solid #e65100;padding:10px 14px;border-radius:6px;margin-top:8px">有 ' + un.length
-      + ' 个站名未能匹配到站点清单：' + un.slice(0,12).map(esc).join('、') + (un.length>12?' 等':'')
-      + '。这些站不参与学习，请核对是否与系统内站名一致（例如「镇海路」与「镇海路站」均可识别）。</div>';
+
+  /* 三分法说明：把「未匹配」这件事讲清楚，而不是丢一句报错 */
+  if(cls.external.length || susList.length){
+    h += '<div style="background:#fff8e1;border-left:4px solid #f57f17;padding:12px 14px;border-radius:6px;margin-top:8px;line-height:1.9">'
+      + '<b>这批数据分三类，逐条说清楚：</b><br>'
+      + '① <b>' + cls.linked.length + ' 个站</b>属本站线网（1/2/3 号线 70 站）→ 参与回测，学习后写回预测模型<br>'
+      + '② <b>' + cls.external.length + ' 个站</b>不在这 70 个站名单里 → <b>照样存档、可看统计，但不会改动地铁线网模型</b><br>'
+      + '③ <b>' + susList.length + ' 个站</b>名字对得上但日均差太多 → 疑似同名不同线网，<b>默认不覆盖</b>'
+      + '</div>';
+
+    h += '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:12px 14px;border-radius:6px;margin-top:8px;line-height:1.85">'
+      + '<b>② 是什么情况？</b>本站模型只覆盖地铁 1/2/3 号线的 70 个站。'
+      + '名单外的基本来自<b>BRT 快速公交</b>和<b>4、6 号线</b>——比如「第一码头、开禾路口、思北、斗西路、二市、金榜公园、火车站、龙山桥」这一串就是 BRT 快 1 线的站序。'
+      + '所以不是名字写错了，是两份名单本来就不同。这些数据会作为独立档案保存（可查每日均值与样本天数），只是不参与地铁基准校准。</div>';
+
+    if(susList.length){
+      h += '<div style="background:#ffebee;border-left:4px solid #c62828;padding:12px 14px;border-radius:6px;margin-top:8px;line-height:1.85">'
+        + '<b>③ 需要你确认的 ' + susList.length + ' 个站：</b>'
+        + susList.slice(0,6).map(function(o){
+            return esc(o.stn) + '（文件日均 ' + imInt(o.avg) + '，本站模型 ' + imInt(o.ref) + '，仅 ' + Math.round(o.ratio*100) + '%）';
+          }).join('；')
+        + (susList.length > 6 ? ' 等' : '')
+        + '。<br>典型原因：同名但属于不同线网（如 BRT 文灶约 6 千/日、地铁文灶是 2 万级）。'
+        + '默认<b>不写入模型</b>；若确认是同一站同口径，可在下方勾选「强制覆盖」。</div>';
+    }
+
+    var listAll = function(arr, color){
+      return '<details style="margin-top:8px"><summary style="cursor:pointer;font-size:13px;color:' + color + '">查看 ' + arr.length + ' 个站名清单</summary>'
+        + '<div style="font-size:12px;color:#5a6b7d;line-height:1.9;margin-top:6px">'
+        + arr.map(function(o){ return esc(o.name) + '（' + imInt(o.n) + ' 条/' + o.daysCount + ' 天，日均 ' + imInt(o.avg) + '）'; }).join('　·　')
+        + '</div></details>';
+    };
+    if(cls.linked.length) h += listAll(cls.linked, '#2e7d32');
+    if(cls.external.length) h += listAll(cls.external, '#e65100');
   }
   if(box) box.innerHTML = h;
 
@@ -8189,11 +8390,17 @@ function imRenderPreview(){
   if(!box) return;
   if(!IMP.records.length){ box.innerHTML = ''; return; }
   var top = IMP.records.slice(0, 8);
-  var h = '<table><thead><tr><th>站名</th><th>日期</th><th style="text-align:right">进站量</th><th>站点匹配</th></tr></thead><tbody>';
+  var h = '<table><thead><tr><th>站名</th><th>日期</th><th style="text-align:right">进站量</th><th>归属</th></tr></thead><tbody>';
+  var susSet = {};
+  (IMP.suspectNames || []).forEach(function(n){ susSet[n] = 1; });
   top.forEach(function(r){
     var stn = ImportMod.matchStation(r.station);
+    var tag;
+    if(!stn) tag = '<span class="badge" style="background:#eceff1;color:#546e7a">仅存档</span>';
+    else if(susSet[stn]) tag = '<span class="badge" style="background:#fff3e0;color:#e65100">疑似同名 · 待确认</span>';
+    else tag = '<span class="badge green">线网内 · ' + esc(stn) + '</span>';
     h += '<tr><td>' + esc(r.station) + '</td><td>' + esc(r.date) + '</td><td style="text-align:right">' + imInt(r.inbound) + '</td>'
-      + '<td>' + (stn ? '<span class="badge green">✓ ' + esc(stn) + '</span>' : '<span class="badge red">未匹配</span>') + '</td></tr>';
+      + '<td>' + tag + '</td></tr>';
   });
   h += '</tbody></table><div style="font-size:12px;color:#999;margin-top:6px">仅显示前 8 条</div>';
   box.innerHTML = h;
@@ -8209,7 +8416,9 @@ function imReport(title, bt){
     + '　|　RMSE ' + imInt(bt.rmse) + '　|　平均偏差 ' + (bt.bias == null ? '—' : (bt.bias > 0 ? '+' : '') + imPct(bt.bias))
     + '　|　R² ' + (bt.r2 == null ? '—' : bt.r2.toFixed(3)) + '</div>';
   if(bt.unmatched && bt.unmatched.length){
-    h += '<div style="background:#fff3e0;border-left:4px solid #e65100;padding:10px 14px;border-radius:6px;margin-top:8px">未匹配站名 ' + bt.unmatched.length + ' 个：' + bt.unmatched.slice(0,10).map(esc).join('、') + '</div>';
+    h += '<div style="background:#e3eefd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px;margin-top:8px;font-size:13px">'
+      + '另有 <b>' + bt.unmatched.length + ' 个站</b>不属本站线网（BRT / 4、6 号线等），已单独存档，<b>不计入本次回测</b>。'
+      + '回测只统计能对上线网模型的站点。</div>';
   }
   return h;
 }
@@ -8235,10 +8444,11 @@ function imDoBacktest(){
 function imDoLearn(){
   if(!IMP.records.length){ imMsg('bad','还没有可学习的数据，请先选择文件或点「载入示例数据」。'); return; }
   var btn = $_('impApply');
+  var fc = $_('impForce');
   var res;
   try{
     if(btn){ btn.disabled = true; btn.textContent = '学习中…'; }
-    res = ImportMod.learn(IMP.records, IMP.fileName);
+    res = ImportMod.learn(IMP.records, IMP.fileName, { force: !!(fc && fc.checked) });
   }catch(e){
     var eb = $_('impBtResult');
     if(eb) eb.innerHTML = '<div style="background:#ffebee;border-left:4px solid #c62828;padding:10px 14px;border-radius:6px;margin-top:10px">学习出错：' + esc(e.message) + '。请把这份文件发给管理员排查。</div>';
@@ -8246,29 +8456,71 @@ function imDoLearn(){
     return;
   }
   if(btn){ btn.disabled = false; btn.textContent = '② 学习并复测'; }
-  var h = imReport('学习前（上一次的记忆）', res.before) + imReport('学习后（并入本次数据）', res.after);
-  if(res.before.mape != null && res.after.mape != null && res.after.n > 0){
-    var delta = res.after.mape - res.before.mape;
-    if(delta < -0.002){
-      h += '<div style="background:#e8f5e9;border-left:4px solid #2e7d32;padding:10px 14px;border-radius:6px;margin-top:10px"><b>本次学习有效：</b>MAPE 由 '
-        + imPct(res.before.mape) + ' 降到 ' + imPct(res.after.mape) + '，改善 ' + imPct(Math.abs(delta)) + '。新基准已写入长期记忆，全站预测立即生效。</div>';
-    } else if(delta > 0.002){
-      h += '<div style="background:#fff3e0;border-left:4px solid #e65100;padding:10px 14px;border-radius:6px;margin-top:10px"><b>本次学习反而变差：</b>MAPE 由 '
-        + imPct(res.before.mape) + ' 升到 ' + imPct(res.after.mape) + '。常见原因：这批数据的时段与既有规律差异过大（如跨节假日），或含异常值。参数仍已写入，建议核对数据质量。</div>';
+
+  var h = '';
+  var wrote = res.stationCount - (res.suspects ? res.suspects.length : 0);
+
+  if(res.after && res.after.n > 0){
+    var onlyLearned = res.afterLearned && res.afterLearned.n > 0;
+    h += imReport('学习前（上一次的记忆）' + (onlyLearned ? '：全部线网站点' : ''), res.before);
+    if(onlyLearned){
+      h += imReport('学习后（只看本次已校准的站点，' + (res.linkedNames || []).length + ' 个站）', res.afterLearned);
+      h += imReport('学习后（全部线网站点，含被拦下的同名站）', res.after);
     } else {
-      h += '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px;margin-top:10px">本次 MAPE 基本持平（'
-        + imPct(res.before.mape) + ' → ' + imPct(res.after.mape) + '），说明这批数据与已学到的规律一致。</div>';
+      h += imReport('学习后（并入本次数据）', res.after);
     }
+    var b0 = onlyLearned ? res.beforeLearned.mape : res.before.mape;
+    var a0 = onlyLearned ? res.afterLearned.mape : res.after.mape;
+    if(b0 != null && a0 != null){
+      var delta = a0 - b0;
+      var scope = onlyLearned ? '已校准的 ' + (res.linkedNames || []).length + ' 个站' : '本次样本';
+      if(delta < -0.002){
+        h += '<div style="background:#e8f5e9;border-left:4px solid #2e7d32;padding:10px 14px;border-radius:6px;margin-top:10px"><b>学习有效：</b>' + scope + '的 MAPE 由 '
+          + imPct(b0) + ' 降到 ' + imPct(a0) + '，改善 ' + imPct(Math.abs(delta)) + '。</div>';
+      } else if(delta > 0.002){
+        h += '<div style="background:#fff3e0;border-left:4px solid #e65100;padding:10px 14px;border-radius:6px;margin-top:10px"><b>学习后误差反而变大：</b>' + scope + '的 MAPE 由 '
+          + imPct(b0) + ' 升到 ' + imPct(a0) + '。常见原因：这批数据的时段与既有规律差异过大（如跨节假日），或含异常值。建议核对数据质量。</div>';
+      } else {
+        h += '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px;margin-top:10px">' + scope + '的 MAPE 基本持平（'
+          + imPct(b0) + ' → ' + imPct(a0) + '），说明这批数据与已学到的规律一致。</div>';
+      }
+    }
+  } else {
+    /* 全部是其他线网的站：不再假装「回测失败」，直接把结论说清楚 */
+    h += '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:12px 14px;border-radius:6px;margin-top:10px;line-height:1.85">'
+      + '<b>本次没有可回测的线网站点。</b>这批数据里的站全部不在 1/2/3 号线 70 站名单内（多为 BRT、4/6 号线），'
+      + '所以没有「预测值」可以对比，MAPE 无从计算——这是正常的，不是导入失败。数据已作为独立档案保存。</div>';
   }
-  h += '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px;margin-top:12px"><b>本次写入长期记忆：</b><br>'
-    + '· 站点基准 → 更新 ' + res.stationCount + ' 个站，新增 ' + imInt(res.added) + ' 条日记录<br>';
+
+  var lines = [];
+  lines.push('· <b>线网站点</b> → ' + res.stationCount + ' 个站' + (wrote > 0 ? '，其中 <b>' + wrote + ' 个已写回模型</b>：' + (res.linkedNames || []).map(esc).join('、') + '（全站预测立即生效）' : ''));
+  if(res.extCount > 0){
+    lines.push('· <b>其他线网站点</b> → ' + res.extCount + ' 个站已存档（可查日均与样本天数，不参与地铁模型）');
+  }
+  if(res.suspects && res.suspects.length){
+    lines.push('· <b>疑似同名站点</b> → ' + res.suspects.length + ' 个站已跳过，未覆盖模型：' + res.suspects.map(esc).join('、'));
+  }
+  lines.push('· 新增 ' + imInt(res.added) + ' 条日记录（同日期以最新值为准）');
   if(res.globalDow){
     var nm = ['周日','周一','周二','周三','周四','周五','周六'];
-    h += '· 星期系数 → ' + Object.keys(res.globalDow).map(function(k){ return nm[k] + ' ' + res.globalDow[k]; }).join('　') + '<br>';
+    lines.push('· <b>星期系数</b> → ' + Object.keys(res.globalDow).map(function(k){ return nm[k] + ' ' + res.globalDow[k]; }).join('　'));
   }
-  h += '档案存放在本机浏览器，关闭浏览器、重启电脑后依然生效；换设备用「导出学习档案」迁移。</div>';
-  h += '<div style="background:#e8f5e9;border-left:4px solid #2e7d32;padding:10px 14px;border-radius:6px;margin-top:10px">'
-    + '✓ <b>已同步到全站：</b>切到「运营总览」或「客流预测」标签页，即可看到按实测基准重算的结果（这些页面每次切换都会重新渲染）。</div>';
+  h += '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:12px 14px;border-radius:6px;margin-top:12px;line-height:1.9"><b>本次写入长期记忆：</b><br>'
+    + lines.join('<br>') + '</div>';
+
+  if(res.suspects && res.suspects.length){
+    h += '<div style="background:#ffebee;border-left:4px solid #c62828;padding:12px 14px;border-radius:6px;margin-top:10px;line-height:1.85">'
+      + '<b>为什么这几站不写入？</b>它们的日均与本站模型原有锚点相差超过 45%，最可能的原因是<b>同名但属于不同线网</b>（例如 BRT 文灶约 6 千/日、地铁文灶是 2 万级）。'
+      + '如果强行写入，地铁站的基准会被打到地板价，全线预测跟着失真。<br>'
+      + '确认是同一站、同一口径（比如确实拿到了地铁文灶的实测），勾选上方的「强制覆盖同名站」再点一次学习即可。</div>';
+  }
+
+  h += '<div style="background:' + (wrote > 0 ? '#e8f5e9' : '#fff8e1') + ';border-left:4px solid ' + (wrote > 0 ? '#2e7d32' : '#f57f17') + ';padding:10px 14px;border-radius:6px;margin-top:10px">'
+    + (wrote > 0
+        ? '✓ <b>已同步到全站：</b>切到「运营总览」或「客流预测」标签页，即可看到按实测基准重算的结果。'
+        : '本次没有站点写入线网模型，地铁 1/2/3 号线的预测结果保持不变。')
+    + '<br>档案存放在本机浏览器，关闭浏览器、重启电脑后依然生效；换设备用「导出学习档案」迁移。</div>';
+
   var box = $_('impBtResult');
   if(box){
     box.innerHTML = h;
@@ -8287,19 +8539,23 @@ function imRenderState(){
     return;
   }
   var hist = ImportMod.history(), m = ImportMod.meta();
+  var lk = ImportMod.linkedCount(), ex = ImportMod.extCount();
   var h = '<div class="stats-grid">';
   h += '<div class="stat-card info"><div><div class="stat-value">' + imInt(hist.length) + '</div><div class="stat-label">累计学习次数</div></div></div>';
   h += '<div class="stat-card success"><div><div class="stat-value">' + imInt(ImportMod.totalRecords()) + '</div><div class="stat-label">累计日记录（同日期去重）</div></div></div>';
-  h += '<div class="stat-card"><div><div class="stat-value">' + imInt(ImportMod.stationCount()) + '</div><div class="stat-label">已学站点 / 共 ' + allStations.length + ' 站</div></div></div>';
+  h += '<div class="stat-card"><div><div class="stat-value">' + imInt(lk) + '</div><div class="stat-label">线网站点 / 共 ' + allStations.length + ' 站</div></div></div>';
+  h += '<div class="stat-card' + (ex > 0 ? ' info' : '') + '"><div><div class="stat-value">' + imInt(ex) + '</div><div class="stat-label">仅存档站点（BRT / 其他线网）</div></div></div>';
   h += '<div class="stat-card"><div><div class="stat-value" style="font-size:16px">' + esc(m.dateRange || '—') + '</div><div class="stat-label">数据跨度</div></div></div>';
   h += '</div>';
 
   if(hist.length){
     var last = hist[hist.length-1];
     var ok = last.beforeMape != null && last.afterMape != null && last.afterMape < last.beforeMape;
+    var tail = (last.extCount ? '，另存档 ' + imInt(last.extCount) + ' 个线网站点' : '')
+             + (last.suspectCount ? '，跳过 ' + imInt(last.suspectCount) + ' 个疑似同名站' : '');
     h += '<div style="background:' + (ok ? '#e8f5e9' : '#e3f2fd') + ';border-left:4px solid ' + (ok ? '#2e7d32' : '#1565c0') + ';padding:10px 14px;border-radius:6px;margin-top:10px">'
       + '<b>最近一次学习</b>（' + esc((last.at || '').slice(0,16).replace('T',' ')) + '，' + esc(last.file) + '）：'
-      + 'MAPE ' + imPct(last.beforeMape) + ' → <b>' + imPct(last.afterMape) + '</b>，样本 ' + imInt(last.n) + ' 条，新增 ' + imInt(last.added) + ' 条日记录。</div>';
+      + 'MAPE ' + imPct(last.beforeMape) + ' → <b>' + imPct(last.afterMape) + '</b>，样本 ' + imInt(last.n) + ' 条，新增 ' + imInt(last.added) + ' 条日记录' + tail + '。</div>';
   }
   if(ImportMod.raw.globalDow){
     var nm2 = ['周日','周一','周二','周三','周四','周五','周六'];
@@ -8307,28 +8563,36 @@ function imRenderState(){
       + Object.keys(ImportMod.raw.globalDow).map(function(k){ return nm2[k] + ' <b>' + ImportMod.raw.globalDow[k] + '</b>'; }).join('　') + '</div>';
   }
 
-  /* 健康检查：早期版本未聚合分时数据，会把「一小时的量」当成「一天的基准」，
-   * 学到的值会比原锚点低一个数量级以上。这类档案给出明确提示。 */
+  /* 健康检查：两类失真都能一键还原
+   * ① 旧版未聚合分时数据 → 基准只有原锚点的零头
+   * ② 同名不同线网（如 BRT 文灶）→ 基准被覆盖成另一个数量级 */
   var stt0 = ImportMod.raw.stations;
-  var suspect = Object.keys(stt0).filter(function(k){
+  var bad = [];
+  Object.keys(stt0).forEach(function(k){
     var c = (CRAWLED.historicalData.station_calibration || {})[k + '站'] || {};
-    return c._origNormal > 0 && c.daily_normal > 0 && c.daily_normal < c._origNormal * 0.4;
+    if(!(c._origNormal > 0) || !(c.daily_normal > 0)) return;
+    var rt = c.daily_normal / c._origNormal;
+    if(rt < 0.55 || rt > 1.8) bad.push({ k:k, cur:c.daily_normal, ref:c._origNormal, rt:rt });
   });
-  if(suspect.length){
-    h += '<div style="background:#ffebee;border-left:4px solid #c62828;padding:10px 14px;border-radius:6px;margin-top:10px">'
-      + '<b>档案可能失真：</b>有 ' + suspect.length + ' 个站学到的基准不足原锚点的 40%（'
-      + suspect.slice(0,8).map(esc).join('、') + (suspect.length>8?' 等':'') + '）。'
-      + '常见原因是导入了<b>分时数据</b>但旧版本未做聚合，把单小时客流当成了全天客流。'
-      + '建议点「清空学习档案」后重新导入（新版本会自动按「站+日」求和）。</div>';
+  if(bad.length){
+    h += '<div style="background:#ffebee;border-left:4px solid #c62828;padding:12px 14px;border-radius:6px;margin-top:10px;line-height:1.85">'
+      + '<b>有 ' + bad.length + ' 个站的模型基准已被改到不合理的水平：</b>'
+      + bad.slice(0,6).map(function(x){ return esc(x.k) + '（现 ' + imInt(x.cur) + ' / 原 ' + imInt(x.ref) + '）'; }).join('；')
+      + (bad.length > 6 ? ' 等' : '') + '。<br>'
+      + '原因通常是历史导入把<b>同名但不同线网</b>的数据（如 BRT 文灶）写进了地铁站，或旧版本未聚合分时数据。'
+      + '<br><button class="btn" style="margin-top:8px" onclick="imFixSuspects()">一键还原这些站的基准（数据仍保留为存档）</button></div>';
   }
 
   var stt = ImportMod.raw.stations, keys = Object.keys(stt).sort();
   if(keys.length){
     h += '<details style="margin-top:12px"><summary style="cursor:pointer;font-weight:600">查看已学到的站点基准（' + keys.length + ' 个）</summary>'
-      + '<table style="margin-top:10px"><thead><tr><th>站名</th><th style="text-align:right">常态日基准</th><th style="text-align:right">样本天数</th><th>数据区间</th></tr></thead><tbody>'
+      + '<table style="margin-top:10px"><thead><tr><th>站名</th><th>归属</th><th style="text-align:right">常态日基准</th><th style="text-align:right">样本天数</th><th>数据区间</th></tr></thead><tbody>'
       + keys.map(function(k){
         var r = stt[k];
-        return '<tr><td>' + esc(k) + '</td><td style="text-align:right"><b>' + imInt(r.daily) + '</b></td><td style="text-align:right">' + imInt(r.days) + '</td>'
+        var tag = r.ext ? '<span class="badge" style="background:#eceff1;color:#546e7a">仅存档</span>'
+                : (r.suspect ? '<span class="badge" style="background:#fff3e0;color:#e65100">待确认</span>'
+                             : '<span class="badge green">线网内</span>');
+        return '<tr><td>' + esc(k) + '</td><td>' + tag + '</td><td style="text-align:right"><b>' + imInt(r.daily) + '</b></td><td style="text-align:right">' + imInt(r.days) + '</td>'
           + '<td style="font-size:12px;color:#999">' + esc((r.firstAt || '—') + ' ~ ' + (r.lastAt || '—')) + '</td></tr>';
       }).join('') + '</tbody></table></details>';
   }
@@ -8346,10 +8610,26 @@ function imRenderState(){
   box.innerHTML = h;
 }
 
+/* 一键还原被其他线网/分时数据污染的站点基准：模型回到导入前，数据保留为存档 */
+function imFixSuspects(){
+  var fixed = ImportMod.revertSuspects();
+  imRenderState();
+  imRenderNeed();
+  var box = $_('impState');
+  if(!fixed.length){
+    if(box) box.insertAdjacentHTML('afterbegin', '<div style="background:#e8f5e9;border-left:4px solid #2e7d32;padding:10px 14px;border-radius:6px;margin-bottom:10px">没有需要还原的站点。</div>');
+    return;
+  }
+  if(box) box.insertAdjacentHTML('afterbegin',
+    '<div style="background:#e8f5e9;border-left:4px solid #2e7d32;padding:10px 14px;border-radius:6px;margin-bottom:10px">'
+    + '✓ 已还原 <b>' + fixed.length + '</b> 个站的模型基准：' + fixed.slice(0,8).map(esc).join('、') + (fixed.length>8?' 等':'')
+    + '。这些站的实测数据仍保留在档案里（标为「仅存档」），不会再影响 1/2/3 号线预测。</div>');
+}
+
 function imRenderNeed(){
   var box = $_('impNeed');
   if(!box) return;
-  var learned = ImportMod.stationCount();
+  var learned = ImportMod.linkedCount();
   var rows = [
     ['站级日进站量（分站、分日）', learned + ' / ' + allStations.length + ' 站', learned > 0 ? 'green' : 'red'],
     ['分时段进站量（小时级）', '未接入', 'red'],
@@ -8429,6 +8709,13 @@ function loadImport(){
     + '<h2 style="font-size:16px;margin-bottom:8px">导入实际客流数据</h2>'
     + '<div style="font-size:13px;color:#666;line-height:1.8">支持 <b>.xlsx / .xls / .csv</b>。表头需包含：站名、日期、进站量（出站量与小时为可选），系统自动识别列名。'
     + '导入后先回测精度，再把〈站点常态基准〉与〈星期系数〉累积写入模型，全站预测（运营总览、客流预测、活动保障）立即改用实测锚点。</div>'
+    + '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:13px;line-height:1.85">'
+    + '<b>适用范围先说清楚：</b>本模块只校准地铁 <b>1/2/3 号线的 ' + allStations.length + ' 个站</b>。'
+    + 'BRT、4 号线、6 号线的表也可以照常导入——系统会自动认出哪些站不属于本站线网，把它们作为<b>独立档案</b>保存（可查日均、样本天数），'
+    + '但不会拿去改地铁站的基准。名字写「镇海路」或「镇海路站」都行，括号备注、空格也会自动忽略。</div>'
+    + '<div style="background:#fff8e1;border-left:4px solid #f57f17;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:13px;line-height:1.85">'
+    + '<b>同名站怎么处理：</b>如果文件里的「文灶」其实是 BRT 文灶，会和地铁文灶撞名。'
+    + '系统会比较日均量级，差得太多（超过 45%）就<b>默认不覆盖模型</b>并提示你确认，避免把地铁预测带偏。</div>'
     + '<div style="background:#e3f2fd;border-left:4px solid #1565c0;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:13px">'
     + '导入记录永久保存在本机浏览器，多次导入会叠加学习，同日期以最新值为准，不会重复计数。可用「导出学习档案」备份或迁移。</div>'
     + '<div id="impDrop" style="border:2px dashed #c8d6e5;border-radius:10px;padding:26px;text-align:center;cursor:pointer;background:#fafcff;margin-top:12px">'
@@ -8453,7 +8740,9 @@ function loadImport(){
     + '<div style="font-size:13px;color:#666">先用当前模型回测这批数据得到误差，再应用学习，用同一批数据复测，检验是否真的收敛。</div>'
     + '<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">'
     + '<button class="btn primary" id="impBt" disabled>① 回测当前模型</button>'
-    + '<button class="btn primary" id="impApply" disabled>② 学习并复测</button></div>'
+    + '<button class="btn primary" id="impApply" disabled>② 学习并复测</button>'
+    + '<label style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#666;cursor:pointer">'
+    + '<input type="checkbox" id="impForce"> 强制覆盖同名站（确认是同一线网、同一口径）</label></div>'
     + '<div id="impBtResult"></div></div>'
 
     + '<div class="card"><h2 style="font-size:16px;margin-bottom:8px">学习档案与记忆</h2>'
